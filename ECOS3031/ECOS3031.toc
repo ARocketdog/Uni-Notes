@@ -7,41 +7,41 @@
 \contentsline {subsubsection}{\numberline {1.3.2}Marginalism and capital}{2}{subsubsection.1.3.2}%
 \contentsline {subsection}{\numberline {1.4}Keynes's challenge and the Development of Macroeconomics post-\textit {General Theory}}{4}{subsection.1.4}%
 \contentsline {subsubsection}{\numberline {1.4.1}Challenges to the synthesis}{5}{subsubsection.1.4.1}%
-\contentsline {section}{\numberline {2}Heterodox Foundations: Some Building Blocks}{8}{section.2}%
-\contentsline {subsection}{\numberline {2.1}Production of Commodities by means of Commodities}{8}{subsection.2.1}%
-\contentsline {subsubsection}{\numberline {2.1.1}The \textit {n}-commodity case}{8}{subsubsection.2.1.1}%
-\contentsline {subsubsection}{\numberline {2.1.2}Closing the Price System in the Iron/Corn Case}{9}{subsubsection.2.1.2}%
-\contentsline {subsubsection}{\numberline {2.1.3}The real wage - rate of profit relation}{10}{subsubsection.2.1.3}%
-\contentsline {subsubsection}{\numberline {2.1.4}The Maximum Rate of Profit, Maximum Real Wage and Relative Prices}{10}{subsubsection.2.1.4}%
-\contentsline {subsubsection}{\numberline {2.1.5}Basics and Non-basics}{12}{subsubsection.2.1.5}%
-\contentsline {subsubsection}{\numberline {2.1.6}Some Comparisons with Conventional Theory}{13}{subsubsection.2.1.6}%
-\contentsline {subsection}{\numberline {2.2}The Choice of Technique: A Preliminary Analysis}{13}{subsection.2.2}%
-\contentsline {section}{\numberline {3}Capital-Theoretic Issues and Conventional Macroeconomic Theory}{16}{section.3}%
-\contentsline {subsection}{\numberline {3.1}Distribution, Input Proportions and the Choice of Technique}{16}{subsection.3.1}%
-\contentsline {subsection}{\numberline {3.2}Heterogeneous Capital, the Production Function and the Choice of Technique}{17}{subsection.3.2}%
-\contentsline {subsubsection}{\numberline {3.2.1}The Surrogate Production Function, a Convex Technological Frontier}{19}{subsubsection.3.2.1}%
-\contentsline {subsection}{\numberline {3.3}Reswitching or ``double-switching'' of techniques}{20}{subsection.3.3}%
-\contentsline {subsection}{\numberline {3.4}Reverse capital deepening}{21}{subsection.3.4}%
-\contentsline {subsection}{\numberline {3.5}Reswitching and reverse capital deepening}{21}{subsection.3.5}%
-\contentsline {subsection}{\numberline {3.6}Reverse Capital Deepening and the Orthodox Explanation of Distribution}{22}{subsection.3.6}%
-\contentsline {section}{\numberline {4}Demand-Constrained Approaches to the Theory of Output and Growth}{24}{section.4}%
-\contentsline {subsection}{\numberline {4.1}The Basis for a Non-Marginalist Theory of Output}{24}{subsection.4.1}%
-\contentsline {subsubsection}{\numberline {4.1.1}Kalecki and Keynes}{24}{subsubsection.4.1.1}%
-\contentsline {subsection}{\numberline {4.2}A Non-Marginalist Approach to Output, Value and Distribution}{25}{subsection.4.2}%
-\contentsline {subsection}{\numberline {4.3}Growth and Distribution}{25}{subsection.4.3}%
-\contentsline {subsubsection}{\numberline {4.3.1}Cambridge / post-Keynesian Theory}{25}{subsubsection.4.3.1}%
-\contentsline {subsubsection}{\numberline {4.3.2}Robinson and Kaldor on Saving, Distribution and Accumulation}{26}{subsubsection.4.3.2}%
-\contentsline {subsubsection}{\numberline {4.3.3}The Composition of Aggregate Demand and the Distribution of Income}{26}{subsubsection.4.3.3}%
-\contentsline {subsubsection}{\numberline {4.3.4}The Cambridge Equation as a Theory of Distribution and Long-Run Counterpart to Keynes's PED}{27}{subsubsection.4.3.4}%
-\contentsline {subsubsection}{\numberline {4.3.5}Dispute over the Equation and the Appropriate Characterisation of Long-Run Effective Demand}{28}{subsubsection.4.3.5}%
-\contentsline {subsubsection}{\numberline {4.3.6}Modern Post-Keynesian/Kaleckian Models}{28}{subsubsection.4.3.6}%
-\contentsline {subsubsection}{\numberline {4.3.7}Kaleckian and Sraffians: Utilisation and Distribution}{31}{subsubsection.4.3.7}%
-\contentsline {section}{\numberline {5}Modern Classical Approaches to Value and Distribution and Demand-Led Growth}{32}{section.5}%
-\contentsline {subsection}{\numberline {5.1}Possibilities for a Sraffa-Keynes Synthesis}{32}{subsection.5.1}%
-\contentsline {subsubsection}{\numberline {5.1.1}Complimentarities}{32}{subsubsection.5.1.1}%
-\contentsline {subsubsection}{\numberline {5.1.2}A Sraffa-Keynes Synthesis}{32}{subsubsection.5.1.2}%
-\contentsline {subsubsection}{\numberline {5.1.3}A Couple of sticking points}{33}{subsubsection.5.1.3}%
-\contentsline {subsection}{\numberline {5.2}Normal Capacity Utilisation and Fully-adjusted Positions}{33}{subsection.5.2}%
-\contentsline {subsection}{\numberline {5.3}The ``Supermultiplier'' Approach}{35}{subsection.5.3}%
-\contentsline {subsection}{\numberline {5.4}Normal Utilisation, Steady-State Analysis and Demand-Led Growth}{36}{subsection.5.4}%
-\contentsline {subsubsection}{\numberline {5.4.1}Criticism}{38}{subsubsection.5.4.1}%
+\contentsline {section}{\numberline {2}Heterodox Foundations: Some Building Blocks}{9}{section.2}%
+\contentsline {subsection}{\numberline {2.1}Production of Commodities by means of Commodities}{9}{subsection.2.1}%
+\contentsline {subsubsection}{\numberline {2.1.1}The \textit {n}-commodity case}{9}{subsubsection.2.1.1}%
+\contentsline {subsubsection}{\numberline {2.1.2}Closing the Price System in the Iron/Corn Case}{10}{subsubsection.2.1.2}%
+\contentsline {subsubsection}{\numberline {2.1.3}The real wage - rate of profit relation}{11}{subsubsection.2.1.3}%
+\contentsline {subsubsection}{\numberline {2.1.4}The Maximum Rate of Profit, Maximum Real Wage and Relative Prices}{11}{subsubsection.2.1.4}%
+\contentsline {subsubsection}{\numberline {2.1.5}Basics and Non-basics}{13}{subsubsection.2.1.5}%
+\contentsline {subsubsection}{\numberline {2.1.6}Some Comparisons with Conventional Theory}{14}{subsubsection.2.1.6}%
+\contentsline {subsection}{\numberline {2.2}The Choice of Technique: A Preliminary Analysis}{14}{subsection.2.2}%
+\contentsline {section}{\numberline {3}Capital-Theoretic Issues and Conventional Macroeconomic Theory}{17}{section.3}%
+\contentsline {subsection}{\numberline {3.1}Distribution, Input Proportions and the Choice of Technique}{17}{subsection.3.1}%
+\contentsline {subsection}{\numberline {3.2}Heterogeneous Capital, the Production Function and the Choice of Technique}{18}{subsection.3.2}%
+\contentsline {subsubsection}{\numberline {3.2.1}The Surrogate Production Function, a Convex Technological Frontier}{20}{subsubsection.3.2.1}%
+\contentsline {subsection}{\numberline {3.3}Reswitching or ``double-switching'' of techniques}{21}{subsection.3.3}%
+\contentsline {subsection}{\numberline {3.4}Reverse capital deepening}{22}{subsection.3.4}%
+\contentsline {subsection}{\numberline {3.5}Reswitching and reverse capital deepening}{22}{subsection.3.5}%
+\contentsline {subsection}{\numberline {3.6}Reverse Capital Deepening and the Orthodox Explanation of Distribution}{23}{subsection.3.6}%
+\contentsline {section}{\numberline {4}Demand-Constrained Approaches to the Theory of Output and Growth}{25}{section.4}%
+\contentsline {subsection}{\numberline {4.1}The Basis for a Non-Marginalist Theory of Output}{25}{subsection.4.1}%
+\contentsline {subsubsection}{\numberline {4.1.1}Kalecki and Keynes}{25}{subsubsection.4.1.1}%
+\contentsline {subsection}{\numberline {4.2}A Non-Marginalist Approach to Output, Value and Distribution}{26}{subsection.4.2}%
+\contentsline {subsection}{\numberline {4.3}Growth and Distribution}{26}{subsection.4.3}%
+\contentsline {subsubsection}{\numberline {4.3.1}Cambridge / post-Keynesian Theory}{26}{subsubsection.4.3.1}%
+\contentsline {subsubsection}{\numberline {4.3.2}Robinson and Kaldor on Saving, Distribution and Accumulation}{27}{subsubsection.4.3.2}%
+\contentsline {subsubsection}{\numberline {4.3.3}The Composition of Aggregate Demand and the Distribution of Income}{27}{subsubsection.4.3.3}%
+\contentsline {subsubsection}{\numberline {4.3.4}The Cambridge Equation as a Theory of Distribution and Long-Run Counterpart to Keynes's PED}{28}{subsubsection.4.3.4}%
+\contentsline {subsubsection}{\numberline {4.3.5}Dispute over the Equation and the Appropriate Characterisation of Long-Run Effective Demand}{29}{subsubsection.4.3.5}%
+\contentsline {subsubsection}{\numberline {4.3.6}Modern Post-Keynesian/Kaleckian Models}{29}{subsubsection.4.3.6}%
+\contentsline {subsubsection}{\numberline {4.3.7}Kaleckian and Sraffians: Utilisation and Distribution}{32}{subsubsection.4.3.7}%
+\contentsline {section}{\numberline {5}Modern Classical Approaches to Value and Distribution and Demand-Led Growth}{33}{section.5}%
+\contentsline {subsection}{\numberline {5.1}Possibilities for a Sraffa-Keynes Synthesis}{33}{subsection.5.1}%
+\contentsline {subsubsection}{\numberline {5.1.1}Complimentarities}{33}{subsubsection.5.1.1}%
+\contentsline {subsubsection}{\numberline {5.1.2}A Sraffa-Keynes Synthesis}{33}{subsubsection.5.1.2}%
+\contentsline {subsubsection}{\numberline {5.1.3}A Couple of sticking points}{34}{subsubsection.5.1.3}%
+\contentsline {subsection}{\numberline {5.2}Normal Capacity Utilisation and Fully-adjusted Positions}{34}{subsection.5.2}%
+\contentsline {subsection}{\numberline {5.3}The ``Supermultiplier'' Approach}{36}{subsection.5.3}%
+\contentsline {subsection}{\numberline {5.4}Normal Utilisation, Steady-State Analysis and Demand-Led Growth}{37}{subsection.5.4}%
+\contentsline {subsubsection}{\numberline {5.4.1}Criticism}{39}{subsubsection.5.4.1}%
