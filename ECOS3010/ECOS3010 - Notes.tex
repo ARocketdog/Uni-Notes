@@ -1,4 +1,5 @@
 \documentclass[a4paper,twoside]{article}
+\usepackage{afterpage}
 \usepackage{array} 
 \usepackage{amsmath}
 \usepackage{amssymb}
@@ -6,7 +7,9 @@
 \usepackage{amstext} 
 \usepackage{amsfonts}
 \usepackage[english]{babel}
+\usepackage{booktabs}
 \usepackage{bm}
+\usepackage{bbm}
 \usepackage{caption}
 \usepackage{contour}
 \usepackage{csquotes}
@@ -18,94 +21,63 @@
 \usepackage{geometry}
 \usepackage{graphicx}
 \usepackage{hhline}
-\usepackage[hidelinks]{hyperref}
+\usepackage[hidelinks,unicode]{hyperref}
 \usepackage[noabbrev]{cleveref}
+\usepackage{longtable}
 \usepackage{lmodern}
 \usepackage{listings}
 \usepackage{nicematrix}
+\usepackage{mathtools}
 \usepackage{multirow,array}
 \usepackage{parskip}
 \usepackage{pgfplots}
 \pgfplotsset{compat=1.18}
 \usepgfplotslibrary{dateplot}
 \usepackage{ragged2e}
-\usepackage{siunitx}
-\usepackage[cm]{sfmath}
+\usepackage[lm]{sfmath}
 \usepackage{subcaption}
 \usepackage{tabularx}
+\usepackage{thmtools}
 \usepackage{titlesec}
 \usepackage{tikz}
-\usetikzlibrary{intersections, angles, quotes, calc, positioning, arrows.meta, bending}
+\usetikzlibrary{intersections, angles, quotes, calc, positioning}
+\usetikzlibrary{arrows.meta}
+\usetikzlibrary{bending}
 \tikzset{>=stealth}
 \usepackage[theorems, skins, breakable]{tcolorbox}
 \usepackage{wrapfig}
 \usepackage{ulem}
 \usepackage{xcolor}
 
+%afterpage
+\newcommand\blankpage{
+	\null
+	\pagestyle{fancy}
+	\fancyhead{}\fancyfoot{}
+	\fancyhead[RO,LE]{\thepage}
+	\newpage}
+
 %sff for all types of font
 \renewcommand{\familydefault}{\sfdefault}
 
-\DeclareMathVersion{sans}
-\SetSymbolFont{operators}{sans}{OT1}{cmbr}{m}{n}
-\SetSymbolFont{letters}{sans}{OML}{cmbrm}{m}{it}
-\SetSymbolFont{symbols}{sans}{OMS}{cmbrs}{m}{n}
-\SetMathAlphabet{\mathit}{sans}{OT1}{cmbr}{m}{sl}
-\SetMathAlphabet{\mathbf}{sans}{OT1}{cmbr}{bx}{n}
-\SetMathAlphabet{\mathtt}{sans}{OT1}{cmtl}{m}{n}
-\SetSymbolFont{largesymbols}{sans}{OMX}{iwona}{m}{n}
-
-\DeclareMathVersion{boldsans}
-\SetSymbolFont{operators}{boldsans}{OT1}{cmbr}{b}{n}
-\SetSymbolFont{letters}{boldsans}{OML}{cmbrm}{b}{it}
-\SetSymbolFont{symbols}{boldsans}{OMS}{cmbrs}{b}{n}
-\SetMathAlphabet{\mathit}{boldsans}{OT1}{cmbr}{b}{sl}
-\SetMathAlphabet{\mathbf}{boldsans}{OT1}{cmbr}{bx}{n}
-\SetMathAlphabet{\mathtt}{boldsans}{OT1}{cmtl}{b}{n}
-\SetSymbolFont{largesymbols}{boldsans}{OMX}{iwona}{bx}{n}
-
-\newif\IfInSansMode
-\let\oldsf\sffamily
-\renewcommand*{\sffamily}{\oldsf\mathversion{sans}\InSansModetrue}
-\let\oldmd\mdseries
-\renewcommand*{\mdseries}{\oldmd\IfInSansMode\mathversion{sans}\fi\relax}
-\let\oldbf\bfseries
-\renewcommand*{\bfseries}{\oldbf\IfInSansMode\mathversion{boldsans}\else%
-	\mathversion{bold}\fi\relax}
-\let\oldnorm\normalfont
-\renewcommand*{\normalfont}{\oldnorm\InSansModefalse\mathversion{normal}}
-\let\oldrm\rmfamily
-\renewcommand*{\rmfamily}{\oldrm\InSansModefalse\mathversion{normal}}
-
-%link setup
-\hypersetup{
-	colorlinks,
-	citecolor=black,
-	filecolor=black,
-	linkcolor=black, 
-	urlcolor=black
-}
-%image path
-\graphicspath{ {./images/} }
-
-%boxes
-\newtcolorbox{questionbox}[1]{enhanced,breakable,colback=white,colbacktitle=myblue,colframe=myblue,title=#1,sharpish corners,breakable=true,fonttitle=\bfseries,boxrule=0pt,attach boxed title to top left={yshift=-2mm}}
-\newtcolorbox{explanationbox}{enhanced,breakable,borderline west={2pt}{0pt}{myblue},colback=myblue!5,boxrule=0pt,frame hidden}
-\newtcolorbox{mybox}[1]{colback=white,colframe=mygold,notitle,sharp corners,halign=center}
-
-%matrix setup
+%uline setup
 \setcounter{MaxMatrixCols}{20}
-\renewcommand{\ULdepth}{1.8pt}
-\contourlength{0.8pt}
+\renewcommand{\ULdepth}{2pt}
+\contourlength{0.7pt}
 \newcommand{\myuline}[1]{%
 	\uline{\phantom{#1}}%
 	\llap{\contour{white}{#1}}%
 }
-\renewcommand{\vec}[1]{%
-	\smash{\ensurestackMath{\stackengine{1pt}{#1}{\scriptscriptstyle\sim}{U}{c}{F}{F}{S}}}
-	\vphantom{#1}
-}
 
-%custom colors
+%image path
+\graphicspath{ {./images/} }
+
+%boxes
+\newtcolorbox{questionbox}[1]{enhanced, breakable, colback=white, colbacktitle=myblue, colframe=myblue, title=#1,sharpish corners, fonttitle=\bfseries, boxrule=0pt, attach boxed title to top left={yshift=-2mm}}
+\newtcolorbox{explanationbox}{enhanced, breakable, borderline west={2pt}{0pt}{myblue}, colback=myblue!5, boxrule=0pt,frame hidden}
+\newtcolorbox{mybox}{goldstylecolor}
+
+%custom color
 \defaultfontfeatures {Ligatures = TeX}
 \definecolor{myblue}{HTML}{224099}
 \definecolor{mygreen}{HTML}{409922}
@@ -128,54 +100,42 @@
 \fancyhead[RE]{\rightmark}
 \fancyhead[LO]{\leftmark}
 
-%bold math
-\newcommand\N{\ensuremath{\mathbb{N}}}
-\newcommand\R{\ensuremath{\mathbb{R}}}
-\newcommand\Z{\ensuremath{\mathbb{Z}}}
-\renewcommand\O{\ensuremath{\emptyset}}
-\newcommand\Q{\ensuremath{\mathbb{Q}}}
-\newcommand\C{\ensuremath{\mathbb{C}}}
+%math commands
 \DeclareMathOperator{\sgn}{sgn}
+\DeclareMathOperator{\id}{id}
+\DeclareMathOperator{\im}{im}
+\DeclareMathOperator{\pj}{Proj}
+\DeclareMathOperator{\var}{Var}
+\DeclareMathOperator{\cov}{Cov}
 
 %theorems
 \tcbset{
-	bluestylecolor/.style={sharp corners,colback=myblue!5,colframe=myblue,fonttitle=\bfseries,boxrule=0pt},
-	bluestyleline/.style={sharp corners,colback=white,colframe=myblue,fonttitle=\bfseries,boxrule=0pt},
-	redstylecolor/.style={sharp corners,colback=myred!5,colframe=myred,fonttitle=\bfseries,boxrule=0pt},
-	redstyleline/.style={sharp corners,colback=white,colframe=myred,fonttitle=\bfseries,boxrule=0pt},
-	greenstylecolor/.style={sharp corners,colback=mygreen!5,colframe=mygreen,fonttitle=\bfseries,boxrule=0pt},
-	greenstyleline/.style={sharp corners,colback=white,colframe=mygreen,fonttitle=\bfseries,boxrule=0pt},
+	bluestylecolor/.style={enhanced, sharp corners, breakable,colback=myblue!15, coltitle=myblue, frame hidden, boxrule=0pt, detach title, before upper=\tcbtitle\par\smallskip, fonttitle=\bfseries, borderline west={2pt}{0pt}{myblue}},
+	bluestyleline/.style={enhanced, sharp corners, breakable, colback=white, coltitle=myblue, frame hidden, boxrule=0pt, detach title, before upper=\tcbtitle\par\smallskip,  fonttitle=\bfseries, borderline west={2pt}{0pt}{myblue}},
+	redstylecolor/.style={enhanced, sharp corners, breakable, colback=myred!15, coltitle=myred, frame hidden, boxrule=0pt, detach title, before upper=\tcbtitle\par\smallskip, fonttitle=\bfseries, borderline west={2pt}{0pt}{myred}},
+	redstyleline/.style={enhanced, sharp corners, breakable,colback=white, coltitle=myred, frame hidden, boxrule=0pt, detach title, before upper=\tcbtitle\par\smallskip, fonttitle=\bfseries, borderline west={2pt}{0pt}{myred}},
+	greenstylecolor/.style={enhanced, sharp corners, breakable, colback=mygreen!15, coltitle=mygreen, frame hidden, boxrule=0pt, detach title, before upper=\tcbtitle\par\smallskip, fonttitle=\bfseries, borderline west={2pt}{0pt}{mygreen}},
+	greenstyleline/.style={enhanced, sharp corners, breakable, colback=white, coltitle=mygreen, frame hidden, boxrule=0pt, detach title, before upper=\tcbtitle\par\smallskip, fonttitle=\bfseries, borderline west={2pt}{0pt}{mygreen}},
+	goldstylecolor/.style={enhanced, sharp corners, breakable, colback=mygold!15, coltitle=mygold, frame hidden, boxrule=0pt, detach title, before upper=\tcbtitle\par\smallskip, fonttitle=\bfseries, borderline west={2pt}{0pt}{mygold}},
+	goldstyleline/.style={enhanced, sharp corners, colback=white, colframe=mygold, boxrule=0pt,breakable, mygold=\bfseries, borderline horizontal={2pt}{0pt}{mygreen}},
 }
 
-\newtcbtheorem[number within=section,crefname={definition}{definitions}]{definition}{Definition}{greenstylecolor}{def}
-\newtcbtheorem[use counter from=definition,crefname={theorem}{theorems}]{theorem}{Theorem}{redstylecolor}{theo}
-\newtcbtheorem[use counter from=definition,crefname={lemma}{lemmas}]{lemma}{Lemma}{redstylecolor}{lem}
-\newtcbtheorem[use counter from=definition,crefname={remark}{remarks}]{remark}{Remark}{redstylecolor}{rem}
-\newtcbtheorem[use counter from=definition,crefname={corollary}{corollarys}]{corollary}{Corollary}{greenstylecolor}{coll}
-\newtcbtheorem[number within=section,crefname={example}{examples}]{example}{Example}{bluestylecolor}{ex}
+\newtcbtheorem[number within=section, crefname={definition}{definitions}]{definition}{Definition}{greenstylecolor}{def}
+\newtcbtheorem[use counter from=definition, crefname={theorem}{theorems}]{theorem}{Theorem}{goldstyleline}{tho}
+\newtcbtheorem[use counter from=definition, crefname={lemma}{lemmas}]{lemma}{Lemma}{redstylecolor}{lem}
+\newtcbtheorem[use counter from=definition, crefname={remark}{remarks}]{remark}{Remark}{bluestyleline}{rem}
+\newtcbtheorem[use counter from=definition, crefname={corollary}{corollarys}]{corollary}{Corollary}{greenstyleline}{col}
+\newtcbtheorem[use counter from=definition, crefname={example}{examples}]{example}{Example}{bluestylecolor}{exa}
+\newtcbtheorem[use counter from=definition, crefname={proposition}{propositions}]{proposition}{Proposition}{redstyleline}{pro}
+\newtcbtheorem[use counter from=definition, crefname={axiom}{Axiom}]{axiom}{Axiom}{goldstylecolor}{axm}
+
+\tcbset{highlight math style={enhanced,colframe=mygold,colback=mygold!15,boxsep=0pt}}
 
 \numberwithin{equation}{section}
 \numberwithin{figure}{section}
+\newcommand{\sectionbreak}{\clearpage}
 
-%custom headings for notes
-\newcommand\sectiontitle[1]{%
-	\tikz[baseline,trim left=3.3cm,trim right=2.85cm] {
-		\fill [myblue] (3.2cm,-1ex) rectangle (\textwidth+3.45cm,2.5ex);
-		
-	}
-}
-
-\newcommand\subsectiontitle{%
-	\tikz[baseline,trim left=3.3cm,trim right=2.85cm] {
-		\fill [myblue!25] (3.2cm,-1ex) rectangle (\textwidth+3.45cm,2.5ex);
-		
-	}
-}
-
-\titleformat{\section}{\bfseries\large\color{white}}{\bfseries\sectiontitle}{0.3cm}{}
-\titlespacing{\section}{0pt}{*6}{-1pt}
-\titleformat{\subsection}{\bfseries\large}{\bfseries\subsectiontitle}{0.3cm}{}
-\titlespacing{\subsection}{0pt}{*3}{*1}
+%subsubsection
 \titleformat{\subsubsection}{\bfseries}{}{0pt}{\myuline}
 \titlespacing{\subsubsection}{0pt}{*3}{*1}
 
@@ -1605,9 +1565,9 @@
 		\[
 			v_t^a M_t^a + v_t^b M_t^b = N_t^a \left(y^a - c_{1,t}^a\right) + N_t^b \left(y^b - c_{1,t}^b\right) 
 		\]
-		Or with a fixed exchange rate \( \bar{e} \)
+		Or with a fixed exchange rate \( \overline{e} \)
 		\[
-			\bar{e}v_t^a M_t^a + v_t^b M_t^b = N_t^a \left(y^a - c_{1,t}^a\right) + N_t^b \left(y^b - c_{1,t}^b\right)
+			\overline{e}v_t^a M_t^a + v_t^b M_t^b = N_t^a \left(y^a - c_{1,t}^a\right) + N_t^b \left(y^b - c_{1,t}^b\right)
 		\]
 		\item Consider a specific example to have a better understanding of the differences between cooperative stabilisation versus unilateral defence of the exchange rate.
 		\begin{itemize}
@@ -1618,18 +1578,18 @@
 			\]
 			\item Assume that the total money supply in country \( a \) is \$800 and in country \( b \) is \pounds600.
 			\item In the first period, each initial old holds \$4 and \pounds3, regardless of citizenship.
-			\item The exchange rate is fixed at \( \bar{e} = 1/2 \) -- \$1 trades for \pounds0.5.
+			\item The exchange rate is fixed at \( \overline{e} = 1/2 \) -- \$1 trades for \pounds0.5.
 		\end{itemize}
 		\item We can derive the value of country \( b \) money \( v^b_t \)
 		\begin{align*}
-			\bar{e}v_t^b M_t^a + v_t^b M_t^b &= N_t^a \left(y^a - c_{1,t}^a\right) + N_t^b \left(y^b - c_{1,t}^b\right)\\
+			\overline{e}v_t^b M_t^a + v_t^b M_t^b &= N_t^a \left(y^a - c_{1,t}^a\right) + N_t^b \left(y^b - c_{1,t}^b\right)\\
 			\frac{1}{2}v^b(800) +v^b(600) &= 1000 + 1000\\
 			1000 v^b &= 2000\\
 			v^b_t &= 2
 		\end{align*}
 		\item and the value of country \( a \) money \( v_t^a \)
 		\[
-			v^a_t = \bar{e}v^b_t = \frac{1}{2}(2) = 1
+			v^a_t = \overline{e}v^b_t = \frac{1}{2}(2) = 1
 		\]
 		\item Consumption of each old is
 		\[
@@ -1643,7 +1603,7 @@
 		\begin{itemize}
 			\item The value of country \( b \) money is
 			\begin{align*}
-				\bar{e}v_t^b M_t^a + v_t^b M_t^b &= N_t^a \left(y^a - c_{1,t}^a\right) + N_t^b \left(y^b - c_{1,t}^b\right)\\
+				\overline{e}v_t^b M_t^a + v_t^b M_t^b &= N_t^a \left(y^a - c_{1,t}^a\right) + N_t^b \left(y^b - c_{1,t}^b\right)\\
 				\frac{1}{2}v^b(400) +v^b(800) &= 1000 + 1000\\
 				1000 v_t^b &= 2000\\
 				v_t^b &= 2
@@ -1659,7 +1619,7 @@
 		\end{itemize}
 		\item With a fixed exchange rate, the world money market clearing condition suggests that
 		\[
-			v_t^b = \frac{N_t^a \left(y^a - c_{1,t}^a\right) + N_t^b \left(y^b - c_{1,t}^b\right)}{\bar{e}M_t^a+M_t^b}
+			v_t^b = \frac{N_t^a \left(y^a - c_{1,t}^a\right) + N_t^b \left(y^b - c_{1,t}^b\right)}{\overline{e}M_t^a+M_t^b}
 		\]
 		\begin{itemize}
 			\item An increase in one country's money supply reduces the value of both currencies.
@@ -1688,14 +1648,14 @@
 			Since country \( b \) refuses to print additional money.
 			\item The value of country \( b \) money is
 			\begin{align*}
-				\bar{e}v_t^b M_t^a + v_t^b M_t^b &= N_t^a \left(y^a - c_{1,t}^a\right) + N_t^b \left(y^b - c_{1,t}^b\right)\\
+				\overline{e}v_t^b M_t^a + v_t^b M_t^b &= N_t^a \left(y^a - c_{1,t}^a\right) + N_t^b \left(y^b - c_{1,t}^b\right)\\
 				\frac{1}{2}v^b(400) +v^b(600) &= 1000 + 1000\\
 				800 v_t^b &= 2000\\
 				v_t^b &= 2.5
 			\end{align*}
 			\item The value of country \( a \) money is
 			\[
-			v_t^a = \bar{e}v_t^b = \frac{1}{2}(2.5) = 1.25
+			v_t^a = \overline{e}v_t^b = \frac{1}{2}(2.5) = 1.25
 			\]
 			\item Consumption of each old is
 				\[ 

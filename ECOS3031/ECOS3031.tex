@@ -34,7 +34,7 @@
 \pgfplotsset{compat=1.18}
 \usepgfplotslibrary{dateplot}
 \usepackage{ragged2e}
-\usepackage[cm]{sfmath}
+\usepackage[lm]{sfmath}
 \usepackage{subcaption}
 \usepackage{tabularx}
 \usepackage{thmtools}
@@ -62,26 +62,22 @@
 
 %uline setup
 \setcounter{MaxMatrixCols}{20}
-\renewcommand{\ULdepth}{1.8pt}
-\contourlength{0.8pt}
+\renewcommand{\ULdepth}{2pt}
+\contourlength{0.7pt}
 \newcommand{\myuline}[1]{%
 	\uline{\phantom{#1}}%
 	\llap{\contour{white}{#1}}%
 }
-\renewcommand{\vec}[1]{%
-	\smash{\ensurestackMath{\stackengine{1pt}{#1}{\scriptscriptstyle\sim}{U}{c}{F}{F}{S}}}
-	\vphantom{#1}
-}
 
-%link setup
-\hypersetup{
-	colorlinks,
-	citecolor=black,
-	filecolor=black,
-	linkcolor=black, 
-	urlcolor=black
-}
-%custom colors
+%image path
+\graphicspath{ {./images/} }
+
+%boxes
+\newtcolorbox{questionbox}[1]{enhanced, breakable, colback=white, colbacktitle=myblue, colframe=myblue, title=#1,sharpish corners, fonttitle=\bfseries, boxrule=0pt, attach boxed title to top left={yshift=-2mm}}
+\newtcolorbox{explanationbox}{enhanced, breakable, borderline west={2pt}{0pt}{myblue}, colback=myblue!5, boxrule=0pt,frame hidden}
+\newtcolorbox{mybox}[1]{colback=white, colframe=mygold, notitle, sharp corners, halign= flush center}
+
+%custom color
 \defaultfontfeatures {Ligatures = TeX}
 \definecolor{myblue}{HTML}{224099}
 \definecolor{mygreen}{HTML}{409922}
@@ -104,48 +100,42 @@
 \fancyhead[RE]{\rightmark}
 \fancyhead[LO]{\leftmark}
 
+%math commands
+\DeclareMathOperator{\sgn}{sgn}
+\DeclareMathOperator{\id}{id}
+\DeclareMathOperator{\im}{im}
+\DeclareMathOperator{\pj}{Proj}
+\DeclareMathOperator{\var}{Var}
+\DeclareMathOperator{\cov}{Cov}
+
 %theorems
 \tcbset{
-	bluestylecolor/.style={enhanced, sharp corners, colback=myblue!15,colframe=myblue, boxrule=0pt,breakable, fonttitle=\bfseries, borderline south={0.75pt}{0pt}{myblue}},
-	bluestyleline/.style={enhanced, sharp corners, colback=white, colframe=myblue, boxrule=0pt,breakable, fonttitle=\bfseries, borderline south={0.75pt}{0pt}{myblue}},
-	redstylecolor/.style={enhanced, sharp corners, colback=myred!15, colframe=myred, boxrule=0pt,breakable, fonttitle=\bfseries, borderline south={0.75pt}{0pt}{myred}},
-	redstyleline/.style={enhanced, sharp corners, colback=white, colframe=myred, boxrule=0pt,breakable, fonttitle=\bfseries, borderline south={0.75pt}{0pt}{myred}},
-	greenstylecolor/.style={enhanced, sharp corners, colback=mygreen!15, colframe=mygreen, boxrule=0pt,breakable, fonttitle=\bfseries, borderline south={0.75pt}{0pt}{mygreen}},
-	greenstyleline/.style={enhanced, sharp corners, colback=white, colframe=mygreen, boxrule=0pt,breakable, fonttitle=\bfseries, borderline south={0.75pt}{0pt}{mygreen}},
-	goldstyleline/.style={enhanced, sharp corners, colback=white, colframe=mygold, boxrule=0pt,breakable, fonttitle=\bfseries, borderline south={0.75pt}{0pt}{mygold}},
+	bluestylecolor/.style={enhanced, sharp corners, breakable,colback=myblue!15, coltitle=myblue, frame hidden, boxrule=0pt, detach title, before upper=\tcbtitle\par\smallskip, fonttitle=\bfseries, borderline west={2pt}{0pt}{myblue}},
+	bluestyleline/.style={enhanced, sharp corners, breakable, colback=white, coltitle=myblue, frame hidden, boxrule=0pt, detach title, before upper=\tcbtitle\par\smallskip,  fonttitle=\bfseries, borderline west={2pt}{0pt}{myblue}},
+	redstylecolor/.style={enhanced, sharp corners, breakable, colback=myred!15, coltitle=myred, frame hidden, boxrule=0pt, detach title, before upper=\tcbtitle\par\smallskip, fonttitle=\bfseries, borderline west={2pt}{0pt}{myred}},
+	redstyleline/.style={enhanced, sharp corners, breakable,colback=white, coltitle=myred, frame hidden, boxrule=0pt, detach title, before upper=\tcbtitle\par\smallskip, fonttitle=\bfseries, borderline west={2pt}{0pt}{myred}},
+	greenstylecolor/.style={enhanced, sharp corners, breakable, colback=mygreen!15, coltitle=mygreen, frame hidden, boxrule=0pt, detach title, before upper=\tcbtitle\par\smallskip, fonttitle=\bfseries, borderline west={2pt}{0pt}{mygreen}},
+	greenstyleline/.style={enhanced, sharp corners, breakable, colback=white, coltitle=mygreen, frame hidden, boxrule=0pt, detach title, before upper=\tcbtitle\par\smallskip, fonttitle=\bfseries, borderline west={2pt}{0pt}{mygreen}},
+	goldstylecolor/.style={enhanced, sharp corners, breakable, colback=mygold!15, coltitle=mygold, frame hidden, boxrule=0pt, detach title, before upper=\tcbtitle\par\smallskip, fonttitle=\bfseries, borderline west={2pt}{0pt}{mygold}},
+	goldstyleline/.style={enhanced, sharp corners, colback=white, colframe=mygold, boxrule=0pt,breakable, mygold=\bfseries, borderline horizontal={2pt}{0pt}{mygreen}},
 }
 
 \newtcbtheorem[number within=section, crefname={definition}{definitions}]{definition}{Definition}{greenstylecolor}{def}
-\newtcbtheorem[use counter from=definition, crefname={theorem}{theorems}]{theorem}{Theorem}{redstylecolor}{tho}
-\newtcbtheorem[use counter from=definition, crefname={lemma}{lemmas}]{lemma}{Lemma}{redstyleline}{lem}
+\newtcbtheorem[use counter from=definition, crefname={theorem}{theorems}]{theorem}{Theorem}{goldstyleline}{tho}
+\newtcbtheorem[use counter from=definition, crefname={lemma}{lemmas}]{lemma}{Lemma}{redstylecolor}{lem}
 \newtcbtheorem[use counter from=definition, crefname={remark}{remarks}]{remark}{Remark}{bluestyleline}{rem}
 \newtcbtheorem[use counter from=definition, crefname={corollary}{corollarys}]{corollary}{Corollary}{greenstyleline}{col}
 \newtcbtheorem[use counter from=definition, crefname={example}{examples}]{example}{Example}{bluestylecolor}{exa}
 \newtcbtheorem[use counter from=definition, crefname={proposition}{propositions}]{proposition}{Proposition}{redstyleline}{pro}
-\newtcbtheorem[use counter from=definition, crefname={axiom}{Axiom}]{axiom}{Axiom}{goldstyleline}{axm}
+\newtcbtheorem[use counter from=definition, crefname={axiom}{Axiom}]{axiom}{Axiom}{goldstylecolor}{axm}
+
+\tcbset{highlight math style={enhanced,colframe=mygold,colback=mygold!15,boxsep=0pt}}
 
 \numberwithin{equation}{section}
 \numberwithin{figure}{section}
 \newcommand{\sectionbreak}{\clearpage}
 
-%custom headings for notes
-\newcommand\sectiontitle[1]{%
-	\tikz[baseline,trim left=3.3cm,trim right=2.85cm] {
-		\fill [myblue] (3.2cm,-1ex) rectangle (\textwidth+3.45cm,2.5ex);
-		
-	}
-}%
-
-\newcommand\subsectiontitle{%
-	\tikz[baseline,trim left=3.3cm,trim right=2.85cm] {
-		\fill [myblue!25] (3.2cm,-1ex) rectangle (\textwidth+3.45cm,2.5ex);
-		
-	}
-}%
-\titleformat{\section}{\bfseries\large\color{white}}{\bfseries\sectiontitle}{0.3cm}{}
-\titlespacing{\section}{0pt}{*6}{-1pt}
-\titleformat{\subsection}{\bfseries\large}{\bfseries\subsectiontitle}{0.3cm}{}
-\titlespacing{\subsection}{0pt}{*3}{*1}
+%subsubsection
 \titleformat{\subsubsection}{\bfseries}{}{0pt}{\myuline}
 \titlespacing{\subsubsection}{0pt}{*3}{*1}
 
