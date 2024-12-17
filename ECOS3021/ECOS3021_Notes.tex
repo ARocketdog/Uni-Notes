@@ -1,4 +1,5 @@
-\documentclass[a4paper,twoside]{article}
+\documentclass{article}
+\usepackage{NotesTeXV3}
 \usepackage{afterpage}
 \usepackage{array} 
 \usepackage{amsmath}
@@ -21,13 +22,15 @@
 \usepackage{geometry}
 \usepackage{graphicx}
 \usepackage{hhline}
-\usepackage[hidelinks,unicode]{hyperref}
+\usepackage{hyperref}
 \usepackage[noabbrev]{cleveref}
 \usepackage{longtable}
 \usepackage{lmodern}
 \usepackage{listings}
 \usepackage{nicematrix}
 \usepackage{mathtools}
+\usepackage{marginnote}
+\usepackage{minted}
 \usepackage{multirow,array}
 \usepackage{parskip}
 \usepackage{pgfplots}
@@ -35,7 +38,9 @@
 \usepgfplotslibrary{dateplot}
 \usepackage{ragged2e}
 \usepackage[lm]{sfmath}
+\usepackage{sidenotes}
 \usepackage{subcaption}
+\usepackage{subfiles}
 \usepackage{tabularx}
 \usepackage{thmtools}
 \usepackage{titlesec}
@@ -44,18 +49,10 @@
 \usetikzlibrary{arrows.meta}
 \usetikzlibrary{bending}
 \tikzset{>=stealth}
-\usepackage[theorems, skins, breakable]{tcolorbox}
+\usepackage[many]{tcolorbox}
 \usepackage{wrapfig}
 \usepackage{ulem}
-\usepackage{xcolor}
-
-%afterpage
-\newcommand\blankpage{
-	\null
-	\pagestyle{fancy}
-	\fancyhead{}\fancyfoot{}
-	\fancyhead[RO,LE]{\thepage}
-	\newpage}
+\usepackage[usenames,dvipsnames]{xcolor}
 
 %sff for all types of font
 \renewcommand{\familydefault}{\sfdefault}
@@ -77,92 +74,44 @@
 \newtcolorbox{explanationbox}{enhanced, breakable, borderline west={2pt}{0pt}{myblue}, colback=myblue!5, boxrule=0pt,frame hidden}
 \newtcolorbox{mybox}[1]{colback=white, colframe=mygold, notitle, sharp corners, halign= flush center}
 
-%custom color
+%custom color	
 \defaultfontfeatures {Ligatures = TeX}
 \definecolor{myblue}{HTML}{224099}
 \definecolor{mygreen}{HTML}{409922}
 \definecolor{mygold}{HTML}{997b22}
 \definecolor{myred}{HTML}{992240}
 \definecolor{mypurple}{HTML}{7b2299}
-
-%page setup
-\geometry{
-	left=2.54cm,
-	right=2.54cm,
-	top=2.54cm,
-	bottom=2.54cm,
-}
-
-%headers and Footers
-\pagestyle{fancy}
-\fancyhead{}\fancyfoot{}
-\fancyhead[RO,LE]{\thepage}
-\fancyhead[RE]{\rightmark}
-\fancyhead[LO]{\leftmark}
+\definecolor{myblack}{HTML}{000000}
 
 %math commands
-\DeclareMathOperator{\sgn}{sgn}
-\DeclareMathOperator{\id}{id}
-\DeclareMathOperator{\im}{im}
-\DeclareMathOperator{\pj}{Proj}
-\DeclareMathOperator{\var}{Var}
+\DeclareMathOperator{\argmax}{argmax}
 \DeclareMathOperator{\cov}{Cov}
+\DeclareMathOperator{\pr}{P}
 
-%theorems
-\tcbset{
-	bluestylecolor/.style={enhanced, sharp corners, breakable,colback=myblue!15, coltitle=myblue, frame hidden, boxrule=0pt, detach title, before upper=\tcbtitle\par\smallskip, fonttitle=\bfseries, borderline west={2pt}{0pt}{myblue}},
-	bluestyleline/.style={enhanced, sharp corners, breakable, colback=white, coltitle=myblue, frame hidden, boxrule=0pt, detach title, before upper=\tcbtitle\par\smallskip,  fonttitle=\bfseries, borderline west={2pt}{0pt}{myblue}},
-	redstylecolor/.style={enhanced, sharp corners, breakable, colback=myred!15, coltitle=myred, frame hidden, boxrule=0pt, detach title, before upper=\tcbtitle\par\smallskip, fonttitle=\bfseries, borderline west={2pt}{0pt}{myred}},
-	redstyleline/.style={enhanced, sharp corners, breakable,colback=white, coltitle=myred, frame hidden, boxrule=0pt, detach title, before upper=\tcbtitle\par\smallskip, fonttitle=\bfseries, borderline west={2pt}{0pt}{myred}},
-	greenstylecolor/.style={enhanced, sharp corners, breakable, colback=mygreen!15, coltitle=mygreen, frame hidden, boxrule=0pt, detach title, before upper=\tcbtitle\par\smallskip, fonttitle=\bfseries, borderline west={2pt}{0pt}{mygreen}},
-	greenstyleline/.style={enhanced, sharp corners, breakable, colback=white, coltitle=mygreen, frame hidden, boxrule=0pt, detach title, before upper=\tcbtitle\par\smallskip, fonttitle=\bfseries, borderline west={2pt}{0pt}{mygreen}},
-	goldstylecolor/.style={enhanced, sharp corners, breakable, colback=mygold!15, coltitle=mygold, frame hidden, boxrule=0pt, detach title, before upper=\tcbtitle\par\smallskip, fonttitle=\bfseries, borderline west={2pt}{0pt}{mygold}},
-	goldstyleline/.style={enhanced, sharp corners, colback=white, colframe=mygold, boxrule=0pt,breakable, mygold=\bfseries, borderline horizontal={2pt}{0pt}{mygreen}},
-}
-
-\newtcbtheorem[number within=section, crefname={definition}{definitions}]{definition}{Definition}{greenstylecolor}{def}
-\newtcbtheorem[use counter from=definition, crefname={theorem}{theorems}]{theorem}{Theorem}{goldstyleline}{tho}
-\newtcbtheorem[use counter from=definition, crefname={lemma}{lemmas}]{lemma}{Lemma}{redstylecolor}{lem}
-\newtcbtheorem[use counter from=definition, crefname={remark}{remarks}]{remark}{Remark}{bluestyleline}{rem}
-\newtcbtheorem[use counter from=definition, crefname={corollary}{corollarys}]{corollary}{Corollary}{greenstyleline}{col}
-\newtcbtheorem[use counter from=definition, crefname={example}{examples}]{example}{Example}{bluestylecolor}{exa}
-\newtcbtheorem[use counter from=definition, crefname={proposition}{propositions}]{proposition}{Proposition}{redstyleline}{pro}
-\newtcbtheorem[use counter from=definition, crefname={axiom}{Axiom}]{axiom}{Axiom}{goldstylecolor}{axm}
-
-\tcbset{highlight math style={enhanced,colframe=mygold,colback=mygold!15,boxsep=0pt}}
+\tcbset{highlight math style={enhanced, colframe=mygold, colback=mygold!15,boxsep=0pt}}
+\let\boxed=\tcbhighmath
 
 \numberwithin{equation}{section}
 \numberwithin{figure}{section}
-\newcommand{\sectionbreak}{\clearpage}
-
-%subsubsection
-\titleformat{\subsubsection}{\bfseries}{}{0pt}{\myuline}
-\titlespacing{\subsubsection}{0pt}{*3}{*1}
 
 %preamble
 \setcounter{tocdepth}{2}
-\pagenumbering{roman}
 
 \begin{document}
-\begin{titlepage}
-	\centering
-	\vspace*{4.5cm}
-	\rule{\linewidth}{2pt}
-	\LARGE\textbf{ECOS3021}\\
-	\vspace{0.5cm}
-	\Huge\textbf{Business Cycles and Asset Markets}\\
-	\rule{\linewidth}{2pt}
-	\LARGE\textbf{Notes}\\
-	\vspace{1.5cm}
-	\Large Brendan Chow
-	\vfill
-\end{titlepage}
+\title{{ECOS3021}\\{\normalsize{Business Cycles and Asset Markets}}}
+	\author{Brendan Chow}
+	\affiliation{
+	Student at the University of Sydney\\
+	\href{https://xagill.com/}{Website}\\
+	\href{https://www.linkedin.com/in/brendanchow/}{LinkedIn}\\
+	\href{https://github.com/ARocketdog}{GitHub}\\
+	}
+	\emailAdd{brendanchow@xagill.com}
+	\maketitle
 	\newpage
-	\
-	\newpage
-	\tableofcontents
-	\newpage
-\pagenumbering{arabic}
+	\pagestyle{fancynotes}
+%start document
+
 \section{Introduction}\label{Sec:1}
 \subsection{What are Business Cycles}
 	\textbf{What is the business cycle?}
@@ -535,14 +484,15 @@
 		\item The labour supply curve slopes up
 		\item So households supply more labour as wages rise
 	\end{itemize}
-	\begin{figure}[H]
+	\begin{marginfigure}
 		\centering
-		\begin{tikzpicture}[scale=0.55]
-			\draw [thick, <->] (0,9) node[left]{\(W\)} -- (0,0) -- (9,0) node[below]{\(N^S\)};
+		\begin{tikzpicture}[scale=0.45]
+			\draw [thick, <->] (0,9) node[right]{\(W\)} -- (0,0) -- (9,0) node[below]{\(N^S\)};
 			\draw [thick] (0,1) .. controls (6.5,1.25) and (6.25,4.5) .. (7,8);
 			\node at (8,5) {\( w=\frac{bC}{1-N^S} \)};
 		\end{tikzpicture}
-	\end{figure}
+		\caption{Labour supply curve}\label{fig:2.1}
+	\end{marginfigure}
 \subsection{Firms in the Simple RBC Model}
 	\begin{itemize}
 		\item Firms produce output using a production technology:
@@ -552,14 +502,15 @@
 		\item Where \( A \) is the exogenous level of technology;
 		\item And where \( N^D \) is labour inputs demanded by firms
 	\end{itemize}
-	\begin{figure}[H]
+	\begin{marginfigure}
 		\centering
-		\begin{tikzpicture}[scale=0.55]
-			\draw [thick, <->] (0,9) node[left]{\(Y\)} -- (0,0) -- (9,0) node[below]{\(N^D\)};
+		\begin{tikzpicture}[scale=0.45]
+			\draw [thick, <->] (0,9) node[right]{\(Y\)} -- (0,0) -- (9,0) node[below]{\(N^D\)};
 			\draw [thick] (0,0) .. controls (0.75,4.5) and (6,7.5) .. (7.5,8);
 			\node at (7,5) {\( Y = A(N^D)^{1-\alpha} \)};
 		\end{tikzpicture}
-	\end{figure}
+		\caption{Firm output curve}\label{fig:2.2}
+	\end{marginfigure}
 	\begin{itemize}
 		\item A competitive firm chooses labour \( N^D \) to maximize profit \( \Pi \) (returned to households)
 		\begin{align*}
@@ -573,14 +524,15 @@
 		\]
 		\item \textcolor{myblue}{Marginal Product of Labour} (MPN) = extra output generated by one additional labour input
 		\item Firms demand less labour as wages increase
-		\begin{figure}[H]
+		\begin{marginfigure}
 			\centering
-			\begin{tikzpicture}[scale=0.55]
-				\draw [thick, <->] (0,9) node[left]{\(w\)} -- (0,0) -- (11,0) node[below]{\(N^D\)};
+			\begin{tikzpicture}[scale=0.45]
+				\draw [thick, <->] (0,9) node[right]{\(w\)} -- (0,0) -- (11,0) node[below]{\(N^D\)};
 				\draw [thick] (1,8) .. controls (1.25,3) and (2.5,1.25) .. (10,1);
-				\node at (8.5,2) {\( (1-\alpha A(N^D)^{-\alpha} \)};
+				\node [scale = 0.8] at (8.5,2) {\( (1-\alpha) A(N^D)^{-\alpha} \)};
 			\end{tikzpicture}
-		\end{figure}
+			\caption{The MPN curve}\label{fig:2.3}
+		\end{marginfigure}
 	\end{itemize}
 \subsection{Equilibrium in the Simple RBC Model}
 	\begin{itemize}
@@ -613,19 +565,20 @@
 			Y = C = A\left(\frac{(1-\alpha)}{b+(1-\alpha)}\right)^{1-\alpha}\label{E:2.6}
 		\end{equation}
 	\end{itemize}
-	\begin{figure}[H]
+	\begin{marginfigure}
 		\centering
-		\begin{tikzpicture}[scale=0.55]
-			\draw [thick, <->] (0,12) node[left]{\(w\)} -- (0,6) -- (11,6) node[below]{\(N\)};
+		\begin{tikzpicture}[scale=0.4]
+			\draw [thick, <->] (0,12) node[right]{\(w\)} -- (0,6) -- (11,6) node[below]{\(N\)};
 			\draw [thick] (1,11) .. controls (2,7.5) and (6.5,7.5) .. (10,7) node [right]{\( N^D \)};
 			\draw [thick] (1,7) .. controls (4,7.5) and (6.5,7.5) .. (10,11) node [right]{\( N^S \)};
 			\draw [dashed] (0,7.75) node [left]{\( w^* \)} -- (10,7.75);
-			\draw [thick, <->] (0,5) node[left]{\(Y\)} -- (0,0) -- (11,0) node[below]{\(N\)};
+			\draw [thick, <->] (0,5) node[right]{\(Y\)} -- (0,0) -- (11,0) node[below]{\(N\)};
 			\draw [thick] (0.5,1) .. controls (1.75,3) and (6.5,3.5) .. (9,4);
 			\draw [dashed] (0,3.25) node [left]{\( Y^* \)} -- (10,3.25);
 			\draw [dashed] (5,0) node [below]{\( N^* \)}-- (5,11);
 		\end{tikzpicture}
-	\end{figure}
+		\caption{Equilibrium}\label{fig:2.4}
+	\end{marginfigure}
 \subsubsection{Business Cycle Fluctuations in the RBC Model}
 	\begin{itemize}
 		\item Macroeconomic fluctuations in early RBC models were driven entirely by changes in aggregate productivity
@@ -708,14 +661,15 @@
 		\]
 		\item This represents the household's \textcolor{myblue}{supply of savings}
 	\end{itemize}
-	\begin{figure}[H]
+	\begin{marginfigure}
 		\centering
-		\begin{tikzpicture}[scale=0.55]
+		\begin{tikzpicture}[scale=0.45]
 			\draw [thick, <->] (0,9) node[left]{\(r\)} -- (0,0) -- (9,0) node[below]{\(S\)};
 			\draw [thick] (0,1) .. controls (6.5,1.25) and (5.75,4.5) .. (6,8);
-			\node at (8,5) {\( \frac{Y_2}{\beta Y_1 - (1 + \beta)S} - 1 \)};
+			\node [scale =0.8] at (8,5) {\( \frac{Y_2}{\beta Y_1 - (1 + \beta)S} - 1 \)};
 		\end{tikzpicture}
-	\end{figure}
+		\caption{Household Savings}\label{fig:3.1}
+	\end{marginfigure}
 	\begin{itemize}
 		\item When does the household choose to save (i.e. S > 0)?
 		\begin{itemize}
@@ -760,14 +714,15 @@
 		\item Which is also a \textcolor{myblue}{Consumption Euler Equation}
 		\item Here, the return on savings/capital holding is \( (1 + r_2 - \delta) \), but households value capital in the same way they valued savings in \cref{S:3.1}
 	\end{itemize}
-	\begin{figure}[H]
+	\begin{marginfigure}
 		\centering
-		\begin{tikzpicture}[scale=0.55]
+		\begin{tikzpicture}[scale=0.45]
 			\draw [thick, <->] (0,9) node[left]{\(r_2\)} -- (0,0) -- (9,0) node[below]{\(K_2\)};
 			\draw [thick] (0,0.75) .. controls (7.5,1) and (7,4.5) .. (7.5,8);
 			\node at (8.5,7) {\( K_2^{\text{supply}} \)};
 		\end{tikzpicture}
-	\end{figure}
+		\caption{Household capital Accumulation}\label{fig:3.2}
+	\end{marginfigure}
 \subsection{Firms in the Inter-Temporal RBC Model}
 	\begin{itemize}
 		\item Firms produce output using the production technology:
@@ -776,14 +731,15 @@
 		\]
 		\item Where \( A_t \) is technology/productivity; and \( K_t \) is the capital inputs of firms
 	\end{itemize}
-	\begin{figure}[H]
+	\begin{marginfigure}
 		\centering
-		\begin{tikzpicture}[scale=0.55]
+		\begin{tikzpicture}[scale=0.45]
 			\draw [thick, <->] (0,9) node[left]{\(Y_t\)} -- (0,0) -- (9,0) node[below]{\(K_t\)};
 			\draw [thick] (0,0) .. controls (0.25,5.5) and (6,5.75) .. (7.5,6);
 			\node at (8,6.5) {\( A_t K_t^\alpha \)};
 		\end{tikzpicture}
-	\end{figure}
+		\caption{Firms capital Accumulation}\label{fig:3.3}
+	\end{marginfigure}
 \subsubsection{Firm's Choice of Capital Inputs}
 	\begin{itemize}
 		\item A competitive firm chooses capital \( K_2^D \) to maximise profit \( \Pi_2 \):
@@ -801,14 +757,15 @@
 		r_2 = \alpha A_2 (K_2^D)^{\alpha-1}
 		\]
 	\end{itemize}
-	\begin{figure}[H]
+	\begin{marginfigure}
 		\centering
-		\begin{tikzpicture}[scale=0.55]
+		\begin{tikzpicture}[scale=0.45]
 			\draw [thick, <->] (0,9) node[left]{\(r_2\)} -- (0,0) -- (11,0) node[below]{\(K_2\)};
 			\draw [thick] (1,8) .. controls (1.25,3) and (2.5,1.25) .. (10,1);
 			\node at (8.5,2) {\( \alpha A_2 (K_2^D)^{\alpha-1} \)};
 		\end{tikzpicture}
-	\end{figure}
+		\caption{MPK}\label{fig:3.4}
+	\end{marginfigure}
 \subsubsection{Firm's Profits}
 	\begin{itemize}
 		\item Recall that households own the firms and receive the profits the firms generate:
@@ -847,19 +804,20 @@
 		\item Notice the \textcolor{myblue}{real economy} is tightly linked to the \textcolor{myblue}{asset market} (i.e. capital market) \item Equilibrium return on assets (i.e. interest rate), pins down amount of capital supplied \item Capital supply determines production/output in the economy
 		\item So the macroeconomy and asset markets are very closely related!
 	\end{itemize}
-	\begin{figure}[H]
+	\begin{marginfigure}
 		\centering
-		\begin{tikzpicture}[scale=0.55]
-			\draw [thick, <->] (0,12) node[left]{\(r_2\)} -- (0,6) -- (11,6) node[below]{\(K_2\)};
+		\begin{tikzpicture}[scale=0.4]
+			\draw [thick, <->] (0,12) node[right]{\(r_2\)} -- (0,6) -- (11,6) node[below]{\(K_2\)};
 			\draw [thick] (1,11.5) .. controls (2,7.5) and (6.5,7.5) .. (10,7) node [right]{\( K_2^D \)};
 			\draw [thick] (1,7.75) .. controls (4,8.1) and (6.5,8.7) .. (9,9.75) node [right]{\( K_2^S \)};
 			\draw [dashed] (0,8.2) node [left]{\( r_2^* \)} -- (10,8.2);
-			\draw [thick, <->] (0,5) node[left]{\(Y_2\)} -- (0,0) -- (11,0) node[below]{\(K_2\)};
+			\draw [thick, <->] (0,5) node[right]{\(Y_2\)} -- (0,0) -- (11,0) node[below]{\(K_2\)};
 			\draw [thick] (1,1) .. controls (1.75,3) and (6.5,3.5) .. (10,4);
 			\draw [dashed] (0,2.9) node [left]{\( Y_2^* \)} -- (10,2.9);
 			\draw [dashed] (3.9,0) node [below]{\( K_2^* \)}-- (3.9,11);
 		\end{tikzpicture}
-	\end{figure}
+		\caption{Equilibrium}\label{fig:3.5}
+	\end{marginfigure}
 \subsubsection{RBC Model Implications}
 	\begin{itemize}
 		\item Business cycles are due to ``real'' shocks (e.g. TFP or technology shocks)
@@ -969,7 +927,7 @@
 				\addplot [black, no markers] coordinates {(1960-01-01,0) (2022-04-01,0)};
 			 \end{axis}
 			\end{tikzpicture}
-		\label{<label>}
+		\label{fig:4.1}
 	\end{figure}
 \subsubsection{Definitions of Nominal Variables}
 	\begin{itemize}
@@ -1330,7 +1288,8 @@
 			Y = V \times \underbrace{\frac{M}{P}}_{\substack{\text{Real Money} \\ \text{Supply}}}
 		\]
 	\end{enumerate}
-	\begin{figure}[H]
+	\begin{figure*}[H]
+	\centering
 	\begin{tikzpicture}[baseline]
 		\begin{axis}[
 			title = {US},
@@ -1406,7 +1365,7 @@
 			\addplot [black, no markers] coordinates {(1960-01-01,0) (2022-04-01,0)};
 		\end{axis}
 	\end{tikzpicture}
-	\end{figure}
+	\end{figure*}
 	\begin{enumerate}[resume]
 		\item Stable velocity of money? \textcolor{myred}{NO!}
 		\begin{itemize}
@@ -1466,14 +1425,15 @@
 		\item We can represent the \textcolor{myblue}{consumption-money optimality condition} as a money demand equation in \( (M_1/P_1,r^n) \)- space
 		\item Suppose the central bank supplies money \textbf{inelastically} with respect to the interest rate
 	\end{itemize}
-	\begin{figure}[H]
+	\begin{marginfigure}
 		\centering
-		\begin{tikzpicture}[scale=0.55]
+		\begin{tikzpicture}[scale=0.45]
 			\draw [thick, <->] (0,9) node[left]{\(r^n\)} -- (0,0) -- (9,0) node[below]{\(\frac{M}{P}\)};
 			\draw [thick] (1,8) .. controls (1.25,3) and (2.5,1.25) .. (8,1) node [above]{\( M^D \)};
 			\draw [thick] (4.5,0) node [below]{\(\frac{M_1}{P_1}\)} -- (4.5,8) node [above]{\( M_S \)};
 		\end{tikzpicture}
-	\end{figure}
+		\caption{Demand and Supply for money}
+	\end{marginfigure}
 \subsubsection{Simple Monetary Policy}
 	\begin{itemize}
 		\item The New Keynesian model suggestions that money affects the real economy
@@ -1486,9 +1446,9 @@
 		\item Note: These assumptions only hold in the \textcolor{myblue}{short run!}
 		\item With sticky prices (i.e. P constant), an increase in the money supply \textbf{decreases} the nominal interest rate
 	\end{itemize}
-	\begin{figure}[H]
+	\begin{marginfigure}
 		\centering
-		\begin{tikzpicture}[scale=0.55]
+		\begin{tikzpicture}[scale=0.45]
 			\draw [thick, <->] (0,9) node[left]{\(r^n\)} -- (0,0) -- (9,0) node[below]{\(\frac{M}{P}\)};
 			\draw [thick] (1,8) .. controls (1.25,3) and (2.5,1.25) .. (8,1) node [right]{\( M^D \)};
 			\draw [thick] (2,0) node [below]{\(\frac{M_1}{P_1}\)} -- (2,8) node [above]{\( M^S \)};
@@ -1498,7 +1458,8 @@
 			\draw [<-,color=myred] (-0.5,1.6) -- (-0.5,3);
 			\draw [thick,dashed] (0,3.4) node [left]{\( r^n \)} -- (8,3.4);
 		\end{tikzpicture}
-	\end{figure}
+		\caption{Sticky prices}
+	\end{marginfigure}
 	\begin{itemize}
 		\item To solve for changes in consumption take the inter-temporal budget constraint, money demand, and Euler equations (assuming that \( P_1 = P_2 \)):
 		\begin{align*}
@@ -1536,14 +1497,15 @@
 		\item So a decrease in money supply raises the nominal interest rate, which increases bond holdings
 		\item Since the nominal return on money is zero, an increase in the nominal return on bonds leads to a shift away from money and towards bonds
 	\end{itemize}
-	\begin{figure}[H]
+	\begin{marginfigure}
 		\centering
-		\begin{tikzpicture}[scale=0.55]
+		\begin{tikzpicture}[scale=0.45]
 			\draw [thick, <->] (0,9) node[left]{\(r^n\)} -- (0,0) -- (9,0) node[below]{\(\frac{M}{P},\frac{B}{P}\)};
 			\draw [thick,color=myblue] (1,8) .. controls (1.25,3) and (2.5,1.25) .. (8,1) node [right]{\( M^D \)};
 			\draw [thick,color=myred] (1,1) .. controls (1.25,6) and (4,7.75) .. (8,8) node [right]{\( B^D \)};
 		\end{tikzpicture}
-	\end{figure}
+		\caption{Bond market}
+	\end{marginfigure}
 \subsection{Limitations of the New Keynesian Model}
 	\begin{itemize}
 		\item The source of price rigidities is often not well-microfounded
@@ -1581,15 +1543,15 @@
 \subsection{The Precautionary Savings Motive: An Illustrative Model}
 	\begin{itemize}
 		\item A household makes consumption and savings decisions, subject to known and constant incomes
-		\item Assume \( \beta = 1 \) return on savings is zero \( (r = 0) \), income in each period is \(\bar{Y}\), utility function \( u' > 0, u'' < 0, u''' > 0 \)
+		\item Assume \( \beta = 1 \) return on savings is zero \( (r = 0) \), income in each period is \(\overline{Y}\), utility function \( u' > 0, u'' < 0, u''' > 0 \)
 		\begin{align*}
 			\max_{C_1,C_2}\quad &u(C_1) + u(C_2) \\
-			\text{s.t.}\quad &C_1 + C_2 = \bar{Y} + \bar{Y}
+			\text{s.t.}\quad &C_1 + C_2 = \overline{Y} + \overline{Y}
 		\end{align*}
 		\item The first order condition yields the optimality condition (Euler Equation):
 		\begin{align*}
 			u'(C_1) &= u'(C_2) \\
-			\Rightarrow C_1 &= C_2 = \bar{Y}
+			\Rightarrow C_1 &= C_2 = \overline{Y}
 		\end{align*}
 		\item Label these consumption choices \( C_1^c \) and \( C_2^c \) for the choices under \textbf{certainty}
 		\item It will be helpful to plot marginal utility as a function of consumption in period 2
@@ -1611,8 +1573,8 @@
 		\[	
 			Y_2= 
 			\begin{cases}
-				\bar{Y} + x & \text{with probability 0.5 \quad (Good Outcome)} \\
-				\bar{Y} - x & \text{with probability 0.5 \quad (Bad Outcome)}
+				\overline{Y} + x & \text{with probability 0.5 \quad (Good Outcome)} \\
+				\overline{Y} - x & \text{with probability 0.5 \quad (Bad Outcome)}
 			\end{cases}
 		\]
 		\item The first order condition in this case yields the \textcolor{myblue}{Expected Euler Equation:}
@@ -1623,18 +1585,18 @@
 		\item Note that we can compute this as:
 		\begin{align*}
 			E(u'(C_2)) &= 0.5 \times u'(C_2(good)) + 0.5 \times u'(C_2(bad)) \\
-			&= 0.5 \times u'(C_2(\bar{Y} + x + S)) + 0.5 \times u'(C_2(\bar{Y} - x + S))
+			&= 0.5 \times u'(C_2(\overline{Y} + x + S)) + 0.5 \times u'(C_2(\overline{Y} - x + S))
 		\end{align*}
-		\item Suppose the household were to choose period 1 consumption the same as under the certainty case: \( C_1 = C_1^c = \bar{Y} \)
-		\item Then from the period 1 budget constraint, savings are: \( S = \bar{Y} - C_1^c \)
+		\item Suppose the household were to choose period 1 consumption the same as under the certainty case: \( C_1 = C_1^c = \overline{Y} \)
+		\item Then from the period 1 budget constraint, savings are: \( S = \overline{Y} - C_1^c \)
 		\item And we can write consumption in period two as:
 		\begin{align*}
 			C_2 &= Y_2 + S \\
-			&= Y_2 + \bar{Y} - C_1^c \\
+			&= Y_2 + \overline{Y} - C_1^c \\
 			&=
 			\begin{cases}
-				\bar{Y} + x + \bar{Y} - C_1^c & \text{with probability 0.5} \\
-				\bar{Y} - x + \bar{Y} - C_1^c & \text{with probability 0.5}
+				\overline{Y} + x + \overline{Y} - C_1^c & \text{with probability 0.5} \\
+				\overline{Y} - x + \overline{Y} - C_1^c & \text{with probability 0.5}
 			\end{cases}
 			\\
 			&=
@@ -1707,7 +1669,7 @@
 		\item Consider our two-period model:
 		\begin{align*}
 			\max_{C_1,C_2}\quad &u(C_1) + u(C_2) \\
-			\text{s.t.}\quad &C_1 + P_b B = \bar{Y} \\
+			\text{s.t.}\quad &C_1 + P_b B = \overline{Y} \\
 			&\quad C_2 = Y_2 + B
 		\end{align*}
 		\item Where a one period bond \( B \) can be purchased at price \( P_b \)
@@ -1715,8 +1677,8 @@
 		\[
 			Y_2 =
 			\begin{cases}
-				\bar{Y} + x & \text{with probability 0.5 \quad (Good Outcome)} \\
-				\bar{Y} - x & \text{with probability 0.5 \quad (Bad Outcome)}
+				\overline{Y} + x & \text{with probability 0.5 \quad (Good Outcome)} \\
+				\overline{Y} - x & \text{with probability 0.5 \quad (Bad Outcome)}
 			\end{cases}
 		\]
 		\item The first order condition yields the Expected Euler Equation:
@@ -1732,8 +1694,8 @@
 		\item Or, another way: asset prices are given by the marginal rate of substitution between consumption across periods. \textcolor{myblue}{How does uncertainty affect prices?}
 		\item So now consider an increase from \( x \) to \( x^* \):
 		\begin{itemize}
-			\item Now \( Y_2 = \bar{Y} + x^* > \bar{Y} + x \) with probability 0.5, and \( Y_2 = \bar{Y} - x^* < \bar{Y} - x \) with probability 0.5
-			\item But it is still the case that \( E(Y_2) = \bar{Y} \)
+			\item Now \( Y_2 = \overline{Y} + x^* > \overline{Y} + x \) with probability 0.5, and \( Y_2 = \overline{Y} - x^* < \overline{Y} - x \) with probability 0.5
+			\item But it is still the case that \( E(Y_2) = \overline{Y} \)
 			\item This is called a \textcolor{myblue}{mean-preserving spread} in \( Y_2 \)
 			\item Uncertainty only affects period 2, so the effect on asset prices comes through  \( E(u'(C_2)) \)
 		\end{itemize}
@@ -1769,7 +1731,7 @@
 		\item So what is the overall effect?
 		\item Substitute in the budget constraints:
 		\[
-			P_b = \beta \frac{E(u'(Y_2 + B))}{u'(\bar{Y} - P_b B)}
+			P_b = \beta \frac{E(u'(Y_2 + B))}{u'(\overline{Y} - P_b B)}
 		\]
 		\item Illustrate optimal choices graphically by plotting the left-hand-side and right-hand-side of the asset pricing equation
 	\end{itemize}
@@ -1779,10 +1741,10 @@
 			\draw [thick, <->] (0,9) node[left]{LHS, RHS} -- (0,0) -- (9,0) node[below]{\(P_b\)};
 			\draw [thick] (0,0) -- (8,8) node [right] {\( P_b \)};
 			\draw [thick] (1,5.5) to [in=120,out=-5] (7,1);
-			\node at (8.5,2) {\( \beta \frac{E(u'(Y_2 + B))}{u'(\bar{Y} - P_b B)} \)};
+			\node at (8.5,2) {\( \beta \frac{E(u'(Y_2 + B))}{u'(\overline{Y} - P_b B)} \)};
 			\draw [dashed] (4.3,0) node [below]{\( P_b \)}  -- (4.3,6.45);
 			\draw [thick,color=myred] (1,7) to [in=130,out=-5] (8,4);
-			\node at (9.5,5) {\( \beta \frac{E(u'(\textcolor{myred}{Y_2^*} + B))}{u'(\bar{Y} - P_b B)} \)};
+			\node at (9.5,5) {\( \beta \frac{E(u'(\textcolor{myred}{Y_2^*} + B))}{u'(\overline{Y} - P_b B)} \)};
 			\draw [dashed,color=myred] (5.85,0) node [below]{\( P_b^* \)} -- (5.85,5.825);
 			\filldraw[fill=myred,draw=black] (5.85,5.825) circle (3pt);
 			\filldraw[black] (4.3,6.45) circle (3pt);
@@ -1906,7 +1868,7 @@
 		\item Finds that life-cycle motives matter much more for older households' asset decisions
 		\item Young households start out with low wealth, need to save to build a \textbf{\textcolor{myblue}{precautionary savings buffer}}
 	\end{itemize}
-\section{Introduction to Asset Pricing: Concepts, Measurement, and a Simple Model}\label{Sec:6}
+\section[Introduction to Asset Pricing]{Introduction to Asset Pricing: Concepts, Measurement, and a Simple Model}\label{Sec:6}
 \subsection{Definitions and Measurement}
 	\begin{itemize}
 		\item Consider simple asset that was bought last period at \( P_{t-1} \) and sold this period at \( P_t \)
@@ -2039,7 +2001,7 @@
 		\item Household chooses \( C_t, B_t, A_t \) at time \( t \), but chooses \( C_{t+1} \) at time \( t+1 \)
 		\item But choice of \( B_t, A_t \) affects the budget constraint at time \( t+1 \) where outcomes are uncertain
 		\item This uncertainty means the household must form expectations \( (E_t) \) about \( t+1 \) sing information available at time \( t \)
-		\item \large\textcolor{myred}{Important:}
+		\item {\large\textcolor{myred}{Important:}}
 		\begin{itemize}
 			\item Expectations over \( t+1 \) matter for decisions at \( t \) if those decisions affect outcomes at \( t+1 \)!
 		\end{itemize}
@@ -2144,83 +2106,83 @@
 		\]
 		\item Which means that the price (return) of \textcolor{myred}{risk-free assets} can move in opposite directions to the prices (returns) of \textcolor{myblue}{risky assets}
 	\end{itemize}
-	\begin{figure}[H]
-	\begin{tikzpicture}[baseline]
-		\begin{axis}[
-			title = {Various Asset Returns},
-			axis on top,
-			no markers,
-			date coordinates in = x,
-			date ZERO = {1986-01-01},
-			xticklabel = {\year},
-			xtick = {
-				1990-01-01,
-				2000-01-01,
-				2010-01-01,
-				2020-01-01
-			},
-			xmin = 1986-01-01,
-			xmax = 2022-08-01,
-			ylabel = {Return (\%)},
-			ylabel style = {overlay},
-			xtick pos = left,
-			xtick align = outside,
-			ytick = {0.0,2.5,5.0,7.5,10.0,12.5,15.0,17.5},
-			ytick pos = bottom,
-			ytick align = outside,
-			ymin = -1,
-			ymax = 18,
-			legend pos = north east,
-			legend cell align = left,
-			legend style = {font=\scriptsize,draw=none,fill opacity=0.75,cells={align=left}},
-			legend entries = {3-Year Constant Maturity Government Bond Rate, Moodys Aaa Coporate Bond Yield, Moodys Baa Coporate Bond Yield},
-			]
-			\addplot+[color=myblue,thick,smooth] table [x=Date,y=DGS3,col sep=comma] {Asset-Returns.csv};
-			\addplot+[color=myred,thick,smooth] table [x=Date,y=AAA,col sep=comma] {Asset-Returns.csv};
-			\addplot+[color=mygreen,thick,smooth] table [x=Date,y=BAA,col sep=comma] {Asset-Returns.csv};
-			\addplot [draw=none,fill=gray,opacity=0.15] coordinates {(1990-07-01, -1) (1990-07-01, 18) (1991-03-01, 18) (1991-03-01, -1)};
-			\addplot [draw=none,fill=gray,opacity=0.15] coordinates {(2001-03-01, -1) (2001-03-01, 18) (2001-11-01, 18) (2001-11-01, -1)};
-			\addplot [draw=none,fill=gray,opacity=0.15] coordinates {(2007-12-01, -1) (2007-12-01, 18) (2009-06-01, 18) (2009-06-01, -1)};
-			\addplot [draw=none,fill=gray,opacity=0.15] coordinates {(2020-02-01, -1) (2020-02-01, 18) (2020-04-01, 18) (2020-04-01, -1)};
-		\end{axis}
-	\end{tikzpicture}
-	\begin{tikzpicture}[baseline]
-		\begin{axis}[
-			title = {Various Asset Spreads},
-			axis on top,
-			no markers,
-			date coordinates in = x,
-			date ZERO = {1986-01-01},
-			xticklabel = {\year},
-			xtick = {
-				1990-01-01,
-				2000-01-01,
-				2010-01-01,
-				2020-01-01
-			},
-			xmin = 1986-01-01,
-			xmax = 2022-08-01,
-			ylabel = {Spread (\%)},
-			xtick pos = left,
-			xtick align = outside,
-			ytick = {0,2,4,6,8},
-			ytick pos = bottom,
-			ytick align = outside,
-			ymin = -1,
-			ymax = 9,
-			legend pos = north west,
-			legend cell align = left,
-			legend style = {font=\scriptsize,draw=none,fill opacity=0.75,cells={align=left}},
-			legend entries = {Spread: Aaa - 3 Year Treasury,Spread: Baa - 3 Year Treasury},
-			]
-			\addplot+[color=myred,thick,smooth] table [x=Date,y=AAA-DGS3,col sep=comma] {Asset-Spreads.csv};
-			\addplot+[color=mygreen,thick,smooth] table [x=Date,y=BAA-DGS3,col sep=comma] {Asset-Spreads.csv};
-			\addplot [draw=none,fill=gray,opacity=0.15] coordinates {(1990-07-01, -1) (1990-07-01, 9) (1991-03-01, 9) (1991-03-01, -1)};
-			\addplot [draw=none,fill=gray,opacity=0.15] coordinates {(2001-03-01, -1) (2001-03-01, 9) (2001-11-01, 9) (2001-11-01, -1)};
-			\addplot [draw=none,fill=gray,opacity=0.15] coordinates {(2007-12-01, -1) (2007-12-01, 9) (2009-06-01, 9) (2009-06-01, -1)};
-			\addplot [draw=none,fill=gray,opacity=0.15] coordinates {(2020-02-01, -1) (2020-02-01, 9) (2020-04-01, 9) (2020-04-01, -1)};
-		\end{axis}
-	\end{tikzpicture}
+	\begin{figure}
+		\begin{tikzpicture}[baseline]
+			\begin{axis}[
+				title = {Various Asset Returns},
+				axis on top,
+				no markers,
+				date coordinates in = x,
+				date ZERO = {1986-01-01},
+				xticklabel = {\year},
+				xtick = {
+					1990-01-01,
+					2000-01-01,
+					2010-01-01,
+					2020-01-01
+				},
+				xmin = 1986-01-01,
+				xmax = 2022-08-01,
+				ylabel = {Return (\%)},
+				ylabel style = {overlay},
+				xtick pos = left,
+				xtick align = outside,
+				ytick = {0.0,2.5,5.0,7.5,10.0,12.5,15.0,17.5},
+				ytick pos = bottom,
+				ytick align = outside,
+				ymin = -1,
+				ymax = 18,
+				legend pos = north east,
+				legend cell align = left,
+				legend style = {font=\scriptsize,draw=none,fill opacity=0.75,cells={align=left}},
+				legend entries = {3-Year Constant Maturity Government Bond Rate, Moodys Aaa Coporate Bond Yield, Moodys Baa Coporate Bond Yield},
+				]
+				\addplot+[color=myblue,thick,smooth] table [x=Date,y=DGS3,col sep=comma] {Asset-Returns.csv};
+				\addplot+[color=myred,thick,smooth] table [x=Date,y=AAA,col sep=comma] {Asset-Returns.csv};
+				\addplot+[color=mygreen,thick,smooth] table [x=Date,y=BAA,col sep=comma] {Asset-Returns.csv};
+				\addplot [draw=none,fill=gray,opacity=0.15] coordinates {(1990-07-01, -1) (1990-07-01, 18) (1991-03-01, 18) (1991-03-01, -1)};
+				\addplot [draw=none,fill=gray,opacity=0.15] coordinates {(2001-03-01, -1) (2001-03-01, 18) (2001-11-01, 18) (2001-11-01, -1)};
+				\addplot [draw=none,fill=gray,opacity=0.15] coordinates {(2007-12-01, -1) (2007-12-01, 18) (2009-06-01, 18) (2009-06-01, -1)};
+				\addplot [draw=none,fill=gray,opacity=0.15] coordinates {(2020-02-01, -1) (2020-02-01, 18) (2020-04-01, 18) (2020-04-01, -1)};
+			\end{axis}
+		\end{tikzpicture}
+		\begin{tikzpicture}[baseline]
+			\begin{axis}[
+				title = {Various Asset Spreads},
+				axis on top,
+				no markers,
+				date coordinates in = x,
+				date ZERO = {1986-01-01},
+				xticklabel = {\year},
+				xtick = {
+					1990-01-01,
+					2000-01-01,
+					2010-01-01,
+					2020-01-01
+				},
+				xmin = 1986-01-01,
+				xmax = 2022-08-01,
+				ylabel = {Spread (\%)},
+				xtick pos = left,
+				xtick align = outside,
+				ytick = {0,2,4,6,8},
+				ytick pos = bottom,
+				ytick align = outside,
+				ymin = -1,
+				ymax = 9,
+				legend pos = north west,
+				legend cell align = left,
+				legend style = {font=\scriptsize,draw=none,fill opacity=0.75,cells={align=left}},
+				legend entries = {Spread: Aaa - 3 Year Treasury,Spread: Baa - 3 Year Treasury},
+				]
+				\addplot+[color=myred,thick,smooth] table [x=Date,y=AAA-DGS3,col sep=comma] {Asset-Spreads.csv};
+				\addplot+[color=mygreen,thick,smooth] table [x=Date,y=BAA-DGS3,col sep=comma] {Asset-Spreads.csv};
+				\addplot [draw=none,fill=gray,opacity=0.15] coordinates {(1990-07-01, -1) (1990-07-01, 9) (1991-03-01, 9) (1991-03-01, -1)};
+				\addplot [draw=none,fill=gray,opacity=0.15] coordinates {(2001-03-01, -1) (2001-03-01, 9) (2001-11-01, 9) (2001-11-01, -1)};
+				\addplot [draw=none,fill=gray,opacity=0.15] coordinates {(2007-12-01, -1) (2007-12-01, 9) (2009-06-01, 9) (2009-06-01, -1)};
+				\addplot [draw=none,fill=gray,opacity=0.15] coordinates {(2020-02-01, -1) (2020-02-01, 9) (2020-04-01, 9) (2020-04-01, -1)};
+			\end{axis}
+		\end{tikzpicture}
 	\end{figure}
 \section{Asset Prices, Consumption, and the Business Cycle}\label{Sec:7}
 \subsection{Historical Overview of Finance and Asset Pricing}
@@ -2417,9 +2379,9 @@
 \subsubsection{Risk Aversion and Expected Utlity}
 	\begin{itemize}
 		\item Consider a fair bet that would see you gain \( \$x \) or lose \( \$x \) with a 50-50 chance
-		\item Starting from \( \bar{c} \):
+		\item Starting from \( \overline{c} \):
 		\[
-			E[u(C)] = 0.5 \times u(\bar{C}+x) + 0.5 \times u(\bar{C}-x)
+			E[u(C)] = 0.5 \times u(\overline{C}+x) + 0.5 \times u(\overline{C}-x)
 		\]
 		\item For a risk-averse investor, the utility of expected consumption is greater than the expected utility of consumption: \( u[E(C)] > E[u(C)] \)
 		\item \textcolor{myblue}{Investors prefer a sure-thing to a risky bet}
@@ -2847,10 +2809,10 @@
 			H_t:\quad && 0&= \lambda_t(R_t^h-P_t^h)\lambda_{t+1}(1-\delta-\tau)P_{t+1}^h
 		\end{alignat*}
 		\item Together, these form the two Euler equations:
-		\begin{alignat*}{2}
-			\frac{1}{C_t} &= \beta\left[R_{t+1} \frac{1}{C_{t+1}} \right] &&\text{Bond Euler Equation}\\
-			P_t^h \frac{1}{C_t} &= R^h_t\frac{1}{C_t} + \beta\left[ \frac{1}{C_{t+1}} (1-\delta-\tau)P_{t+1}^h \right] \quad &&\text{Housing Euler Equation}
-		\end{alignat*}
+		\begin{align*}{2}
+			\frac{1}{C_t} &= \beta\left[R_{t+1} \frac{1}{C_{t+1}} \right] \marginnote{Bond Euler Equation}\\
+			P_t^h \frac{1}{C_t} &= R^h_t\frac{1}{C_t} + \beta\left[ \frac{1}{C_{t+1}} (1-\delta-\tau)P_{t+1}^h \right] \marginnote{Housing Euler Equation}
+		\end{align*}
 		\item Substitute the bond Euler equation into the housing Euler equation:
 		\[
 			P_t^h = R_t^h + (1-\delta-\tau)\frac{P_{t+1}}{R_{t+1}}
@@ -2993,10 +2955,10 @@
 			H_t^O:\quad && 0&= (1-\alpha)\frac{1}{H_t^O}-\beta\lambda_{t+1}(1-\delta-\tau)P_{t+1}^h
 		\end{alignat*}
 		\item Together, these form the two Euler equations:
-		\begin{alignat*}{2}
-			\frac{1}{C_t^O} &= \beta R_{t+1} \frac{1}{C_{t+1}} &&\text{Bond Euler Equation}\\
-			P_t^h \alpha\frac{1}{C_t} &= (1-\alpha)\frac{1}{C_t} + \beta\alpha\frac{1}{C_{t+1}^O} (1-\delta-\tau)P_{t+1}^h \quad &&\text{Housing Euler Equation}
-		\end{alignat*}
+		\begin{align*}{2}
+			\frac{1}{C_t^O} &= \beta R_{t+1} \frac{1}{C_{t+1}} \marginnote{Bond Euler Equation}\\
+			P_t^h \alpha\frac{1}{C_t} &= (1-\alpha)\frac{1}{C_t} + \beta\alpha\frac{1}{C_{t+1}^O} (1-\delta-\tau)P_{t+1}^h \marginnote{Housing Euler Equation}
+		\end{align*}
 		\item Rewrite the housing Euler equation as:
 		\[\beta\frac{C_t^O}{C_{t+1}^O}(1-\delta-\tau)P_{t+1}^h
 			P_t^h = \underbrace{\frac{(1-\alpha)}{\alpha}\frac{1/H_t^O}{1/C_t^O}}_{\substack{\text{Marginal rate of}\\\text{substitution between}\\\text{housing and consumption}}} + \underbrace{\beta\frac{C_t^O}{C_{t+1}^O} (1-\delta-\tau)P_{t+1}^h}_{\substack{\text{Present discounted value}\\\text{of capital gain on housing}}}
@@ -3086,20 +3048,20 @@
 		\begin{align*}
 			C_1:& \quad\frac{1}{C_1}=\lambda_1\\
 			C_2:& \quad\beta\frac{1}{C_2}=\lambda_2\\
-			B:& \quad\lambda_1=\lambda_2\tilde{R}(B)\\
+			B:& \quad\lambda_1=\lambda_2\overset{\sim}{R}(B)\\
 			H:& \quad\alpha\frac{1}{H}+\lambda_2(1-\delta)P^H = \lambda_1P_1^h
 		\end{align*}
 		\item Combining the first order conditions
 		\item The Euler equations for a homeowner with \textcolor{myblue}{savings} \( (B\leq0) \) are:
-		\begin{alignat*}{2}
-			\frac{1}{C_1^S} &= \beta\textcolor{myblue}{R}\frac{1}{C_2^S}\quad &&\text{Bond Euler Equation}\\
-			P_1^h\frac{1}{C_1^S} &= \alpha\frac{1}{H^S}+\beta\frac{1}{C_2^S}(1-\delta)p^H\quad &&\text{Housing Euler Equation}
-		\end{alignat*}
+		\begin{align*}
+			\frac{1}{C_1^S} &= \beta\textcolor{myblue}{R}\frac{1}{C_2^S}\marginnote{Bond Euler Equation}\\
+			P_1^h\frac{1}{C_1^S} &= \alpha\frac{1}{H^S}+\beta\frac{1}{C_2^S}(1-\delta)p^H \;\marginnote{Housing Euler Equation}
+		\end{align*}
 		\item The Euler equations for a homeowner that \textcolor{myred}{borrows} \( (B<0) \) are:
-		\begin{alignat*}{2}
-			\frac{1}{C_1^B} &= \beta\textcolor{myred}{R^m}\frac{1}{C_2^B}\quad &&\text{Bond Euler Equation}\\
-			P_1^h\frac{1}{C_1^B} &= \alpha\frac{1}{H^B}+\beta\frac{1}{C_2^B}(1-\delta)p^H\quad &&\text{Housing Euler Equation}
-		\end{alignat*}
+		\begin{align*}
+			\frac{1}{C_1^B} &= \beta\textcolor{myred}{R^m}\frac{1}{C_2^B}\marginnote{Bond Euler Equation}\\
+			P_1^h\frac{1}{C_1^B} &= \alpha\frac{1}{H^B}+\beta\frac{1}{C_2^B}(1-\delta)p^H\marginnote{Housing Euler Equation}
+		\end{align*}
 		\item Substituting in for the bond Euler equation, the house price for a homeowner with \textcolor{myblue}{savings}:
 		\[
 			\textcolor{myblue}{P_1^h} = \alpha\frac{\frac{1}{H^S}}{\frac{1}{C_1^S}}+\frac{(1-\delta)P_2^h}{\textcolor{myblue}{R}}
@@ -3343,24 +3305,24 @@
 			\max_{C_1,C_2,B}\quad &\log C_1 + \beta\log C_2\\
 			\text{s.t.}\quad &C_1+P_1^h H = Y_1 + B\\
 			&C_2 + RB = Y_2 + (1-\delta) P_2^h H\\
-			&B \leq \bar{\theta}P_1^h H
+			&B \leq \overline{\theta}P_1^h H
 		\end{align*}
 		\item The final inequality is a \textcolor{myblue}{loan to value constraint}
-		\item The amount borrowed cannot exceed a fraction \( \bar{\theta} \) of the value of the house
-		\item We can rewrite the budget constraints in terms of the LTV borrowing ratio \( \textcolor{myblue}{\bar{\theta} =\frac{B}{P_1^h H}} \)
+		\item The amount borrowed cannot exceed a fraction \( \overline{\theta} \) of the value of the house
+		\item We can rewrite the budget constraints in terms of the LTV borrowing ratio \( \textcolor{myblue}{\overline{\theta} =\frac{B}{P_1^h H}} \)
 		\item For period 1:
 		\begin{align*}
 			C_1+P_1^h H &= Y_1 + B\\
 			C_1+P_1^h H &= Y_1 + \textcolor{myblue}{\frac{B}{P_1^h H}} P_1^h H\\
-			C_1+P_1^h H &= Y_1 + \textcolor{myblue}{\bar{\theta}} P_1^h H
+			C_1+P_1^h H &= Y_1 + \textcolor{myblue}{\overline{\theta}} P_1^h H
 		\end{align*}
 		\item For period 2:
 		\begin{align*}
 			C_2 + RB &= Y_2 + (1-\delta) P_2^h H\\
 			C_2 + R\textcolor{myblue}{\frac{B}{P_1^h H}} P_1^h H &= Y_2 + (1-\delta) P_2^h \\
-			C_2 + R\textcolor{myblue}{\bar{\theta}} P_1^h H &= Y_2 + (1-\delta) P_2^h H
+			C_2 + R\textcolor{myblue}{\overline{\theta}} P_1^h H &= Y_2 + (1-\delta) P_2^h H
 		\end{align*}
-		\item And where the LTV choice must be less than the maximum LTV: \( \textcolor{myblue}{\theta} \leq \bar{\theta} \)
+		\item And where the LTV choice must be less than the maximum LTV: \( \textcolor{myblue}{\theta} \leq \overline{\theta} \)
 		\item To illustrate the importance of the LTV constraint, we will make a figure in (\( \theta,C_2 \))-space
 		\begin{itemize}
 			\item This is similar to our previous figures in (\( C_1, C_2 \))-space
@@ -3368,7 +3330,7 @@
 		\end{itemize}
 		\item Take the period 2 budget constraint:
 		\[
-			C_2 + R\textcolor{myblue}{\bar{\theta}} P_1^h H = Y_2 + (1-\delta) P_2^h H
+			C_2 + R\textcolor{myblue}{\overline{\theta}} P_1^h H = Y_2 + (1-\delta) P_2^h H
 		\]
 		\item When the household borrows nothing, \( \textcolor{myblue}{\theta}=0 \) and maximum consumption is:
 		\[
@@ -3378,7 +3340,7 @@
 		\[
 			\textcolor{myblue}{\theta^\text{max}} = \frac{Y_2 + (1-\delta)P_2^h H}{RP_1^h H}
 		\]
-		\item Because of the LTV constraint \( (\theta\leq\bar{\theta}) \), the household is restricted in its borrowing
+		\item Because of the LTV constraint \( (\theta\leq\overline{\theta}) \), the household is restricted in its borrowing
 		\item This yields a truncated budget constrain in (\( \theta-C_2 \))-space
 		\item Note: Higher \( \theta \) implies higher \( C_1 \), so the indifference curve is convex in (\( \theta-C_2 \))-space
 		\item When constrained, consume more in period 2 and less in period 1 than if unconstrained
@@ -3390,7 +3352,7 @@
 			\draw [thick,myblue] (3.05,4.5) to [in=175,out=-85] (8.75,0.75) node [right]{\( U(C_1(\theta),C_2) \)};
 			\draw [thick] (0,6) -- (3.3,3.5);
 			\draw [thick,dashed] (3.3,3.5) -- (8,0);
-			\draw [dashed] (0,3.5) node [left] {\( C_2^* = Y_2 - R\bar{\theta}P_1^h H + P_2^h H (1-\delta)\)}-- (3.3,3.5) -- (3.3,0) node [below] {\( \bar{\theta} \)};
+			\draw [dashed] (0,3.5) node [left] {\( C_2^* = Y_2 - R\overline{\theta}P_1^h H + P_2^h H (1-\delta)\)}-- (3.3,3.5) -- (3.3,0) node [below] {\( \overline{\theta} \)};
 			\filldraw[black] (3.3,3.5) circle (3pt);
 			\filldraw[black] (0,6) circle (3pt) node [left]{\( C_2^\text{max} = Y_2 + P_2^h H(1-\delta)\)};
 			\filldraw[black] (8,0) circle (3pt) node [below]{\( \theta^\text{max} = \frac{Y_2+P_2^h H(1-\delta)}{RP_1^h H} \)};
@@ -3409,8 +3371,8 @@
 			\draw [thick,dashed] (3.3,3.5) -- (8,0);
 			\draw [thick] (0,5) -- (3.3,2.5);
 			\draw [thick,dashed] (3.3,2.5) -- (7,0);
-			\draw [dashed] (0,3.5) node [left] {\( C_2^* = Y_2 - R\bar{\theta}P_1^h H + P_2^h H (1-\delta)\)}-- (3.3,3.5) -- (3.3,0) node [below] {\( \bar{\theta} \)};
-			\draw [dashed] (0,2.5) node [left] {\( \textcolor{myred}{C_2^{**}} = Y_2 - R\bar{\theta}P_1^h H + \textcolor{myred}{P_2^{h'}} H (1-\delta)\)}-- (3.3,2.5);
+			\draw [dashed] (0,3.5) node [left] {\( C_2^* = Y_2 - R\overline{\theta}P_1^h H + P_2^h H (1-\delta)\)}-- (3.3,3.5) -- (3.3,0) node [below] {\( \overline{\theta} \)};
+			\draw [dashed] (0,2.5) node [left] {\( \textcolor{myred}{C_2^{**}} = Y_2 - R\overline{\theta}P_1^h H + \textcolor{myred}{P_2^{h'}} H (1-\delta)\)}-- (3.3,2.5);
 			\filldraw[black] (3.3,2.5) circle (3pt);
 			\filldraw[black] (0,5) circle (3pt) node [left]{\( \textcolor{myred}{C_2^\text{max}} = Y_2 + \textcolor{myred}{P_2^{h'}} H(1-\delta)\)};
 			\filldraw[black] (7,0) circle (3pt) node [below]{\( \theta^\text{max} = \frac{Y_2+\textcolor{myred}{P_2^{h''}} H(1-\delta)}{RP_1^h H} \)};
@@ -3421,7 +3383,7 @@
 		\item What is the difference between \textcolor{myred}{constrained} vs. \textcolor{myblue}{unconstrained} households?
 		\item The optimal consumption choices for each type of household are:
 		\[
-			C_2^\text{con} = Y_2 - R\bar{\theta}P_1^h H + (1-\delta)P_2^h H, \qquad C_2^\text{unc}=\frac{\beta R}{1 + \beta} \left(Y_1-P_1^h H + \frac{Y_2 + (1-\delta P_2^h H)}{R}\right)
+			C_2^\text{con} = Y_2 - R\overline{\theta}P_1^h H + (1-\delta)P_2^h H, \qquad C_2^\text{unc}=\frac{\beta R}{1 + \beta} \left(Y_1-P_1^h H + \frac{Y_2 + (1-\delta P_2^h H)}{R}\right)
 		\]
 		\item And the consumption responses to \( P_2^h \) are:
 		\[
@@ -3480,11 +3442,11 @@
 			H_{t+1}:& \quad\lambda_tP_t=\beta\frac{1}{H_{t+1}}+\lambda_{t+1}(1-\delta)P_{t+1}+\mu_t\theta_tP_{t+1}
 		\end{align*}
 		\item Combining the first order conditions, and repeating the LTV constraint, we have:
-		\begin{alignat*}{2}
-			1-\mu_t&=\beta(1+r_{t+1}) &&\text{Consumption Euler Equation}\\
-			P_t&=\frac{\beta}{1-\mu_t\theta_t}\left( \frac{1}{H_{t+1}} + (1-\delta)P_{t+1} \right)\quad &&\text{Housing Euler Equation}\\
-			B_{t+1}&=\theta_tP_tH_{t+1} &&\text{LTV Constraint}
-		\end{alignat*}
+		\begin{align*}
+			1-\mu_t&=\beta(1+r_{t+1}) \marginnote{Consumption Euler Equation}\\
+			P_t&=\frac{\beta}{1-\mu_t\theta_t}\left( \frac{1}{H_{t+1}} + (1-\delta)P_{t+1} \right)\marginnote{Housing Euler Equation}\\
+			B_{t+1}&=\theta_tP_tH_{t+1} \marginnote{LTV Constraint}
+		\end{align*}
 		\item Note \( \mu_t \) is the Lagrange multiplier on the borrowing constraint
 		\item It tells us the marginal value of an extra dollar borrowed to finance housing
 	\end{itemize}
@@ -3492,7 +3454,7 @@
 	\begin{itemize}
 		\item Housing market equilibrium:
 		\[
-			\underbrace{H_{t+1}}_\text{Housing Demand} = \underbrace{\bar{H}}_\text{Housing Supply}
+			\underbrace{H_{t+1}}_\text{Housing Demand} = \underbrace{\overline{H}}_\text{Housing Supply}
 		\]
 		\item The house price \( p_t \) adjusts to ensure housing market clears in each period \( t \)
 	\end{itemize}
@@ -3503,12 +3465,12 @@
 		\item Our model equations in the steady state are:
 		\begin{align}
 			1-\mu &= \beta(1+r) \label{E:10.1}\\
-			P &= \frac{\beta}{1-\mu\theta} \left( \frac{1}{\bar{H}} + (1-\delta)P \right) \label{E:10.2}\\
-			B &= \theta P\bar{H} \label{E:10.3}
+			P &= \frac{\beta}{1-\mu\theta} \left( \frac{1}{\overline{H}} + (1-\delta)P \right) \label{E:10.2}\\
+			B &= \theta P\overline{H} \label{E:10.3}
 		\end{align}
 		\item Solve for the house price \( P \) (using \cref{E:10.1} and \cref{E:10.2}):
 		\[
-			P = \frac{\beta}{\bar{H}((1-\theta)(1-\beta)+\beta(\theta r+\delta))}
+			P = \frac{\beta}{\overline{H}((1-\theta)(1-\beta)+\beta(\theta r+\delta))}
 		\]
 		\item Solve for mortgage debt (using \cref{E:10.3})
 		\[
@@ -3516,18 +3478,18 @@
 		\]
 		\item First, consider the effect of a \textcolor{myblue}{change in the interest rate \( \mathit{r} \)}
 		\begin{align*}
-			\frac{\partial P}{\partial r} &= -\bar{H}\beta\theta \times \frac{\beta}{(\bar{H}((1-\theta)(1-\beta)+\beta(\theta r+\delta)))^2} <0\\
+			\frac{\partial P}{\partial r} &= -\overline{H}\beta\theta \times \frac{\beta}{(\overline{H}((1-\theta)(1-\beta)+\beta(\theta r+\delta)))^2} <0\\
 			\frac{\partial B}{\partial r} &= -\beta\theta \times \frac{\beta\theta}{((1-\theta)(1-\beta)+\beta(\theta r+\delta))^2} <0
 		\end{align*}
 		\item Decrease in interest rates leads to: 1. \textcolor{myblue}{increase in house prices}; 2. \textcolor{myblue}{increase in mortgage debt}
 		\begin{itemize}
 			\item Lower mortgage finance costs increase housing demand
-			\item With fixed housing supply \( \bar{H} \), prices must increase
+			\item With fixed housing supply \( \overline{H} \), prices must increase
 			\item To finance higher-priced houses, households must increase borrowing
 		\end{itemize}
 		\item Second, consider the effect of a \textcolor{myblue}{change in the maximum LTV ratio \( \theta \)}
 		\begin{align*}
-			\frac{\partial P}{\partial\theta} &= -\bar{H}(1-\beta(1+r)) \times \frac{\beta}{(\bar{H}((1-\theta)(1-\beta)+\beta(\theta r+\delta)))^2} \\
+			\frac{\partial P}{\partial\theta} &= -\overline{H}(1-\beta(1+r)) \times \frac{\beta}{(\overline{H}((1-\theta)(1-\beta)+\beta(\theta r+\delta)))^2} \\
 			\frac{\partial B}{\partial\theta} &= \frac{\beta\theta}{((1-\theta)(1-\beta)+\beta(\theta r+\delta))} + (1-\beta(1+r)) \times \frac{\beta\theta}{((1-\theta)(1-\beta)+\beta(\theta r+\delta))^2}
 		\end{align*}
 		\item If \( \beta(1+r) > 1 \), households are patient and/or have high costs of borrowing
@@ -3556,29 +3518,29 @@
 			\item An increase in the maximum LTV ratio on mortgage borrowing
 		\end{enumerate}
 		\item Recall the FOCs/optimal decisions of the household:
-		\begin{alignat*}{2}
-			1-\mu_t&=\beta(1+r_{t+1}) &&\text{Consumption Euler Equation}\\
-			P_t&=\frac{\beta}{1-\mu_t\theta_t}\left( \frac{1}{H_{t+1}} + (1-\delta)P_{t+1} \right)\quad &&\text{Housing Euler Equation}\\
-			B_{t+1}&=\theta_tP_t\bar{H} &&\text{LTV Constraint}
-		\end{alignat*}
+		\begin{align*}
+			1-\mu_t&=\beta(1+r_{t+1}) \marginnote{Consumption Euler Equation}\\
+			P_t&=\frac{\beta}{1-\mu_t\theta_t}\left( \frac{1}{H_{t+1}} + (1-\delta)P_{t+1} \right) \marginnote{Housing Euler Equation}\\
+			B_{t+1}&=\theta_tP_t\overline{H} \marginnote{LTV Constraint}
+		\end{align*}
 		\item To begin, suppose ``beliefs'' about future house prices are held fixed: \( P_{t+1} = P \)
 		\item Trace out effect of a decline in \textcolor{myblue}{\( r_{t+1} \)}
-		\begin{alignat*}{2}
-			1-\underbrace{\textcolor{myblue}{\mu_t}}_\uparrow&=\beta(1+\underbrace{\textcolor{myblue}{r_{t+1}}}_\downarrow) &&\text{Consumption Euler Equation}\\
-			\underbrace{\textcolor{myblue}{P_t}}_\uparrow&=\frac{\beta}{1-\underbrace{\textcolor{myblue}{\mu_t}}_\uparrow\theta_t}\left( \frac{1}{H_{t+1}} + (1-\delta)P_{t+1} \right)\quad &&\text{Housing Euler Equation}\\
-			\underbrace{\textcolor{myblue}{B_{t+1}}}_\uparrow1&=\theta_t\underbrace{\textcolor{myblue}{P_t}}_\uparrow H_{t+1} &&\text{LTV Constraint}
-		\end{alignat*}
+		\begin{align*}
+			1-\underbrace{\textcolor{myblue}{\mu_t}}_\uparrow&=\beta(1+\underbrace{\textcolor{myblue}{r_{t+1}}}_\downarrow) \marginnote{Consumption Euler Equation}\\
+			\underbrace{\textcolor{myblue}{P_t}}_\uparrow&=\frac{\beta}{1-\underbrace{\textcolor{myblue}{\mu_t}}_\uparrow\theta_t}\left( \frac{1}{H_{t+1}} + (1-\delta)P_{t+1} \right) \marginnote{Housing Euler Equation}\\
+			\underbrace{\textcolor{myblue}{B_{t+1}}}_\uparrow1&=\theta_t\underbrace{\textcolor{myblue}{P_t}}_\uparrow H_{t+1} \marginnote{LTV Constraint}
+		\end{align*}
 		\begin{itemize}
 			\item Lower interest rates \( \Rightarrow \) increase marginal utility of extra dollar borrowed
 			\item Increased demand for housing \( \Rightarrow \) with fixed supply, current prices must rise
 			\item Borrowing increases to pay for higher price of houses
 		\end{itemize}
 		\item Trace out effect of a rise in \textcolor{myred}{\( \theta_t \)}:
-		\begin{alignat*}{2}
-			1-\mu_t&=\beta(1+r_{t+1}) &&\text{Consumption Euler Equation}\\
-			\underbrace{\textcolor{myred}{P_t}}_\uparrow&=\frac{\beta}{1-\mu_t\underbrace{\textcolor{myred}{\theta_t}}_\uparrow}\left( \frac{1}{H_{t+1}} + (1-\delta)P_{t+1} \right)\quad &&\text{Housing Euler Equation}\\
-			\underbrace{\textcolor{myred}{B_{t+1}}}_\uparrow&=\underbrace{\textcolor{myred}{\theta_t}}_\uparrow\underbrace{\textcolor{myred}{P_t}}_\uparrow\bar{H} &&\text{LTV Constraint} 
-		\end{alignat*}
+		\begin{align*}
+			1-\mu_t&=\beta(1+r_{t+1}) \marginnote{Consumption Euler Equation}\\
+			\underbrace{\textcolor{myred}{P_t}}_\uparrow&=\frac{\beta}{1-\mu_t\underbrace{\textcolor{myred}{\theta_t}}_\uparrow}\left( \frac{1}{H_{t+1}} + (1-\delta)P_{t+1} \right) \marginnote{Housing Euler Equation}\\
+			\underbrace{\textcolor{myred}{B_{t+1}}}_\uparrow&=\underbrace{\textcolor{myred}{\theta_t}}_\uparrow\underbrace{\textcolor{myred}{P_t}}_\uparrow\overline{H} \marginnote{LTV Constraint} 
+		\end{align*}
 		\begin{itemize}
 			\item Higher LTV borrowing limits \( \Rightarrow \) increase amount that can be borrowed
 			\item Since households always borrow as much as they can, borrowing increases
@@ -3591,7 +3553,7 @@
 		\begin{align*}
 			1- \mu_t &= \beta(1+r_{t+1}) \\
 			P_t &= \frac{\beta}{1-\mu_t\theta_t}\left( \frac{1}{H} + (1-\delta)P_{t+1} \right)\\
-			B_{t+1} &= \theta_tP_t\bar{H}
+			B_{t+1} &= \theta_tP_t\overline{H}
 		\end{align*}
 		\item For our dynamic experiments:
 		\begin{itemize}
@@ -3621,7 +3583,7 @@
 		\includegraphics[scale=0.4]{Figure 11.2}
 	\end{figure}
 \section{Welfare and Redistribution Through Asset Price Movements}
-\subsection{A Simple Model of Welfare Gains and Losses From Asset Price Movements}
+\subsection[A Simple Model]{A Simple Model of Welfare Gains and Losses From Asset Price Movements}
 	\begin{itemize}
 		\item Simple model of asset choice and asset price movements
 		\item Hold initial asset stock, rebalance asset portfolio, earn cash flow next period
@@ -3721,44 +3683,46 @@
 		\item For \textbf{net seller} of assets, consume more in both periods
 		\item Higher indifference curve \( \Leftrightarrow \) higher utility \( \Leftrightarrow \) higher welfare
 	\end{itemize}
-	\begin{figure}[H]
+	\begin{marginfigure}
 		\centering
-		\begin{tikzpicture}[scale=0.55]
+		\begin{tikzpicture}[scale=0.45]
 			\draw [thick,color=myred] (3.5,5) to [in=175,out=-85] (8.5,1);
 			\draw [thick,color=gray] (3.5,4.1) to [in=180,out=-90] (8.75,0.75);
 			\draw [thick] (0,6) -- (8,0);
 			\draw [thick,color=gray] (0,7.5) -- (6,0);
-			\draw [dashed] (0,3.75) node[left]{\( Y_2 + A_1D_2 \)} -- (3,3.75) -- (3,0) node[below]{\( Y_1 \)};
+			\draw [dashed] (0,3.75) node[left,scale=0.8]{\( Y_2 + A_1D_2 \)} -- (3,3.75) -- (3,0) node[below]{\( Y_1 \)};
 			\filldraw[black] (3,3.75) circle (3pt);
-			\draw [dashed] (4.1,0) node[below]{\( C_1^* \)} -- (4.1,2.4);
+			\draw [dashed] (4.1,0) node[below,scale=0.8]{\( C_1^* \)} -- (4.1,2.4);
 			\filldraw[black] (4.1,2.4) circle (3pt);
-			\draw [dashed,myred] (5.1,0) node[below]{\( C_1^{**} \)} -- (5.1,2.2);
+			\draw [dashed,myred] (5.1,0) node[below,scale=0.8]{\( C_1^{**} \)} -- (5.1,2.2);
 			\filldraw[myred] (5.1,2.2) circle (3pt);
-			\node at (7.5,7){\( \uparrow P_1\Rightarrow\uparrow P_1(A_1-A_2)\Rightarrow\uparrow C_1,C_2 \Rightarrow \uparrow V \)};
+			\node [scale=0.8,align=left] at (7,7){\( \uparrow P_1\Rightarrow\uparrow P_1(A_1-A_2)\),\\\(\Rightarrow\uparrow C_1,C_2 \Rightarrow \uparrow V \)};
 			\draw [thick] (0,9) node[above]{\( C_2 \)} -- (0,0) -- (9,0) node [right]{\(C_1\)};
 		\end{tikzpicture}
-	\end{figure}
+		\caption{Higher indifference curve}\label{fig:11.1}
+	\end{marginfigure}
 	\begin{itemize}
 		\item Increase in \( P_1 \) tilts budget constraint out
 		\item Investment in net assets is more expensive
 		\item For \textbf{net buyer} of assets, consume less in both periods
 		\item Lower indifference curve \( \Leftrightarrow \) lower utility \( \Leftrightarrow \) lower welfare
 	\end{itemize}
-	\begin{figure}[H]
+	\begin{marginfigure}
 		\centering
-		\begin{tikzpicture}[scale=0.55]
+		\begin{tikzpicture}[scale=0.45]
 			\draw [thick,color=myred] (0.1,7.5) to [in=180,out=-90] (4.7,3.9);
 			\draw [thick,color=gray] (1,7.2) to [in=175,out=-85] (4.7,3.9);
 			\draw [thick] (0,6) -- (8,0);
 			\draw [thick,color=gray] (0,7.5)-- (6,0);
-			\draw [dashed] (0,3.75) node[left]{\( Y_2 + A_1D_2 \)} -- (3,3.75) -- (3,0) node[below]{\( Y_1 \)};
+			\draw [dashed] (0,3.75) node[left,scale=0.8]{\( Y_2 + A_1D_2 \)} -- (3,3.75) -- (3,0) node[below]{\( Y_1 \)};
 			\filldraw[black] (3,3.75) circle (3pt);
-			\draw [dashed,myred] (1.5,0) node[below]{\( C_1^{**} \)} -- (1.5,4.9);
+			\draw [dashed,myred] (1.5,0) node[below,scale=0.8]{\( C_1^{**} \)} -- (1.5,4.9);
 			\filldraw[myred] (1.5,4.9) circle (3pt);
-			\draw [dashed] (1.7,0) node[below right]{\( C_1^* \)} -- (1.7,5.4);
+			\draw [dashed] (1.7,0) node[below right,scale=0.8]{\( C_1^* \)} -- (1.7,5.4);
 			\filldraw[black] (1.7,5.4) circle (3pt);
-			\node at (7.5,7){\( \uparrow P_1\Rightarrow\downarrow P_1(A_1-A_2)\Rightarrow\downarrow C_1,C_2 \Rightarrow \downarrow V \)};
+			\node [scale=0.8, align=left] at (7,7){\( \uparrow P_1\Rightarrow\downarrow P_1(A_1-A_2)\),\\\(\Rightarrow\downarrow C_1,C_2 \Rightarrow \downarrow V \)};
 			\draw [thick] (0,9) node[above]{\( C_2 \)} -- (0,0) -- (9,0) node [right]{\(C_1\)};
 		\end{tikzpicture}
-	\end{figure}
+		\caption{Lower indifference curve}\label{fig:11.2}
+	\end{marginfigure}
 \end{document}

@@ -1,11 +1,7 @@
-\documentclass[a4paper,twoside]{article}
+\documentclass{article}
+\usepackage{NotesTeXV3}
 \usepackage{afterpage}
-\usepackage{array} 
-\usepackage{amsmath}
-\usepackage{amssymb}
-\usepackage{amsthm}
-\usepackage{amstext} 
-\usepackage{amsfonts}
+\usepackage{array}
 \usepackage[english]{babel}
 \usepackage{booktabs}
 \usepackage{bm}
@@ -16,26 +12,31 @@
 \usepackage[shortlabels]{enumitem}
 \usepackage{fancyhdr}
 \usepackage{float}
-\usepackage{fontenc}
+\usepackage[T1]{fontenc}
 \usepackage{fontspec}
 \usepackage{geometry}
 \usepackage{graphicx}
 \usepackage{hhline}
-\usepackage[hidelinks,unicode]{hyperref}
+\usepackage{hyperref}
 \usepackage[noabbrev]{cleveref}
 \usepackage{longtable}
-\usepackage{lmodern}
+\usepackage{lmodern,mathrsfs}
 \usepackage{listings}
 \usepackage{nicematrix}
 \usepackage{mathtools}
+\usepackage{marginnote}
+%\usepackage{minted}
 \usepackage{multirow,array}
 \usepackage{parskip}
+\usepackage{pifont}
 \usepackage{pgfplots}
 \pgfplotsset{compat=1.18}
 \usepgfplotslibrary{dateplot}
 \usepackage{ragged2e}
 \usepackage[lm]{sfmath}
+\usepackage{sidenotes}
 \usepackage{subcaption}
+\usepackage{subfiles}
 \usepackage{tabularx}
 \usepackage{thmtools}
 \usepackage{titlesec}
@@ -44,18 +45,10 @@
 \usetikzlibrary{arrows.meta}
 \usetikzlibrary{bending}
 \tikzset{>=stealth}
-\usepackage[theorems, skins, breakable]{tcolorbox}
+\usepackage[many]{tcolorbox}
 \usepackage{wrapfig}
 \usepackage{ulem}
-\usepackage{xcolor}
-
-%afterpage
-\newcommand\blankpage{
-	\null
-	\pagestyle{fancy}
-	\fancyhead{}\fancyfoot{}
-	\fancyhead[RO,LE]{\thepage}
-	\newpage}
+\usepackage[usenames,dvipsnames]{xcolor}
 
 %sff for all types of font
 \renewcommand{\familydefault}{\sfdefault}
@@ -72,96 +65,51 @@
 %image path
 \graphicspath{ {./images/} }
 
-%boxes
-\newtcolorbox{questionbox}[1]{enhanced, breakable, colback=white, colbacktitle=myblue, colframe=myblue, title=#1,sharpish corners, fonttitle=\bfseries, boxrule=0pt, attach boxed title to top left={yshift=-2mm}}
-\newtcolorbox{explanationbox}{enhanced, breakable, borderline west={2pt}{0pt}{myblue}, colback=myblue!5, boxrule=0pt,frame hidden}
-\newtcolorbox{mybox}{goldstylecolor}
-
-%custom color
+%custom color	
 \defaultfontfeatures {Ligatures = TeX}
 \definecolor{myblue}{HTML}{224099}
 \definecolor{mygreen}{HTML}{409922}
 \definecolor{mygold}{HTML}{997b22}
 \definecolor{myred}{HTML}{992240}
 \definecolor{mypurple}{HTML}{7b2299}
-
-%page setup
-\geometry{
-	left=2.54cm,
-	right=2.54cm,
-	top=2.54cm,
-	bottom=2.54cm,
-}
-
-%headers and Footers
-\pagestyle{fancy}
-\fancyhead{}\fancyfoot{}
-\fancyhead[RO,LE]{\thepage}
-\fancyhead[RE]{\rightmark}
-\fancyhead[LO]{\leftmark}
+\definecolor{myblack}{HTML}{000000}
 
 %math commands
 \DeclareMathOperator{\sgn}{sgn}
 \DeclareMathOperator{\id}{id}
-\DeclareMathOperator{\im}{im}
+\DeclareMathOperator{\im}{Im}
 \DeclareMathOperator{\pj}{Proj}
 \DeclareMathOperator{\var}{Var}
 \DeclareMathOperator{\cov}{Cov}
+\DeclareMathOperator{\re}{Re}
 
-%theorems
-\tcbset{
-	bluestylecolor/.style={enhanced, sharp corners, breakable,colback=myblue!15, coltitle=myblue, frame hidden, boxrule=0pt, detach title, before upper=\tcbtitle\par\smallskip, fonttitle=\bfseries, borderline west={2pt}{0pt}{myblue}},
-	bluestyleline/.style={enhanced, sharp corners, breakable, colback=white, coltitle=myblue, frame hidden, boxrule=0pt, detach title, before upper=\tcbtitle\par\smallskip,  fonttitle=\bfseries, borderline west={2pt}{0pt}{myblue}},
-	redstylecolor/.style={enhanced, sharp corners, breakable, colback=myred!15, coltitle=myred, frame hidden, boxrule=0pt, detach title, before upper=\tcbtitle\par\smallskip, fonttitle=\bfseries, borderline west={2pt}{0pt}{myred}},
-	redstyleline/.style={enhanced, sharp corners, breakable,colback=white, coltitle=myred, frame hidden, boxrule=0pt, detach title, before upper=\tcbtitle\par\smallskip, fonttitle=\bfseries, borderline west={2pt}{0pt}{myred}},
-	greenstylecolor/.style={enhanced, sharp corners, breakable, colback=mygreen!15, coltitle=mygreen, frame hidden, boxrule=0pt, detach title, before upper=\tcbtitle\par\smallskip, fonttitle=\bfseries, borderline west={2pt}{0pt}{mygreen}},
-	greenstyleline/.style={enhanced, sharp corners, breakable, colback=white, coltitle=mygreen, frame hidden, boxrule=0pt, detach title, before upper=\tcbtitle\par\smallskip, fonttitle=\bfseries, borderline west={2pt}{0pt}{mygreen}},
-	goldstylecolor/.style={enhanced, sharp corners, breakable, colback=mygold!15, coltitle=mygold, frame hidden, boxrule=0pt, detach title, before upper=\tcbtitle\par\smallskip, fonttitle=\bfseries, borderline west={2pt}{0pt}{mygold}},
-	goldstyleline/.style={enhanced, sharp corners, colback=white, colframe=mygold, boxrule=0pt,breakable, mygold=\bfseries, borderline horizontal={2pt}{0pt}{mygreen}},
-}
-
-\newtcbtheorem[number within=section, crefname={definition}{definitions}]{definition}{Definition}{greenstylecolor}{def}
-\newtcbtheorem[use counter from=definition, crefname={theorem}{theorems}]{theorem}{Theorem}{goldstyleline}{tho}
-\newtcbtheorem[use counter from=definition, crefname={lemma}{lemmas}]{lemma}{Lemma}{redstylecolor}{lem}
-\newtcbtheorem[use counter from=definition, crefname={remark}{remarks}]{remark}{Remark}{bluestyleline}{rem}
-\newtcbtheorem[use counter from=definition, crefname={corollary}{corollarys}]{corollary}{Corollary}{greenstyleline}{col}
-\newtcbtheorem[use counter from=definition, crefname={example}{examples}]{example}{Example}{bluestylecolor}{exa}
-\newtcbtheorem[use counter from=definition, crefname={proposition}{propositions}]{proposition}{Proposition}{redstyleline}{pro}
-\newtcbtheorem[use counter from=definition, crefname={axiom}{Axiom}]{axiom}{Axiom}{goldstylecolor}{axm}
-
-\tcbset{highlight math style={enhanced,colframe=mygold,colback=mygold!15,boxsep=0pt}}
+\tcbset{highlight math style={enhanced, colframe=mygold, colback=mygold!15,boxsep=0pt}}
+\let\boxed=\tcbhighmath
 
 \numberwithin{equation}{section}
 \numberwithin{figure}{section}
-\newcommand{\sectionbreak}{\clearpage}
 
-%subsubsection
-\titleformat{\subsubsection}{\bfseries}{}{0pt}{\myuline}
-\titlespacing{\subsubsection}{0pt}{*3}{*1}
+%\setminted[python]{tabsize=1,obeytabs,encoding=utf8}
+%\setminted[pycon]{tabsize=1,obeytabs}
 
 %preamble
 \setcounter{tocdepth}{2}
 \pagenumbering{roman}
-
 \begin{document}
-\begin{titlepage}
-	\centering
-	\vspace*{4.5cm}
-	\rule{\linewidth}{2pt}
-	\LARGE\textbf{ECOS3010}\\
-	\vspace{0.5cm}
-	\Huge\textbf{Monetary Economics}\\
-	\rule{\linewidth}{2pt}
-	\LARGE\textbf{Notes}\\
-	\vspace{1.5cm}
-	\Large Brendan Chow
-	\vfill
-\end{titlepage}
+\title{{ECOS3010}\\{\normalsize{Monetary Economics}}}
+	\author{Brendan Chow}
+	\affiliation{
+	Student at the University of Sydney\\
+	\href{https://xagill.com/}{Website}\\
+	\href{https://www.linkedin.com/in/brendanchow/}{LinkedIn}\\
+	\href{https://github.com/ARocketdog}{GitHub}\\
+	}
+	\emailAdd{brendanchow@xagill.com}
+	\maketitle
 	\newpage
-	\pagebreak
-	\tableofcontents
-	\newpage
+	\pagestyle{fancynotes}
 \pagenumbering{arabic}
+%start document
 \section{A Simple Model of Money}
 \subsection{Introduction}
 	\begin{itemize}
@@ -222,27 +170,26 @@
 		\item Three assumptions about an individual's utility
 		\begin{enumerate}[label=\textbf{\arabic*.}]
 			\item Utility is increasing with the consumption.
-		\end{enumerate}
-				\begin{figure}[H]
-				\centering
-				\begin{tikzpicture}[scale=0.55]
-					\draw [thick] (0,9) node[above]{\(c_2\)}--(0,0)--(9,0) node[right]{\(c_1\)};
-					\draw [thick] (1.5,7.5) to [out=-90,in=180] (7.5,1.5) node[right]{\( U^0 \)};
-					\draw [thick] (2.3,8.5) to [out=-90,in=180] (8.5,2.3) node[right]{\( U^1 \)};
-					\draw [thick] (0.7,6.7) to [out=-90,in=180] (6.7,0.7) node[right]{\( U^2 \)};
-					\draw [thick, ->] (2,2)--(6,6) node[right, align=left]{Direction of \\ Increasing Utility};
-					\draw [dashed] (0,5)--(3.4,5);
-					\draw [dashed] (3.4,5)--(3.4,0);
-					\draw [dashed] (2.05,5)--(2.05,0);
-					\draw [dashed] (0.95,5)--(0.95,0);
-					\filldraw [black] (0.95,5) circle (3pt) node[above right]{A};
-					\filldraw [black] (2.05,5) circle (3pt) node[above right]{B};
-					\filldraw [black] (3.4,5) circle (3pt) node[above right]{C};
- 				\end{tikzpicture}
-				\end{figure}
-			\begin{enumerate}[resume, label=\textbf{\arabic*.}]
-			\item Individuals value some consumption in both periods of life: the indifference curves never cross either axis.
-			\item Diminished marginal rate of substitution
+		\begin{marginfigure}
+			\centering
+			\begin{tikzpicture}[scale=0.45]
+				\draw [thick] (0,9) node[above]{\(c_2\)}--(0,0)--(9,0) node[right]{\(c_1\)};
+				\draw [thick] (1.5,7.5) to [out=-90,in=180] (7.5,1.5) node[right]{\( U^0 \)};
+				\draw [thick] (2.3,8.5) to [out=-90,in=180] (8.5,2.3) node[right]{\( U^1 \)};
+				\draw [thick] (0.7,6.7) to [out=-90,in=180] (6.7,0.7) node[right]{\( U^2 \)};
+				\draw [thick, ->] (2,2)--(6,6) node[right, align=left,scale=0.8]{Direction of\\Increasing Utility};
+				\draw [dashed] (0,5)--(3.4,5);
+				\draw [dashed] (3.4,5)--(3.4,0);
+				\draw [dashed] (2.05,5)--(2.05,0);
+				\draw [dashed] (0.95,5)--(0.95,0);
+				\filldraw [black] (0.95,5) circle (3pt) node[above right]{A};
+				\filldraw [black] (2.05,5) circle (3pt) node[above right]{B};
+				\filldraw [black] (3.4,5) circle (3pt) node[above right]{C};
+ 			\end{tikzpicture}
+			\caption{Increasing utility}
+		\end{marginfigure}
+		\item Individuals value some consumption in both periods of life: the indifference curves never cross either axis.
+		\item Diminished marginal rate of substitution
 		\end{enumerate}
 	\end{itemize}
 \subsection{Centralised Solution: the Golden Rule Allocation}
@@ -263,38 +210,40 @@
 			c_1 + c_2 \leq y.
 		\]
 		\item Graphically the feasible set is
-		\begin{figure}[H]
+		\begin{marginfigure}
 			\centering
-			\begin{tikzpicture}[scale=0.55]
+			\begin{tikzpicture}[scale=0.45]
 				\draw [fill=gray!20] (0,0) -- (0,7.5) -- (7.5,0);
 				\draw [thick] (0,7.5) node [left]{\( y \)} to (7.5,0) node [below]{\( y \)};
 				\draw [thick] (0,9) node[above]{\(c_2\)} -- (0,0) -- (9,0) node[right]{\(c_1\)};
 				\filldraw [black] (6,4) circle (3pt) node[right]{A};
 				\draw [thick, <-] (2,5.6) -- (3.3,7) node[right, align=left]{Feasible set line};
 			\end{tikzpicture}
-		\end{figure}
+			\caption{The feasible set}
+		\end{marginfigure}
 		\item Within the feasible set, which allocation would the planner choose? The combination of \( (c_1, c_2) \) that maximizes an individual's utility.
 		\item The golden rule allocation is the allocation within the feasible set that maximizes the utility of future generations. It occurs at the unique point of tangency between the feasible set line and an indifference curve
 		\item Does the golden rule allocation maximize the utility of the initial old?
 		\item Point A:\@ the golden rule allocation; Point E:\@ max utility of the initial old.
 	\end{itemize}
-		\begin{figure}[H]
-			\centering
-			\begin{tikzpicture}[scale=0.55]
-				\draw [thick] (0,6.5) node [left]{\( y \)} to (6.5,0) node [below]{\( y \)};
-				\draw [thick] (0,9) node[above]{\(c_2\)} -- (0,0) -- (9,0) node[right]{\(c_1\)};
-				\draw [dashed] (0,3.25) node[left]{\(c_2^*\)} -- (3.25,3.25) -- (3.25,0) node[below]{\(c_1^*\)};
-				\filldraw [black] (3.25,3.25) circle (3pt) node[below left]{A};
-				\filldraw [black] (5.7,0.8) circle (3pt) node[above right]{B};
-				\filldraw [black] (0.8,5.7) circle (3pt) node[right]{C};
-				\filldraw [black] (3.6,4.7) circle (3pt) node[above right]{D};
-				\filldraw [black] (0,6.5) circle (3pt) node[right]{E};
-				\draw [thick, <-] (3.4,3.4) -- (5,5) node[right, align=left]{The Golden \\ Rule Allocation};
-				\draw [thick] (1.5,7.5) to [out=-90,in=180] (7.5,1.5);
-				\draw [thick] (2.3,8.5) to [out=-90,in=180] (8.5,2.3);
-				\draw [thick] (0.7,6.7) to [out=-90,in=180] (6.7,0.7);
-			\end{tikzpicture}
-		\end{figure}
+	\begin{marginfigure}
+		\centering
+		\begin{tikzpicture}[scale=0.45]
+			\draw [thick] (0,6.5) node [left]{\( y \)} to (6.5,0) node [below]{\( y \)};
+			\draw [thick] (0,9) node[above]{\(c_2\)} -- (0,0) -- (9,0) node[right]{\(c_1\)};
+			\draw [dashed] (0,3.25) node[left]{\(c_2^*\)} -- (3.25,3.25) -- (3.25,0) node[below]{\(c_1^*\)};
+			\filldraw [black] (3.25,3.25) circle (3pt) node[below left]{A};
+			\filldraw [black] (5.7,0.8) circle (3pt) node[above right]{B};
+			\filldraw [black] (0.8,5.7) circle (3pt) node[right]{C};
+			\filldraw [black] (3.6,4.7) circle (3pt) node[above right]{D};
+			\filldraw [black] (0,6.5) circle (3pt) node[right]{E};
+			\draw [thick, <-] (3.4,3.4) -- (5,5) node[right, align=left,scale=0.8]{The Golden \\ Rule Allocation};
+			\draw [thick] (1.5,7.5) to [out=-90,in=180] (7.5,1.5);
+			\draw [thick] (2.3,8.5) to [out=-90,in=180] (8.5,2.3);
+			\draw [thick] (0.7,6.7) to [out=-90,in=180] (6.7,0.7);
+		\end{tikzpicture}
+		\caption{Golden Rule allocation}
+	\end{marginfigure}
 \subsection{Decentralised Solutions: a Competitive Equilibrium without Money}
 	\begin{itemize}
 		\item To achieve the golden rule allocation, the planner needs to redistribute \( c_2^* \) units of goods from each young to each old in every period.
@@ -313,14 +262,15 @@
 	\item Each individual's consumption: \( c_1 = y, c_2 = 0. \) (Goods are non-storable!)
 	\item Utility is low: both the future generations and the initial old are \textbf{worse off} than \textbf{almost} any other feasible consumption bundle.
 	\end{itemize}
-	\begin{figure}[H]
+	\begin{marginfigure}
 		\centering
-		\begin{tikzpicture}[scale=0.55]
+		\begin{tikzpicture}[scale=0.45]
 			\draw [thick] (0,6.5) node [above right]{C} to (6.5,0) node [above right]{B} node [below]{\( y \)};
 			\draw [thick] (0,9) node[above]{\(c_2\)} -- (0,0) -- (9,0) node[right]{\(c_1\)};
 			\filldraw [black] (3.25,3.25) circle (3pt) node[above right]{A};
 		\end{tikzpicture}
-	\end{figure}
+		\caption{Decentralised solution}
+	\end{marginfigure}
 \subsection{Decentralised Solutions: a Monetary Equilibrium}
 	\begin{itemize}
 		\item How can the economy achieve a better allocation than the autarkic allocation?
@@ -374,16 +324,17 @@
 	\item Graphically, we depict the budget set
 	\item Within the budget set, point A maximises an individual's utility.
 	\end{itemize}
-	\begin{figure}[H]
+	\begin{marginfigure}
 		\centering
-		\begin{tikzpicture}[scale=0.55]
-			\draw [thick] (0,6.5) node [left]{\( \left[\frac{v_t}{v_{t+1}}\right] \cdot y \)} to (6.5,0) node [below]{\( y \)};
+		\begin{tikzpicture}[scale=0.4]
+			\draw [thick] (0,6.5) node [left,scale=0.7]{\( \left[\frac{v_t}{v_{t+1}}\right] \cdot y \)} to (6.5,0) node [below]{\( y \)};
 			\draw [thick] (0,9) node[above]{\(c_{2,t+1}\)} -- (0,0) -- (9,0) node[right]{\(c_{1,t}\)};
 			\draw [dashed] (0,3.25) node[left]{\(c_{2,t+1}^*\)} -- (3.25,3.25) -- (3.25,0) node[below]{\(c_{1,t}^*\)};
 			\filldraw [black] (3.25,3.25) circle (3pt) node[below left]{A};
 			\draw [thick] (1.5,7.5) to [out=-90,in=180] (7.5,1.5);
 		\end{tikzpicture}
-	\end{figure}
+		\caption{Demand for money}
+	\end{marginfigure}
 	\subsubsection{A Monetary Equilibrium}
 	\begin{itemize}
 		\item It remains to find \( \frac{v_{t+1}}{v_t} \). Recall that in any competitive market, the price (or value) of an object is determined as the price at which the supply of the object equals its demand.
@@ -418,16 +369,16 @@
 		\]
 		The value of money is constant.
 	\end{itemize}
-	\begin{figure}[H]
+	\begin{marginfigure}
 		\centering
-		\begin{tikzpicture}[scale=0.55]
+		\begin{tikzpicture}[scale=0.45]
 			\draw [thick] (0,6.5) node [left]{\( y \)} to (6.5,0) node [below]{\( y \)};
 			\draw [thick] (0,9) node[above]{\(c_2\)} -- (0,0) -- (9,0) node[right]{\(c_1\)};
 			\draw [dashed] (0,3.25) node[left]{\(c_2^*\)} -- (3.25,3.25) -- (3.25,0) node[below]{\(c_1^*\)};
 			\filldraw [black] (3.25,3.25) circle (3pt);
 			\draw [thick] (1.5,7.5) to [out=-90,in=180] (7.5,1.5);
 		\end{tikzpicture}
-	\end{figure}
+	\end{marginfigure}
 	\begin{itemize}
 		\item Quantity theory of money: the price level is proportional to the quantity of money in the economy. In our economy, the price level is
 		\[
@@ -457,17 +408,18 @@
 			N_t c_1 + N_{t-1} c_2 \leq N_t y \rightarrow c_1 + \frac{1}{n} c_2 \leq y
 		\]
 	\end{itemize}
-	\begin{figure}[H]
+	\begin{marginfigure}
 	\centering
-	\begin{tikzpicture}[scale=0.55]
+	\begin{tikzpicture}[scale=0.45]
 		\draw [thick] (0,7.5) node [left]{\( ny \)} to (4.5,0) node [below]{\( y \)};
 		\draw [thick] (0,9) node[above]{\(c_2\)} -- (0,0) -- (9,0) node[right]{\(c_1\)};
 		\draw [dashed] (0,4.25) node[left]{\(c_2^*\)} -- (1.95,4.25) -- (1.95,0) node[below]{\(c_1^*\)};
 		\filldraw [black] (1.95,4.25) circle (3pt);
 		\draw [thick] (1,7.75) to [out=-90,in=180] (7.75,1);
-		\draw [thick, <-] (2.1,4.4) -- (3.7,6) node[right, align=left]{Golden Rule Allocation};
+		\draw [thick, <-] (2.1,4.4) -- (3.7,6) node[right, align=left,scale=0.8]{Golden Rule Allocation};
 	\end{tikzpicture}
-	\end{figure}
+	\caption{Golden rule allocation in a growing economy}
+	\end{marginfigure}
 	\begin{itemize}
 		\item A Monetary equilibrium: the individual maximises his own utility subject to the life-time budget constraint
 		\[
@@ -526,7 +478,7 @@
 			\item Japan in the early 1990s.
 		\end{itemize}
 		\item To understand the causes and consequences of changing money growth rate, we will develop a theory.
-	\end{itemize}\pagebreak
+	\end{itemize}
 \subsection{A Growing Money Supply: New Money to the Public}
 	\begin{itemize}
 		\item Consider the OLG economy that we developed so far. Suppose that money supply grows at a rate \( z \):
@@ -2000,13 +1952,14 @@
 		\item What if there is a permanent increase in \( z \)?
 		\item Graphically, we show the determination of \( k \).
 	\end{itemize}
-	\begin{figure}[H]
+	\begin{marginfigure}
 		\centering
-		\begin{tikzpicture}[scale=0.55]
-			\draw [thick, <->] (0,9) node[above]{Rate of Return} -- (0,0) -- (9,0) node [right]{\(k\)};
+		\begin{tikzpicture}[scale=0.4]
+			\draw [thick, <->] (0,9) node[right]{\small{Rate of Return}} -- (0,0) -- (9,0) node [right]{\(k\)};
 			\draw [thick] (1,8) .. controls (1.25,3) and (2.5,1.25) .. (8,1) node [right]{\( f'(k) \)};
 		\end{tikzpicture}
-	\end{figure}
+		\caption{Tobin effect}
+	\end{marginfigure}
 	\begin{itemize}
 		\item When \( z \) increases, \( n/z \) decreases and \( k^* \) increases.
 		\item The substitution of capital for money in reaction to an increase in inflation, described by Tobin (1965), is called the ``\textbf{Tobin effect}''.
