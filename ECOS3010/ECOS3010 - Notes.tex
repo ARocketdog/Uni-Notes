@@ -1,103 +1,22 @@
-\documentclass{article}
-\usepackage{NotesTeXV3}
-\usepackage{afterpage}
-\usepackage{array}
-\usepackage[english]{babel}
-\usepackage{booktabs}
-\usepackage{bm}
-\usepackage{bbm}
-\usepackage{caption}
-\usepackage{contour}
-\usepackage{csquotes}
-\usepackage[shortlabels]{enumitem}
-\usepackage{fancyhdr}
-\usepackage{float}
-\usepackage[T1]{fontenc}
-\usepackage{fontspec}
-\usepackage{geometry}
-\usepackage{graphicx}
+\documentclass[a4paper]{article}
+\usepackage{bchow}
 \usepackage{hhline}
-\usepackage{hyperref}
-\usepackage[noabbrev]{cleveref}
-\usepackage{longtable}
-\usepackage{lmodern,mathrsfs}
-\usepackage{listings}
-\usepackage{nicematrix}
-\usepackage{mathtools}
-\usepackage{marginnote}
-%\usepackage{minted}
-\usepackage{multirow,array}
-\usepackage{parskip}
-\usepackage{pifont}
-\usepackage{pgfplots}
-\pgfplotsset{compat=1.18}
-\usepgfplotslibrary{dateplot}
-\usepackage{ragged2e}
-\usepackage[lm]{sfmath}
-\usepackage{sidenotes}
-\usepackage{subcaption}
-\usepackage{subfiles}
-\usepackage{tabularx}
-\usepackage{thmtools}
-\usepackage{titlesec}
-\usepackage{tikz}
-\usetikzlibrary{intersections, angles, quotes, calc, positioning}
-\usetikzlibrary{arrows.meta}
-\usetikzlibrary{bending}
-\tikzset{>=stealth}
-\usepackage[many]{tcolorbox}
-\usepackage{wrapfig}
-\usepackage{ulem}
-\usepackage[usenames,dvipsnames]{xcolor}
 
-%sff for all types of font
-\renewcommand{\familydefault}{\sfdefault}
+%font
+\setmainfont{KpLight}
+\setsansfont{CMU Bright}[Scale=MatchLowercase]
+\setmonofont{KpMono}
+\setmathfont{KpMath-Light.otf}[math-style=ISO,bold-style=TeX,StylisticSet={1,3,4},CharacterVariant={2,3,6}]
 
-%uline setup
-\setcounter{MaxMatrixCols}{20}
-\renewcommand{\ULdepth}{2pt}
-\contourlength{0.7pt}
-\newcommand{\myuline}[1]{%
-	\uline{\phantom{#1}}%
-	\llap{\contour{white}{#1}}%
-}
+\renewcommand{\familydefault}{\rmdefault}
 
 %image path
-\graphicspath{ {./images/} }
+\graphicspath{{./images/}}
 
-%custom color	
-\defaultfontfeatures {Ligatures = TeX}
-\definecolor{myblue}{HTML}{224099}
-\definecolor{mygreen}{HTML}{409922}
-\definecolor{mygold}{HTML}{997b22}
-\definecolor{myred}{HTML}{992240}
-\definecolor{mypurple}{HTML}{7b2299}
-\definecolor{myblack}{HTML}{000000}
-
-%math commands
-\DeclareMathOperator{\sgn}{sgn}
-\DeclareMathOperator{\id}{id}
-\DeclareMathOperator{\im}{Im}
-\DeclareMathOperator{\pj}{Proj}
-\DeclareMathOperator{\var}{Var}
-\DeclareMathOperator{\cov}{Cov}
-\DeclareMathOperator{\re}{Re}
-
-\tcbset{highlight math style={enhanced, colframe=mygold, colback=mygold!15,boxsep=0pt}}
-\let\boxed=\tcbhighmath
-
-\numberwithin{equation}{section}
-\numberwithin{figure}{section}
-
-%\setminted[python]{tabsize=1,obeytabs,encoding=utf8}
-%\setminted[pycon]{tabsize=1,obeytabs}
-
-%preamble
-\setcounter{tocdepth}{2}
-\pagenumbering{roman}
 \begin{document}
-\title{{ECOS3010}\\{\normalsize{Monetary Economics}}}
+\title{{ECOS3010}\\{\normalsize{Monetary Economics -- Notes}}}
 	\author{Brendan Chow}
+	\abstract{Based on the lecture notes by A/Prof Stella Huangfu}
 	\affiliation{
 	Student at the University of Sydney\\
 	\href{https://xagill.com/}{Website}\\
@@ -108,7 +27,6 @@
 	\maketitle
 	\newpage
 	\pagestyle{fancynotes}
-\pagenumbering{arabic}
 %start document
 \section{A Simple Model of Money}
 \subsection{Introduction}
