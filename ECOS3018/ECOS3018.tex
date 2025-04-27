@@ -1,170 +1,34 @@
-\documentclass[a4paper,twoside]{article}
-\usepackage{afterpage}
-\usepackage{array} 
-\usepackage{amsmath}
-\usepackage{amssymb}
-\usepackage{amsthm}
-\usepackage{amstext} 
-\usepackage{amsfonts}
-\usepackage[english]{babel}
-\usepackage{booktabs}
-\usepackage{bm}
-\usepackage{bbm}
-\usepackage{caption}
-\usepackage{contour}
-\usepackage{csquotes}
-\usepackage[shortlabels]{enumitem}
-\usepackage{fancyhdr}
-\usepackage{float}
-\usepackage{fontenc}
-\usepackage{fontspec}
-\usepackage{geometry}
-\usepackage{graphicx}
-\usepackage{hhline}
-\usepackage[hidelinks,unicode]{hyperref}
-\usepackage[noabbrev]{cleveref}
-\usepackage{longtable}
-\usepackage{lmodern}
-\usepackage{listings}
-\usepackage{nicematrix}
-\usepackage{mathtools}
-\usepackage{multirow,array}
-\usepackage{parskip}
-\usepackage{pgfplots}
-\pgfplotsset{compat=1.18}
-\usepgfplotslibrary{dateplot}
-\usepackage{ragged2e}
-\usepackage[lm]{sfmath}
-\usepackage{subcaption}
-\usepackage{tabularx}
-\usepackage{thmtools}
-\usepackage{titlesec}
-\usepackage{tikz}
-\usetikzlibrary{intersections, angles, quotes, calc, positioning}
-\usetikzlibrary{arrows.meta}
-\usetikzlibrary{bending}
-\tikzset{>=stealth}
-\usepackage[theorems, skins, breakable]{tcolorbox}
-\usepackage{wrapfig}
-\usepackage{ulem}
-\usepackage{xcolor}
+\documentclass{article}
+\usepackage{bchow}
 
-%afterpage
-\newcommand\blankpage{
-	\null
-	\pagestyle{fancy}
-	\fancyhead{}\fancyfoot{}
-	\fancyhead[RO,LE]{\thepage}
-	\newpage}
+%font
+\setmainfont{KpLight}
+\setsansfont{CMU Bright}[Scale=MatchLowercase]
+\setmonofont{KpMono}
+\setmathfont{KpMath-Light.otf}[math-style=ISO,bold-style=TeX,StylisticSet={1,3,4},CharacterVariant={2,3,6}]
 
-%sff for all types of font
-\renewcommand{\familydefault}{\sfdefault}
-
-%uline setup
-\setcounter{MaxMatrixCols}{20}
-\renewcommand{\ULdepth}{2pt}
-\contourlength{0.7pt}
-\newcommand{\myuline}[1]{%
-	\uline{\phantom{#1}}%
-	\llap{\contour{white}{#1}}%
-}
+\renewcommand{\familydefault}{\rmdefault}
 
 %image path
-\graphicspath{ {./images/} }
+\graphicspath{{./figure/}}
 
-%boxes
-\newtcolorbox{questionbox}[1]{enhanced, breakable, colback=white, colbacktitle=myblue, colframe=myblue, title=#1,sharpish corners, fonttitle=\bfseries, boxrule=0pt, attach boxed title to top left={yshift=-2mm}}
-\newtcolorbox{explanationbox}{enhanced, breakable, borderline west={2pt}{0pt}{myblue}, colback=myblue!5, boxrule=0pt,frame hidden}
-\newtcolorbox{mybox}{goldstylecolor}
-
-%custom color
-\defaultfontfeatures {Ligatures = TeX}
-\definecolor{myblue}{HTML}{224099}
-\definecolor{mygreen}{HTML}{409922}
-\definecolor{mygold}{HTML}{997b22}
-\definecolor{myred}{HTML}{992240}
-\definecolor{mypurple}{HTML}{7b2299}
-
-%page setup
-\geometry{
-	left=2.54cm,
-	right=2.54cm,
-	top=2.54cm,
-	bottom=2.54cm,
-}
-
-%headers and Footers
-\pagestyle{fancy}
-\fancyhead{}\fancyfoot{}
-\fancyhead[RO,LE]{\thepage}
-\fancyhead[RE]{\rightmark}
-\fancyhead[LO]{\leftmark}
-
-%math commands
-\DeclareMathOperator{\sgn}{sgn}
-\DeclareMathOperator{\id}{id}
-\DeclareMathOperator{\im}{im}
-\DeclareMathOperator{\pj}{Proj}
-\DeclareMathOperator{\var}{Var}
-\DeclareMathOperator{\cov}{Cov}
-
-%theorems
-\tcbset{
-	bluestylecolor/.style={enhanced, sharp corners, breakable,colback=myblue!15, coltitle=myblue, frame hidden, boxrule=0pt, detach title, before upper=\tcbtitle\par\smallskip, fonttitle=\bfseries, borderline west={2pt}{0pt}{myblue}},
-	bluestyleline/.style={enhanced, sharp corners, breakable, colback=white, coltitle=myblue, frame hidden, boxrule=0pt, detach title, before upper=\tcbtitle\par\smallskip,  fonttitle=\bfseries, borderline west={2pt}{0pt}{myblue}},
-	redstylecolor/.style={enhanced, sharp corners, breakable, colback=myred!15, coltitle=myred, frame hidden, boxrule=0pt, detach title, before upper=\tcbtitle\par\smallskip, fonttitle=\bfseries, borderline west={2pt}{0pt}{myred}},
-	redstyleline/.style={enhanced, sharp corners, breakable,colback=white, coltitle=myred, frame hidden, boxrule=0pt, detach title, before upper=\tcbtitle\par\smallskip, fonttitle=\bfseries, borderline west={2pt}{0pt}{myred}},
-	greenstylecolor/.style={enhanced, sharp corners, breakable, colback=mygreen!15, coltitle=mygreen, frame hidden, boxrule=0pt, detach title, before upper=\tcbtitle\par\smallskip, fonttitle=\bfseries, borderline west={2pt}{0pt}{mygreen}},
-	greenstyleline/.style={enhanced, sharp corners, breakable, colback=white, coltitle=mygreen, frame hidden, boxrule=0pt, detach title, before upper=\tcbtitle\par\smallskip, fonttitle=\bfseries, borderline west={2pt}{0pt}{mygreen}},
-	goldstylecolor/.style={enhanced, sharp corners, breakable, colback=mygold!15, coltitle=mygold, frame hidden, boxrule=0pt, detach title, before upper=\tcbtitle\par\smallskip, fonttitle=\bfseries, borderline west={2pt}{0pt}{mygold}},
-	goldstyleline/.style={enhanced, sharp corners, colback=white, colframe=mygold, boxrule=0pt,breakable, mygold=\bfseries, borderline horizontal={2pt}{0pt}{mygreen}},
-}
-
-\newtcbtheorem[number within=section, crefname={definition}{definitions}]{definition}{Definition}{greenstylecolor}{def}
-\newtcbtheorem[use counter from=definition, crefname={theorem}{theorems}]{theorem}{Theorem}{goldstyleline}{tho}
-\newtcbtheorem[use counter from=definition, crefname={lemma}{lemmas}]{lemma}{Lemma}{redstylecolor}{lem}
-\newtcbtheorem[use counter from=definition, crefname={remark}{remarks}]{remark}{Remark}{bluestyleline}{rem}
-\newtcbtheorem[use counter from=definition, crefname={corollary}{corollarys}]{corollary}{Corollary}{greenstyleline}{col}
-\newtcbtheorem[use counter from=definition, crefname={example}{examples}]{example}{Example}{bluestylecolor}{exa}
-\newtcbtheorem[use counter from=definition, crefname={proposition}{propositions}]{proposition}{Proposition}{redstyleline}{pro}
-\newtcbtheorem[use counter from=definition, crefname={axiom}{Axiom}]{axiom}{Axiom}{goldstylecolor}{axm}
-
-\tcbset{highlight math style={enhanced,colframe=mygold,colback=mygold!15,boxsep=0pt}}
-
-\numberwithin{equation}{section}
-\numberwithin{figure}{section}
-\newcommand{\sectionbreak}{\clearpage}
-
-%subsubsection
-\titleformat{\subsubsection}{\bfseries}{}{0pt}{\myuline}
-\titlespacing{\subsubsection}{0pt}{*3}{*1}
-
-%preamble
-\setcounter{tocdepth}{2}
-\pagenumbering{roman}
 
 \begin{document}
-\begin{titlepage}
-	\centering
-	\vspace*{4.5cm}
-	\rule{\linewidth}{2pt}
-	\LARGE\textbf{ECOS3018}\\
-	\vspace{0.5cm}
-	\Huge\textbf{Economics of Growth}\\
-	\rule{\linewidth}{2pt}
-	\LARGE\textbf{Notes}\\
-	\vspace{1.5cm}
-	\Large Brendan Chow
-	\vfill
-\end{titlepage}
-\newpage
-\
-\newpage
-\tableofcontents
-\newpage
-\
-\newpage
-\pagenumbering{arabic}
+	\title{{ECOS3018}\\{\normalsize{Econoomics of Growth -- Notes}}}
+	\author{Brendan Chow}
+	\abstract{Based on the lecture notes by A/Prof Graham White}
+	\affiliation{
+	Student at the University of Sydney\\
+	\href{https://xagill.com/}{Website}\\
+	\href{https://www.linkedin.com/in/brendanchow/}{LinkedIn}\\
+	\href{https://github.com/ARocketdog}{GitHub}\\
+	}
+	\emailAdd{brendanchow@xagill.com}
+	\maketitle
+	\newpage
+	\pagestyle{fancynotes}
+	\pagenumbering{arabic}
+%start document
 \section{Introduction to Growth Theory}\label{sec:1}
 \subsection{Growth, Distribution and Duality - One-Sector Case}
 	\begin{alignat}{1}
@@ -325,7 +189,6 @@
 		\item Analogous arguments to those used in a static context (i.e. for a stationary economy).
 		\item However, the history of formal growth theory (mainly through the 20th century) contains a rich undercurrent of dissent from this view.
 	\end{itemize}
-\afterpage{\blankpage}
 
 \section{Early Keynesian-Inspired Models of Growth: Harrod and Domar}
 \subsection{A Conceptual Issue in Moving to Growth Analysis: the Two Sides of Investment}
@@ -338,8 +201,8 @@
 	\item But suppose \( I \) includes positive net invest \( \implies \) productive capacity is expanding. Producers must be anticipating growth in demand. How is this consistent with a constant \( AE \)?
 	\item With demand constant producers would find their productive capacity underutilized. For equilibrium, increased output produced with larger capacity must be matched by increased demand. With positive net investment equilibrium requires that aggregate demand grow in line with productive capacity. From \cref{eq:2.1}, if \( c \) is constant, \( I \) must be growing, so according to \cref{eq:2.1}, \( Y \) must be growing - a ``moving equilibrium''.
 	\item Hence, with a positive net investment, it is incorrect to speak of equilibrium \textbf{level} of income. The appropriate concept is instead an equilibrium \textbf{rate of growth} of income.
-	\begin{mybox}
-		Taking account of two sides of investment \( \implies \) equilibrium must be one characterised by growing output. Along the equilibrium growth path, the demand effects from growing investment exactly balance capacity effects from that investment
+	\begin{mybox}{}
+		\textsf{Taking account of two sides of investment \( \implies \) equilibrium must be one characterised by growing output. Along the equilibrium growth path, the demand effects from growing investment exactly balance capacity effects from that investment}
 	\end{mybox}
 	\item In other words, produces expand capacity by \( x\% \) via increases investment on the basis of an expected expansion of demand at \( x\% \).
 	\item Increased investment orders \( \implies \) a multiplied increase in aggregate expenditure
@@ -352,7 +215,7 @@
 \subsection{The Harrod-Domar Approach}
 	\begin{itemize}
 		\item Can be seen as an attempt to extend Keynes's ``principle of effective demand'' (PED) (1936) into the ``long-run'', i.e. to a growing economy. 
-		\item PED is the level of output and employment are ultimately constrained by the level of aggregate demand in a capitalist economy -- i.e. the effective limit on the level of output and employment is \textbf{\myuline{not}} the full-employment of labour, either in the short-run or the long-run.
+		\item PED is the level of output and employment are ultimately constrained by the level of aggregate demand in a capitalist economy -- i.e. the effective limit on the level of output and employment is \textbf{\textbf{not}} the full-employment of labour, either in the short-run or the long-run.
 		\item Alternatively put, investment governs the level of saving and there is no mechanism to ensure investment will be sufficient to warrant the full-employment level of output (i.e. to absorb the level of saving at the full-employment level of income).
 		\item The simple multiplier can be used to illustrate
 		\begin{align}
@@ -436,7 +299,6 @@
 			\end{itemize}
 		\end{enumerate}
 	\end{itemize}
-\afterpage{\blankpage}
 
 \section{Traditional Neo-Classical Growth Theory: Solow-Swan}
 \subsection{Growth Without Technical Progress}
@@ -745,7 +607,7 @@
 		\end{tikzpicture}
 	\end{figure}
 	\begin{itemize}
-		\item Note: adjacent techniques at a switch point will in general differ in the method of producing \myuline{only one} of the commodities
+		\item Note: adjacent techniques at a switch point will in general differ in the method of producing \textbf{only one} of the commodities
 		\item \( \implies \) in the 2-commodity case, at the switch point there are three unknowns between the two price systems -- \( p_{21}, w_1 \) and \( r \)
 		\item At \( r = \overline{r_1} \)
 		\begin{align*}
@@ -820,8 +682,8 @@
 			\draw (4,1.3) -- (4,0) node [below]{\( \overline{g} \)};
 		\end{tikzpicture}
 	\end{figure}
-	\begin{mybox}
-		In the golden-rule case \( (r=g) \) technique which maximises \( c_w \) is also cost-minimizing
+	\begin{mybox}{}
+		\textsf{In the golden-rule case \( (r=g) \) technique which maximises \( c_w \) is also cost-minimizing}
 	\end{mybox}
 	\begin{itemize}
 		\item At the rate of profit, \( r \), under competitive conditions, technique \( \delta \) would dominate
@@ -842,7 +704,6 @@
 			\draw (1.7,3) -- (1.7,0) node [below]{\( \overline{g} \)};
 		\end{tikzpicture}
 	\end{figure}
-\afterpage{\blankpage}
 
 \section{Growth and Issues in Capital Theory}
 \subsection{Distribution, Input Proportions and the Choice of Technique}
@@ -1161,8 +1022,8 @@
 		\item \( \implies \) stimulus to utilisation via the positive effect of a rise in \( \pi \) on capitalists' consumption and accumulation outweighs negative impact on utilisation from a falling real wage reducing workers' consumption
 		\item The steady state rate of accumulation and the steady state rate of profit both rise
 		\item These different cases entail two different relations between steady state distribution and the steady state
-		\item The stagnationist case: a rise in \( g^* \), a fall in the \( \pi \) and \myuline{a rise in the real wage}, steady state utilisation \myuline{and rate of profit}
-		\item The exhilarationist case: a rise in \( g^* \), a rise in \( \pi \), \myuline{a fall in the real wage, a rise in the rate of profit} and a rise in steady state utilisation
+		\item The stagnationist case: a rise in \( g^* \), a fall in the \( \pi \) and \textbf{a rise in the real wage}, steady state utilisation \textbf{and rate of profit}
+		\item The exhilarationist case: a rise in \( g^* \), a rise in \( \pi \), \textbf{a fall in the real wage, a rise in the rate of profit} and a rise in steady state utilisation
 		\item The ``stagnationist'' case may also be referred to as ``wage-led'' growth while the ``exhilarationist'' case may be referred to as ``profit-led'' growth
 		\item As Blecker (2003) notes, there are intermediate cases between the stagnationist and exhilarationist possibilities 
 	\end{itemize}
@@ -1238,7 +1099,7 @@
 	\item BUT, the demand-led growth thesis raises an additional  complex theoretical question (not entirely without practical policy interest): what is the autonomous element(s) of demand which drives growth?
 	\item If output and output capacity are ultimately dictated by demand, there must be an independent or autonomous component?
 	\item i.e. independent of current and anticipated growth rate of income
-	\item Not easy to conceive of expenditures autonomous in this sense for \myuline{all time}
+	\item Not easy to conceive of expenditures autonomous in this sense for \textbf{all time}
 	\item Problems with the concept of autonomous investment and to a lesser extent with consumption
 	\item Government expenditure also less of a problem, but arguably subject to at least a long-run intertemporal government budget constraint
 	\item And seen as having a one-way relation with public debt and running a sustainable fiscal policy

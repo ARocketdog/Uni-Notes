@@ -1,105 +1,21 @@
-\documentclass{article}
-\usepackage{NotesTeXV3}
-\usepackage{afterpage}
-\usepackage{array} 
-\usepackage{amsmath}
-\usepackage{amssymb}
-\usepackage{amsthm}
-\usepackage{amstext} 
-\usepackage{amsfonts}
-\usepackage[english]{babel}
-\usepackage{booktabs}
-\usepackage{bm}
-\usepackage{bbm}
-\usepackage{caption}
-\usepackage{contour}
-\usepackage{csquotes}
-\usepackage[shortlabels]{enumitem}
-\usepackage{fancyhdr}
-\usepackage{float}
-\usepackage{fontenc}
-\usepackage{fontspec}
-\usepackage{geometry}
-\usepackage{graphicx}
-\usepackage{hhline}
-\usepackage{hyperref}
-\usepackage[noabbrev]{cleveref}
-\usepackage{longtable}
-\usepackage{lmodern}
-\usepackage{listings}
-\usepackage{nicematrix}
-\usepackage{mathtools}
-\usepackage{marginnote}
-\usepackage{minted}
-\usepackage{multirow,array}
-\usepackage{parskip}
-\usepackage{pgfplots}
-\pgfplotsset{compat=1.18}
-\usepgfplotslibrary{dateplot}
-\usepackage{ragged2e}
-\usepackage[lm]{sfmath}
-\usepackage{sidenotes}
-\usepackage{subcaption}
-\usepackage{subfiles}
-\usepackage{tabularx}
-\usepackage{thmtools}
-\usepackage{titlesec}
-\usepackage{tikz}
-\usetikzlibrary{intersections, angles, quotes, calc, positioning}
-\usetikzlibrary{arrows.meta}
-\usetikzlibrary{bending}
-\tikzset{>=stealth}
-\usepackage[many]{tcolorbox}
-\usepackage{wrapfig}
-\usepackage{ulem}
-\usepackage[usenames,dvipsnames]{xcolor}
+\documentclass[a4paper]{article}
+\usepackage{bchow}
 
-%sff for all types of font
-\renewcommand{\familydefault}{\sfdefault}
+%font
+\setmainfont{KpLight}
+\setsansfont{CMU Bright}[Scale=MatchLowercase]
+\setmonofont{KpMono}
+\setmathfont{KpMath-Light.otf}[math-style=ISO,bold-style=TeX,StylisticSet={1,3,4},CharacterVariant={2,3,6}]
 
-%uline setup
-\setcounter{MaxMatrixCols}{20}
-\renewcommand{\ULdepth}{2pt}
-\contourlength{0.7pt}
-\newcommand{\myuline}[1]{%
-	\uline{\phantom{#1}}%
-	\llap{\contour{white}{#1}}%
-}
+\renewcommand{\familydefault}{\rmdefault}
 
 %image path
-\graphicspath{ {./images/} }
-
-%boxes
-\newtcolorbox{questionbox}[1]{enhanced, breakable, colback=white, colbacktitle=myblue, colframe=myblue, title=#1,sharpish corners, fonttitle=\bfseries, boxrule=0pt, attach boxed title to top left={yshift=-2mm}}
-\newtcolorbox{explanationbox}{enhanced, breakable, borderline west={2pt}{0pt}{myblue}, colback=myblue!5, boxrule=0pt,frame hidden}
-\newtcolorbox{mybox}[1]{colback=white, colframe=mygold, notitle, sharp corners, halign= flush center}
-
-%custom color	
-\defaultfontfeatures {Ligatures = TeX}
-\definecolor{myblue}{HTML}{224099}
-\definecolor{mygreen}{HTML}{409922}
-\definecolor{mygold}{HTML}{997b22}
-\definecolor{myred}{HTML}{992240}
-\definecolor{mypurple}{HTML}{7b2299}
-\definecolor{myblack}{HTML}{000000}
-
-%math commands
-\DeclareMathOperator{\argmax}{argmax}
-\DeclareMathOperator{\cov}{Cov}
-\DeclareMathOperator{\pr}{P}
-
-\tcbset{highlight math style={enhanced, colframe=mygold, colback=mygold!15,boxsep=0pt}}
-\let\boxed=\tcbhighmath
-
-\numberwithin{equation}{section}
-\numberwithin{figure}{section}
-
-%preamble
-\setcounter{tocdepth}{2}
+\graphicspath{{./images/}}
 
 \begin{document}
 \title{{ECOS3021}\\{\normalsize{Business Cycles and Asset Markets}}}
 	\author{Brendan Chow}
+	\abstract{Based on the lecture notes by Dr. James Graham}
 	\affiliation{
 	Student at the University of Sydney\\
 	\href{https://xagill.com/}{Website}\\

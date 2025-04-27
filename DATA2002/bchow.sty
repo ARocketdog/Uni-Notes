@@ -1,0 +1,765 @@
+%% bchow.sty
+%% A package modified from NotesTeXV3.sty from 
+%%        https://jhep.sissa.it/jhep/help/JHEP_TeXclass.jsp 
+%% by Brendan Chow. 
+%% ------------------------------- Legal -------------------------------
+%% Brendan Chow does not own the copyright to the original package,
+%% jheppub.sty. All modification have been approved by the Jhep Editori-
+%% al committee, and permission has been attributed to Brendan to distri-
+%% bute freely the modified version of jheppub.sty, known as bchow.sty
+%% 
+%% This work may be distributed and/or modified under the conditions of 
+%% the LaTeX Project Public License, either version 1.3 of this license
+%% or (at your option) any later version. The latest version of this 
+%% license is in 
+%%        http://www.latex-project.org/lppl.txt
+%% and version 1.3 or later is part of all distributions of LaTeX version
+%% 2005/12/01 or later.
+%% The Current Maintainer of this work is 
+%%             Brendan Chow <brendanchow@xagill.com>
+%% --------------------------------------------------------------------
+
+% ----------------------------------------------------------------------
+%                        Jhep Master Presets 
+% ----------------------------------------------------------------------
+\NeedsTeXFormat{LaTeX2e}
+
+\gdef\@fpheader{\ }
+\gdef\@journal{jhep}
+
+\newif\ifnotoc\notocfalse
+\newif\ifemailadd\emailaddfalse
+\newif\iftoccontinuous\toccontinuousfalse
+\newif\ifnatbibsort\natbibsorttrue
+
+\DeclareOption{no-natbib-sort}{\natbibsortfalse}
+\ProcessOptions\relax
+
+\ifnatbibsort\RequirePackage[numbers,sort&compress]{natbib}\else\RequirePackage[numbers,compress]{natbib}\fi
+\RequirePackage{color}
+\RequirePackage[colorlinks=true
+,urlcolor=myblue
+,anchorcolor=myblue
+,citecolor=myblue
+,filecolor=myblue
+,linkcolor=black
+,menucolor=myblue
+,linktocpage=true
+,pdfproducer=medialab
+,pdfa=true
+,pdfusetitle,
+]{hyperref}
+
+% ----------------------------------------------------------------------
+%           User Top Level Packages: Required
+% ----------------------------------------------------------------------
+
+\usepackage{marginnote,sidenotes,fancyhdr,geometry}
+\usepackage{fix-cm}
+\usepackage[dvipsnames,table]{xcolor}
+\usepackage[many]{tcolorbox}
+\usepackage{subfiles}
+
+% ----------------------------------------------------------------------
+%           User Top Level Packages: Additional & Styling
+% ----------------------------------------------------------------------
+
+\usepackage[symbols]{kpfonts-otf}                      % Font
+\usepackage{cmbright}
+\usepackage[shortlabels]{enumitem}                     % Enumitem Options
+\usepackage[noabbrev]{cleveref}
+\usepackage{mathtools,amsmath,amsthm,amsfonts}         % Math Presets
+\usepackage{nicematrix}
+\NiceMatrixOptions{renew-matrix,renew-dots}
+
+\usepackage{array,tabularray,booktabs}                 % Table Presets
+\UseTblrLibrary{amsmath, booktabs, siunitx}
+
+\usepackage{graphicx,wrapfig,float,caption,subcaption} % Figure Presets
+\usepackage{setspace,multicol,parskip}                 % Text Presets
+\usepackage{tikz}                                      % Tikz Presets
+\usetikzlibrary{arrows.meta, angles, bending, positioning}
+\tikzset{>=stealth}
+
+\usepackage{pgfplots}                                  % Plotting Presets
+\pgfplotsset{compat=1.18}
+\usepgfplotslibrary{dateplot}
+
+\usepackage{mleftright}                                % Parentheses
+\usepackage{minted, listings, forest}                  % Code
+
+% Color	
+\definecolor{myblue}{HTML}{224099}
+\definecolor{mygreen}{HTML}{409922}
+\definecolor{mygold}{HTML}{997b22}
+\definecolor{myred}{HTML}{992240}
+\definecolor{mypurple}{HTML}{7b2299}
+\definecolor{myblack}{HTML}{000000}
+
+% ----------------------------------------------------------------------
+%           User Page Preferences 
+% ----------------------------------------------------------------------
+\DeclareGraphicsExtensions{.pdf,.png,.jpg}
+
+\geometry{
+paperwidth=8.5in,
+paperheight=11in,
+inner=.06\paperheight,
+voffset=-70pt,
+headheight=.02\paperheight,
+textwidth=.63\paperwidth,
+marginparsep=.02\paperwidth,
+marginparwidth=.2\paperwidth,
+textheight=.78\paperheight,
+headsep=.02\paperheight,
+footskip=30pt
+}
+
+% The running heads/feet don't have rules
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+
+\pagestyle{fancy}%
+\newlength{\myoddoffset}%
+\setlength{\myoddoffset}{\marginparwidth + \marginparsep}%
+\renewcommand{\sectionmark}[1]{\markboth{#1}{}}%
+\renewcommand{\subsectionmark}[1]{\markright{#1}{}}%
+
+\fancypagestyle{fancynotes}{%
+    \fancyhf{}%
+    \fancyheadoffset[rh]{\myoddoffset}%
+    \fancyhead[L]{{\textsc\leftmark}}%
+    \fancyhead[R]{\footnotesize \textit{\rightmark}~~~~ \thepage}%
+}%
+
+\newenvironment{fullpage}
+    {\smallskip\noindent\begin{minipage}
+    {\textwidth+\marginparwidth+\marginparsep}\smallskip\smallskip}
+    {\end{minipage}\vspace{.1in}}
+
+% ----------------------------------------------------------------------
+%           User Created Environments 
+% ----------------------------------------------------------------------
+
+% Set the font sizes and baselines to match Tufte's books
+\renewcommand\normalsize{%
+   \@setfontsize\normalsize\@xpt{14}%
+   \abovedisplayskip 10\p@ \@plus2\p@ \@minus5\p@
+   \abovedisplayshortskip \z@ \@plus3\p@
+   \belowdisplayshortskip 6\p@ \@plus3\p@ \@minus3\p@
+   \belowdisplayskip \abovedisplayskip
+   \let\@listi\@listI}
+\normalbaselineskip=14pt
+\normalsize
+\renewcommand\small{%
+   \@setfontsize\small\@ixpt{12}%
+   \abovedisplayskip 8.5\p@ \@plus3\p@ \@minus4\p@
+   \abovedisplayshortskip \z@ \@plus2\p@
+   \belowdisplayshortskip 4\p@ \@plus2\p@ \@minus2\p@
+   \def\@listi{\leftmargin\leftmargini
+               \topsep 4\p@ \@plus2\p@ \@minus2\p@
+               \parsep 2\p@ \@plus\p@ \@minus\p@
+               \itemsep \parsep}%
+   \belowdisplayskip \abovedisplayskip
+}
+\renewcommand\footnotesize{%
+   \@setfontsize\footnotesize\@viiipt{10}%
+   \abovedisplayskip 6\p@ \@plus2\p@ \@minus4\p@
+   \abovedisplayshortskip \z@ \@plus\p@
+   \belowdisplayshortskip 3\p@ \@plus\p@ \@minus2\p@
+   \def\@listi{\leftmargin\leftmargini
+               \topsep 3\p@ \@plus\p@ \@minus\p@
+               \parsep 2\p@ \@plus\p@ \@minus\p@
+               \itemsep \parsep}%
+   \belowdisplayskip \abovedisplayskip
+}
+\renewcommand\scriptsize{\@setfontsize\scriptsize\@viipt\@viiipt}
+\renewcommand\tiny{\@setfontsize\tiny\@vpt\@vipt}
+\renewcommand\large{\@setfontsize\large\@xipt{15}}
+\renewcommand\Large{\@setfontsize\Large\@xiipt{16}}
+\renewcommand\LARGE{\@setfontsize\LARGE\@xivpt{18}}
+\renewcommand\huge{\@setfontsize\huge\@xxpt{30}}
+\renewcommand\Huge{\@setfontsize\Huge{24}{36}}
+
+% Enviroments
+\tcbset{
+	  bluestylecolor/.style={enhanced, breakable, colback=myblue!15, coltitle=myblue, frame hidden, boxrule=0pt, boxsep=0pt, detach title, before upper=\tcbtitle\par\smallskip, fonttitle=\bfseries, borderline west={1.6pt}{0pt}{myblue}}, before skip=10pt, after skip=10pt, left=10pt, right=10pt, sharp corners,
+	  bluestyleline/.style={enhanced, breakable, colback=white, coltitle=myblue, frame hidden, boxrule=0pt, boxsep=0pt, detach title, before upper=\tcbtitle\par\smallskip,  fonttitle=\bfseries, borderline west={1.6pt}{0pt}{myblue}},
+	  redstylecolor/.style={enhanced, breakable, colback=myred!15, coltitle=myred, frame hidden, boxrule=0pt, boxsep=0pt, detach title, before upper=\tcbtitle\par\smallskip, fonttitle=\bfseries, borderline west={1.6pt}{0pt}{myred}}, before skip=10pt, after skip=10pt, left=10pt, right=10pt, sharp corners,
+	  redstyleline/.style={enhanced, breakable, colback=white, coltitle=myred, frame hidden, boxrule=0pt, boxsep=0pt, detach title, before upper=\tcbtitle\par\smallskip, fonttitle=\bfseries, borderline west={1.6pt}{0pt}{myred}},
+	  greenstylecolor/.style={enhanced, breakable, colback=mygreen!15, coltitle=mygreen, frame hidden, boxrule=0pt, boxsep=0pt, detach title, before upper=\tcbtitle\par\smallskip, fonttitle=\bfseries, borderline west={1.6pt}{0pt}{mygreen}}, before skip=10pt, after skip=10pt, left=10pt, right=10pt, sharp corners,
+	  greenstyleline/.style={enhanced, breakable, colback=white, coltitle=mygreen, frame hidden, boxrule=0pt, boxsep=0pt, detach title, before upper=\tcbtitle\par\smallskip, fonttitle=\bfseries, borderline west={1.6pt}{0pt}{mygreen}}, before skip=10pt, after skip=10pt, left=10pt, right=10pt, sharp corners,
+	  goldstylecolor/.style={enhanced, breakable, colback=mygold!15, coltitle=mygold, frame hidden, boxrule=0pt, boxsep=0pt, detach title, before upper=\tcbtitle\par\smallskip, fonttitle=\bfseries, borderline west={1.6pt}{0pt}{mygold}}, before skip=10pt, after skip=10pt, left=10pt, right=10pt, sharp corners,
+	  goldstyleline/.style={enhanced, breakable, colback=white, coltitle=mygold, frame hidden, boxrule=0pt, boxsep=0pt, detach title, before upper=\tcbtitle\par\smallskip, fonttitle=\bfseries, borderline west={1.6pt}{0pt}{mygold}}, before skip=10pt, after skip=10pt, left=10pt, right=10pt, sharp corners,
+}
+
+\newtcbtheorem[number within=section, crefname={definition}{definitions}]{definition}{Definition}{greenstylecolor}{def}
+\newtcbtheorem[use counter from=definition, crefname={theorem}{theorems}]{theorem}{Theorem}{goldstyleline}{tho}
+\newtcbtheorem[use counter from=definition, crefname={lemma}{lemmas}]{lemma}{Lemma}{redstyleline}{lem}
+\newtcbtheorem[use counter from=definition, crefname={remark}{remarks}]{remark}{Remark}{bluestyleline}{rem}
+\newtcbtheorem[use counter from=definition, crefname={corollary}{corollarys}]{corollary}{Corollary}{greenstyleline}{col}
+\newtcbtheorem[use counter from=definition, crefname={example}{examples}]{example}{Example}{bluestylecolor}{exa}
+\newtcbtheorem[use counter from=definition, crefname={proposition}{propositions}]{proposition}{Proposition}{redstylecolor}{pro}
+\newtcbtheorem[use counter from=definition, crefname={axiom}{Axiom}]{axiom}{Axiom}{goldstylecolor}{axm}
+
+
+\AddToHook{env/definition/after}{\colorlet{myblack}{mygreen}}
+\AddToHook{env/theorem/after}{\colorlet{myblack}{mygold}}
+\AddToHook{env/lemma/after}{\colorlet{myblack}{myred}}
+\AddToHook{env/corollary/after}{\colorlet{myblack}{mygreen}}
+\AddToHook{env/proposition/after}{\colorlet{myblack}{myred}}
+
+\tcolorboxenvironment{proof}{
+    enhanced, breakable, colback=white, frame hidden, boxrule=0pt, borderline west={1.6pt}{0pt}{myblack}, before skip=10pt, after skip=10pt, left=10pt, right=10pt, sharp corners
+}
+
+\renewcommand*{\raggedleftmarginnote}{\noindent}
+\renewcommand*{\raggedrightmarginnote}{\noindent}
+\newcommand{\mn}[1]{\textsuperscript{\thesidenote}{}\marginnote{\textsuperscript{\thesidenote}{}\itshape\footnotesize #1}\refstepcounter{sidenote}}
+\newcommand{\en}[1]{\marginnote{\footnotesize{#1}}}
+\newcommand{\lec}[2]{{\setlength{\marginparwidth}{.07\paperwidth}\reversemarginpar\marginnote{\centering\footnotesize{\textsf{\bfseries #1}}\\#2}}}
+\newcommand{\sn}[1]{\sidenote{\itshape\footnotesize #1}}
+
+% Boxes
+\newtcolorbox{questionbox}[1]{enhanced, breakable, colback=white, colbacktitle=myblue, colframe=myblue, title=#1,sharpish corners, fonttitle=\bfseries, boxrule=0pt, attach boxed title to top left={yshift=-2mm}}
+\newtcolorbox{explanationbox}{enhanced, breakable, borderline west={2pt}{0pt}{myblue}, colback=myblue!5, boxrule=0pt,frame hidden}
+\newtcolorbox{mybox}[1]{colback=white, colframe=mygold, notitle, sharp corners, halign=flush center}
+\tcbset{highlight math style={enhanced, colframe=mygold, boxsep=0pt}}
+
+% Extra boxes
+\newtcolorbox{goldbox}{goldstylecolor}
+\newtcolorbox{greenbox}{greenstylecolor}
+\newtcolorbox{bluebox}[1]{bluestylecolor, title = #1}
+\newtcolorbox{redbox}[1]{redstylecolor, title = #1}
+
+% Algorithm environment
+\usepackage{algorithm}
+\usepackage[noend]{algpseudocode}
+\renewcommand{\algorithmicrequire}{\textbf{Input:}}
+\renewcommand{\algorithmicensure}{\textbf{Output:}}
+\algblockdefx[DEF]{Def}{EndDef}[2]{\textbf{def} #1(#2)}{\vspace{-\baselineskip}}
+
+% ----------------------------------------------------------------------
+%           User Macros: Add Below 
+% ----------------------------------------------------------------------
+
+%\newcommand{\ball}[1][red]{\text{\textcolor{#1}{\footnotesize\faBaseballBall}}\xspace}
+%\newcommand{\balla}[1][red]{\text{\textcolor{#1}{\footnotesize\faBaseballBall}}\xspace}
+%\newcommand{\ballb}[1][blue]{\text{\textcolor{#1}{\footnotesize\faBasketballBall}}\xspace}
+%\newcommand{\bin}[1][brown]{\text{\textcolor{#1}{\faBoxOpen}}}
+
+% Color
+\newcommand{\red}[1]{\textcolor{myred}{#1}}
+\newcommand{\blue}[1]{\textcolor{myblue}{#1}}
+\newcommand{\gold}[1]{\textcolor{mygold}{#1}}
+\newcommand{\green}[1]{\textcolor{mygreen}{#1}}
+\newcommand{\purple}[1]{\textcolor{mypurple}{#1}}
+
+% Shortcuts
+\newcommand{\eps}{\ensuremath{\varepsilon}\xspace}
+\newcommand{\Algo}{\ensuremath{\textcolor{orange!90!black}{A}}\xspace} % Algorithm A
+\newcommand{\Tester}{\ensuremath{\mathcal{T}}\xspace} % Testing algorithm T
+\newcommand{\Learner}{\ensuremath{\mathcal{L}}\xspace} % Learning algorithm L
+\newcommand{\property}{\ensuremath{\mathcal{P}}\xspace} % Property P
+\newcommand{\task}{\ensuremath{\mathcal{P}}\xspace} % Task P
+\newcommand{\class}{\ensuremath{\mathcal{C}}\xspace} % Class C
+\newcommand{\eqdef}{:=}
+\newcommand{\eqlaw}{\stackrel{\mathcal{L}}{=}}
+\newcommand{\accept}{\textsf{accept}\xspace}
+\newcommand{\fail}{\textsf{fail}\xspace}
+\newcommand{\reject}{\textsf{reject}\xspace}
+\newcommand{\opt}{{\textsc{opt}}\xspace}
+\newcommand{\val}{{\textsc{val}}\xspace}
+\newcommand{\half}{\frac{1}{2}}
+\newcommand{\domain}{\ensuremath{\mathcal{X}}\xspace} % Domain of a distribution (default notation)
+\newcommand{\distribs}[1]{\Delta\mleft(#1\mright)} % Domain of a distribution (default notation)
+\newcommand{\yes}{{\sf{}yes}\xspace}
+\newcommand{\no}{{\sf{}no}\xspace}
+\newcommand{\dyes}{{\cal Y}}
+\newcommand{\dno}{{\cal N}}
+
+\newcommand{\Testing}{\ensuremath{\mathcal{T}}\xspace} % Testing problem
+\newcommand{\UTesting}{\ensuremath{\mathcal{T}^{\rm u}}\xspace} % Uniformity testing problem
+\newcommand{\Learning}{\ensuremath{\mathcal{L}}\xspace} % Learning problem
+
+% Complexity
+\newcommand{\littleO}[1]{{o\mleft( #1 \mright)}}
+\newcommand{\bigO}[1]{{O\mleft( #1 \mright)}}
+\newcommand{\bigOSmall}[1]{{O\big( #1 \big)}}
+\newcommand{\bigTheta}[1]{{\Theta\mleft( #1 \mright)}}
+\newcommand{\bigOmega}[1]{{\Omega\mleft( #1 \mright)}}
+\newcommand{\bigOmegaSmall}[1]{{\Omega\big( #1 \big)}}
+\newcommand{\tildeO}[1]{\tilde{O}\mleft( #1 \mright)}
+\newcommand{\tildeTheta}[1]{\operatorname{\tilde{\Theta}}\mleft( #1 \mright)}
+\newcommand{\tildeOmega}[1]{\operatorname{\tilde{\Omega}}\mleft( #1 \mright)}
+\providecommand{\poly}{\operatorname*{poly}}
+
+% Influence
+\newcommand{\totinf}[1][f]{{\mathbf{Inf}[#1]}}
+\newcommand{\infl}[2][f]{{\mathbf{Inf}_{#1}(#2)}}
+\newcommand{\infldeg}[3][f]{{\mathbf{Inf}_{#1}^{#2}(#3)}}
+
+% Sets and indicators
+\newcommand{\setOfSuchThat}[2]{ \left\{\; #1 \;\colon\; #2\; \right\} } 			% sets such as "{ elems | condition }"
+\newcommand{\indicSet}[1]{\mathds{1}_{#1}}                                              % indicator function
+\newcommand{\indic}[1]{\indicSet{\left\{#1\right\}}}                                             % indicator function
+\newcommand{\disjunion}{\amalg}%\coprod, \dotcup...
+
+% Distance
+\newcommand{\dtv}{\operatorname{d}_{\rm TV}}
+\newcommand{\hellinger}[2]{{\operatorname{d_{\rm{}H}}\mleft({#1, #2}\mright)}}
+\newcommand{\kolmogorov}[2]{{\operatorname{d_{\rm{}K}}\mleft({#1, #2}\mright)}}
+\newcommand{\totalvardistrestr}[3][]{{\dtv^{#1}\mleft({#2, #3}\mright)}}
+\newcommand{\totalvardist}[2]{\totalvardistrestr[]{#1}{#2}}
+\newcommand{\kldiv}[2]{{\operatorname{KL}\mleft({#1 \mid\mid #2}\mright)}}
+\newcommand{\kldivsym}[2]{{\operatorname{KL}^{\rm sym}\mleft({#1 \mid\mid #2}\mright)}}
+%\newcommand{\chisquarerestr}[3][]{{\operatorname{d}^{#1}_{\chi^2}\mleft({#2 \mid\mid #3}\mright)}}
+\newcommand{\chisquare}[2]{\chi^2\mleft({#1 \mid\mid #2}\mright)}
+%\newcommand{\chisquaresym}[2]{\chisquarerestr[\rm sym]{#1}{#2}}
+\newcommand{\dist}[2]{\operatorname{dist}\mleft({#1, #2}\mright)}
+
+% Restriction (functions, sequences, etc.)
+\newcommand\restr[2]{{% we make the whole thing an ordinary symbol
+  \left.\kern-\nulldelimiterspace % automatically resize the bar with \right
+  #1 % the function
+  \vphantom{\big|} % pretend it's a little taller at normal size
+  \right|_{#2} % this is the delimiter
+  }}
+
+% Probability
+\newcommand{\proba}{\operatorname{P}}
+\newcommand{\probaOf}[1]{\proba\mleft( #1 \mright)}
+\newcommand{\probaCond}[2]{\proba\mleft(#1 \mid #2\, \mright)}
+\newcommand{\probaDistrOf}[2]{\proba_{#1}\mleft( #2 \mright)}
+\newcommand{\probaDistrOfCond}[3]{\proba_{#1}\mleft( #2 \mid #3 \mright)}
+
+% Support of a distribution/function
+\newcommand{\supp}[1]{\operatorname{supp}\mleft(#1\mright)}
+
+% Expectation & variance
+\newcommand{\expect}[1]{\mathbb{E}\mleft(#1\mright)}
+\newcommand{\expectCond}[2]{\mathbb{E}\mleft(#1 \mid #2\mright)}
+\newcommand{\shortexpect}{\mathbb{E}}
+\newcommand{\var}{\operatorname{Var}}
+\newcommand{\cov}{\operatorname{Cov}}
+
+% Distributions
+\newcommand{\uniform}{\ensuremath{\mathbf{u}}}
+\newcommand{\uniformOn}[1]{\ensuremath{\uniform_{ #1 } }}
+\newcommand{\geom}[1]{\ensuremath{\operatorname{Geom}\mleft( #1 \mright)}}
+\newcommand{\bernoulli}[1]{\ensuremath{\operatorname{Bern}( #1 ) }}
+\newcommand{\binomial}[2]{\ensuremath{\operatorname{Bin}\mleft( #1, #2 \mright)}}
+\newcommand{\poisson}[1]{\ensuremath{\operatorname{Poisson}\mleft( #1 \mright) }}
+\newcommand{\gaussian}[2]{\ensuremath{ \mathcal{N}\mleft(#1,#2\mright) }}
+\newcommand{\gaussianpdf}[2]{\ensuremath{ g_{#1,#2}}}
+\newcommand{\betadistr}[2]{\ensuremath{ \operatorname{Beta}\mleft( #1, #2 \mright) }}
+\newcommand{\normal}[2]{\ensuremath{\operatorname{N}\mleft( #1, #2 \mright)}}
+
+% Norms
+\newcommand{\norm}[1]{\lVert#1{\rVert}}
+\newcommand{\normone}[1]{{\norm{#1}}_1}
+\newcommand{\normtwo}[1]{{\norm{#1}}_2}
+\newcommand{\norminf}[1]{{\norm{#1}}_\infty}
+\newcommand{\abs}[1]{\left\lvert #1 \right\rvert}
+\newcommand{\dabs}[1]{\lvert #1 \rvert}
+\newcommand{\dotprod}[2]{ \left\langle #1,\xspace #2 \right\rangle } 			% <a,b>
+\newcommand{\ip}[2]{\dotprod{#1}{#2}} 			% shortcut
+
+\newcommand{\vect}[1]{\mathbf{#1}} 			% shortcut
+
+% Ceiling and floor
+\newcommand{\clg}[1]{\left\lceil #1 \right\rceil}
+\newcommand{\flr}[1]{\left\lfloor #1 \right\rfloor}
+
+% Common sets
+\newcommand{\R}{\ensuremath{\mathbb{R}}\xspace}
+\newcommand{\C}{\ensuremath{\mathbb{C}}\xspace}
+\newcommand{\Q}{\ensuremath{\mathbb{Q}}\xspace}
+\newcommand{\Z}{\ensuremath{\mathbb{Z}}\xspace}
+\newcommand{\N}{\ensuremath{\mathbb{N}}\xspace}
+\newcommand{\cont}[1]{\ensuremath{\mathcal{C}^{#1}}}
+
+%% Terminology
+\newcommand{\pdfsamp}{dual\xspace}
+\newcommand{\cdfsamp}{cumulative dual\xspace}
+\newcommand{\Pdfsamp}{\expandafter\capitalisewords\expandafter{\pdfsamp}}
+\newcommand{\Cdfsamp}{\expandafter\capitalisewords\expandafter{\cdfsamp}}
+
+% L_p norms
+\newcommand{\lp}[1][1]{\ell_{#1}}
+
+% Convolution
+\DeclareMathOperator{\convolution}{\ast}
+
+%% Terminology
+\newcommand{\distrD}{\ensuremath{\mathcal{D}}}
+\newcommand{\birge}[2][\D]{\Phi_{#2}(#1)}
+\newcommand{\iid}{i.i.d.\xspace}
+
+\newcommand{\bool}{\{0,1\}}
+
+% Sign
+\DeclareMathOperator{\sign}{sign}
+
+\newcommand{\eg}{\textit{e.g.},\xspace}
+\newcommand{\ie}{\textit{i.e.},\xspace}
+
+\newcommand{\ns}{{\textcolor{myred}{n}}} % Number of samples
+\newcommand{\ab}{\textcolor{cyan!80!black}{k}} % alphabet (domain) size
+\newcommand{\numbits}{{\textcolor{orange}{\ell}}}
+\newcommand{\dims}{{\textcolor{cyan!70!blue!100}{d}}}
+\newcommand{\pbits}{{\textcolor{pink}{s}}}
+\newcommand{\priv}{{\textcolor{orange}{\varrho}}}
+\newcommand{\dst}{{\textcolor{ForestGreen!80!black}{\eps}}}
+\newcommand{\errprob}{{\textcolor{brown}{\delta}}}
+
+%===========================================================================================================
+
+\def\@subheader{\@empty}
+\def\@keywords{\@empty}
+\def\@abstract{\@empty}
+\def\@xtum{\@empty}
+\def\@dedicated{\@empty}
+\def\@arxivnumber{\@empty}
+\def\@collaboration{\@empty}
+\def\@collaborationImg{\@empty}
+\def\@proceeding{\@empty}
+\def\@preprint{\@empty}
+\def\@acknowledgments{\@empty}
+
+\newcommand{\subheader}[1]{\gdef\@subheader{#1}}
+\newcommand{\keywords}[1]{\if!\@keywords!\gdef\@keywords{#1}\else%
+\PackageWarningNoLine{\jname}{Keywords already defined.\MessageBreak Ignoring last definition.}\fi}
+\renewcommand{\abstract}[1]{\gdef\@abstract{#1}}
+\newcommand{\dedicated}[1]{\gdef\@dedicated{#1}}
+\newcommand{\arxivnumber}[1]{\gdef\@arxivnumber{#1}}
+\newcommand{\proceeding}[1]{\gdef\@proceeding{#1}}
+\newcommand{\xtumfont}[1]{\textsc{#1}}
+\newcommand{\correctionref}[3]{\gdef\@xtum{\xtumfont{#1} \href{#2}{#3}}}
+\newcommand\jname{JHEP}
+\newcommand{\acknowledgments}[1]{\gdef\@acknowledgments{#1}}
+%\newcommand\acknowledgments{\section*{Acknowledgments}}
+\newcommand\notoc{\notoctrue}
+\newcommand\preprint[1]{\gdef\@preprint{\hfill #1}}
+
+
+
+%Equivalent to ``\footnote'', but can be used inside the \author macro
+% because it does not write the footnote mark
+% it has an optional argument that will be used as footnote mark when given
+% WARNING: when the optional argument is used, the footnotecounter is not increased
+% WARNING: the character ``!'' cannot be used.
+% If you really need it use somthing like [\relax !] as the optional arg.
+\newcommand\note[2][]{%
+\if!#1!%
+\stepcounter{footnote}\footnotetext{#2}%
+\else%
+{\renewcommand\thefootnote{#1}%
+\footnotetext{#2}}%
+\fi}
+
+
+
+%Use this if you want to try to keep some piece of the abstract on a
+%very long first page
+\newcommand\compress{%
+\renewcommand\afterProceedingsSpace{\bigskip}%
+\renewcommand\afterTitleSpace{\bigskip}%
+\renewcommand\afterRuleSpace{\bigskip\bigskip}
+\renewcommand\afterEmailSpace{\par\bigskip}}
+
+%authors and affiliations
+\newtoks\auth@toks
+\renewcommand{\author}[2][]{%
+  \if!#1!%
+    \auth@toks=\expandafter{\the\auth@toks#2\ }%
+  \else
+    \auth@toks=\expandafter{\the\auth@toks#2$^{#1}$\ }%
+  \fi
+}
+
+\newtoks\affil@toks\newif\ifaffil\affilfalse
+\newcommand{\affiliation}[2][]{%
+\affiltrue
+  \if!#1!%
+    \affil@toks=\expandafter{\the\affil@toks{\item[]#2}}%
+  \else
+    \affil@toks=\expandafter{\the\affil@toks{\item[$^{#1}$]#2}}%
+  \fi
+}
+
+%emails
+%automatically put a comma between emails
+\newtoks\email@toks\newcounter{email@counter}%
+\setcounter{email@counter}{0}%
+\newcommand{\emailAdd}[1]{%
+\emailaddtrue%
+\ifnum\theemail@counter>0\email@toks=\expandafter{\the\email@toks, \@email{#1}}%
+\else\email@toks=\expandafter{\the\email@toks\@email{#1}}%
+\fi\stepcounter{email@counter}}
+\newcommand{\@email}[1]{\href{mailto:#1}{\tt #1}}
+
+
+% Collaboration macros
+\newcommand*\collaboration[1]{\gdef\@collaboration{#1}}
+\newcommand*\collaborationImg[2][]{\gdef\@collaborationImg{#2}}
+
+%all pieces get a ``after'' spacing
+\newcommand\afterLogoSpace{\smallskip}
+\newcommand\afterSubheaderSpace{\vskip3pt plus 2pt minus 1pt}
+\newcommand\afterProceedingsSpace{\vskip21pt plus0.4fil minus15pt}
+\newcommand\afterTitleSpace{\vskip10pt}
+%\newcommand\afterRuleSpace{\vskip23pt plus0.06fil minus13pt}
+\newcommand\afterRuleSpace{\vskip20pt plus0.06fil minus13pt}
+\newcommand\afterCollaborationSpace{\vskip3pt plus 2pt minus 1pt}
+\newcommand\afterCollaborationImgSpace{\vskip3pt plus 2pt minus 1pt}
+\newcommand\afterAuthorSpace{\vskip5pt plus4pt minus4pt}
+\newcommand\afterAffiliationSpace{\vskip3pt plus3pt}
+%\newcommand\afterEmailSpace{\vskip16pt plus9pt minus10pt\filbreak}
+\newcommand\afterEmailSpace{\vskip20pt\filbreak}
+\newcommand\afterXtumSpace{\par\bigskip}
+\newcommand\afterAbstractSpace{\vskip16pt plus9pt minus13pt}
+\newcommand\afterKeywordsSpace{\vskip16pt plus9pt minus13pt}
+\newcommand\afterArxivSpace{\vskip3pt plus0.01fil minus10pt}
+\newcommand\afterDedicatedSpace{\vskip0pt plus0.01fil}
+\newcommand\afterTocSpace{\bigskip\medskip}
+%this is the ``itemsep'' of the affiliations list
+\newlength{\affiliationsSep}\setlength{\affiliationsSep}{-3pt}
+%this hook is needed if the toc starts on the first page
+\newcommand\beforetochook{\pagestyle{myplain}\pagenumbering{roman}}
+
+\DeclareFixedFont\trfont{OT1}{phv}{b}{sc}{11}
+
+%first page
+\renewcommand\maketitle{
+%% First page
+\pagestyle{empty}
+\thispagestyle{titlepage}
+\newgeometry{marginparwidth=0pt,marginparsep=0pt,textwidth=.82\paperwidth,hoffset=0in,voffset=0in}
+\setcounter{page}{0}
+\noindent{\small\scshape\@fpheader}\@preprint\par
+\afterLogoSpace
+% Subheader
+\if!\@subheader!\else\noindent{\trfont{\@subheader}}\fi
+\afterSubheaderSpace
+% Proceedings
+\if!\@proceeding!\else\noindent{\sc\@proceeding}\fi
+\afterProceedingsSpace
+% Title
+{\huge\centering\bfseries\sffamily\@title\par}
+\afterTitleSpace
+% Rule
+{\color{mygold}\hrule height 1.6\p@}%
+\afterRuleSpace
+% Collaboration
+\if!\@collaboration!\else
+{\Large\bfseries\sffamily\raggedright\@collaboration}\par
+\afterCollaborationSpace
+\fi
+%
+\if!\@collaborationImg!\else
+{\normalsize\bfseries\sffamily\raggedright\@collaborationImg}\par
+\afterCollaborationImgSpace
+%% I leave the size and font so that if there are two collaboration
+%% they can be linked with an 'and'
+\fi
+% Author
+{\sffamily\bfseries\raggedright\the\auth@toks\par}
+%{\bfseries\raggedright\sffamily\sc\the\auth@toks\par}
+\afterAuthorSpace
+% Affiliation
+\ifaffil\begin{list}{}{%
+\setlength{\leftmargin}{0.28cm}%
+\setlength{\labelsep}{0pt}%
+\setlength{\itemsep}{\affiliationsSep}%
+\setlength{\topsep}{-\parskip}}
+\itshape\small%
+\the\affil@toks
+\end{list}\fi
+\afterAffiliationSpace
+% E-mail
+\ifemailadd %% if emailadd is true
+\noindent\hspace{0.28cm}\begin{minipage}[l]{.9\textwidth}
+\begin{flushleft}
+%\textit{E-mail:} \the\email@toks
+\the\email@toks
+\end{flushleft}
+\end{minipage}
+\else %% if emailaddfalse do nothing
+\PackageWarningNoLine{\jname}{E-mails are missing.\MessageBreak Plese use \protect\emailAdd\space macro to provide e-mails.}
+\fi
+\afterEmailSpace
+%Erratum or addendum
+\if!\@xtum!\else\noindent{\@xtum}\afterXtumSpace\fi
+% Abstract
+%\if!\@abstract!\else\noindent{\renewcommand\baselinestretch{.9}\textsc{Abstract:}}\ \@abstract\afterAbstractSpace\fi
+\if!\@abstract!\else\noindent\@abstract\afterAbstractSpace\fi
+% Keywords
+\if!\@keywords!\else\noindent{\textsc{Keywords:}} \@keywords\afterKeywordsSpace\fi
+% Arxivnumber
+\if!\@arxivnumber!\else\noindent{\textsc{ArXiv ePrint:}} \href{http://arxiv.org/abs/\@arxivnumber}{\@arxivnumber}\afterArxivSpace\fi
+% Dedication
+\if!\@dedicated!\else\vbox{\small\it\raggedleft\@dedicated}\afterDedicatedSpace\fi
+%
+\ifnotoc\else
+\iftoccontinuous\else\newpage\fi
+\beforetochook
+\tableofcontents
+\afterTocSpace
+\fi
+%\if!\@acknowledgments!\else\vfill\noindent{\renewcommand\baselinestretch{.9}\textsc{Acknowledgments:}}\ \@acknowledgments\afterAbstractSpace\fi
+\setcounter{footnote}{0}
+\restoregeometry
+\pagestyle{myplain}\pagenumbering{arabic}
+} % close the \renewcommand\maketitle{
+
+
+% Page layout
+\renewcommand{\baselinestretch}{1.0}\normalsize
+\setlength\lineskip{1\p@}
+\setlength\parindent{1.2\parindent}
+\setlength\normallineskip{1\p@}
+\setlength\parskip{0\p@ \@plus \p@}
+\@lowpenalty   51
+\@medpenalty  151
+\@highpenalty 301
+\widowpenalty 1000
+\clubpenalty 1000
+
+\setcounter{topnumber}{4}
+\renewcommand\topfraction{1}
+\setcounter{bottomnumber}{1}
+\renewcommand\bottomfraction{.6}
+\setcounter{totalnumber}{5}
+\renewcommand\textfraction{0}
+\renewcommand\floatpagefraction{1}
+\addtolength\textheight{\topskip}
+
+\marginparpush 6\p@
+\topmargin   .05\paperheight
+
+\setlength\arraycolsep{2\p@}
+\setlength\tabcolsep{6\p@}
+\setlength\arrayrulewidth{.4\p@}
+\setlength\doublerulesep{2\p@}
+\setlength\tabbingsep{\labelsep}
+\skip\@mpfootins = \skip\footins
+\setlength\fboxsep{3\p@}
+\setlength\fboxrule{.4\p@}
+
+% No dots and subsections in the table of contents
+\renewcommand{\@dotsep}{10000}
+
+% Set table of contents depth
+\setcounter{tocdepth}{1}
+
+% section numbering
+\setcounter{secnumdepth}{2}
+
+% Footer and header of the body
+% the command ``\pagestyle{myplain}'' must be inserted
+% just after ``\begin{document}''
+\newcommand\ps@myplain{
+\pagenumbering{arabic}
+\renewcommand\@oddfoot{\hfill-- \thepage\ --\hfill}
+\renewcommand\@oddhead{}}
+\let\ps@plain=\ps@myplain
+
+
+
+% no header or footer in the title page
+\newcommand\ps@titlepage{\renewcommand\@oddfoot{}\renewcommand\@oddhead{}}
+
+%number equations after the sections
+\renewcommand{\theequation}{\thesection.\arabic{equation}}
+\numberwithin{equation}{section}
+
+%number figure after the sections
+\numberwithin{figure}{section}
+
+
+%headings style
+\renewcommand\section{\@startsection{section}{1}{\z@}%
+                                   {-3.5ex \@plus -1.3ex \@minus -.7ex}%
+                                   {2.3ex \@plus.4ex \@minus .4ex}%
+                                   {\normalfont\large\bfseries}}
+\renewcommand\subsection{\@startsection{subsection}{2}{\z@}%
+                                   {-2.3ex\@plus -1ex \@minus -.5ex}%
+                                   {1.2ex \@plus .3ex \@minus .3ex}%
+                                   {\normalfont\normalsize\bfseries}}
+\renewcommand\subsubsection{\@startsection{subsubsection}{3}{\z@}%
+                                   {-2.3ex\@plus -1ex \@minus -.5ex}%
+                                   {1ex \@plus .2ex \@minus .2ex}%
+                                   {\normalfont\normalsize\bfseries}}
+\renewcommand\paragraph{\@startsection{paragraph}{4}{\z@}%
+                                   {1.75ex \@plus1ex \@minus.2ex}%
+                                   {1em}%
+                                   {\normalfont\normalsize\bfseries}}
+\renewcommand\subparagraph{\@startsection{subparagraph}{5}{\parindent}%
+                                   {1.75ex \@plus1ex \@minus .2ex}%
+                                   {1em}%
+                                   {\normalfont\normalsize\bfseries}}
+
+\RequirePackage{titlesec}
+
+
+
+\titleformat{name=\section}
+[display]
+{\bfseries\huge\sffamily}
+{\thesection}
+{0pt}
+{}
+[]
+
+\titleformat{name=\subsection}
+[hang]
+{\sffamily\Large\bfseries}
+{\makebox[33pt][l]{\thesubsection}}
+{1em}
+{}
+[]
+
+\titleformat{name=\subsubsection}
+[hang]
+{\sffamily\large\bfseries}
+{\makebox[35pt][l]{\thesubsubsection}}
+{1em}
+{}
+[]
+
+\titlespacing*{\section}{0pt}{50pt}{30pt}
+\titlespacing*{\subsection}{0pt}{3.5ex plus 1ex minus .2ex}{2.3ex plus .2ex}
+\titlespacing*{\subsubsection}{0pt}{3.25ex plus 1ex minus .2ex}{1.5ex plus.2ex}
+
+%Caption of figure and table
+\def\fnum@figure{\textbf{\figurename\nobreakspace\thefigure}}
+\def\fnum@table{\textbf{\tablename\nobreakspace\thetable}}
+
+%redefining \@makecaption, to have captions with \small font size
+%taken from article.cls l.489--498
+%the only differences are the ``\small '' commands added on two lines
+\long\def\@makecaption#1#2{%
+  \vskip\abovecaptionskip
+  \sbox\@tempboxa{\small #1. #2}%
+  \ifdim \wd\@tempboxa >\hsize
+    \small #1. #2\par
+  \else
+    \global \@minipagefalse
+    \hb@xt@\hsize{\hfil\box\@tempboxa\hfil}%
+  \fi
+  \vskip\belowcaptionskip}
+
+%apply some formatting on the biblio
+%without redefining the whole env
+\let\oldthebibliography=\thebibliography
+\let\endoldthebibliography=\endthebibliography
+\renewenvironment{thebibliography}[1]{%
+\begin{oldthebibliography}{#1}%
+\small%
+\raggedright%
+\setlength{\itemsep}{5pt plus 0.2ex minus 0.1ex}%
+}%
+{%
+\end{oldthebibliography}%
+}
