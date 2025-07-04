@@ -1,181 +1,30 @@
 \documentclass[a4paper]{article}
-\usepackage{array} 
-\usepackage{amsmath}
-\usepackage{amssymb}
-\usepackage{amsthm}
-\usepackage{amstext} 
-\usepackage{amsfonts}
-\usepackage[english]{babel}
-\usepackage{bm}
-\usepackage{caption}
-\usepackage{contour}
-\usepackage{csquotes}
-\usepackage[shortlabels]{enumitem}
-\usepackage{fancyhdr}
-\usepackage{float}
-\usepackage{fontenc}
-\usepackage{fontspec}
-\usepackage{geometry}
-\usepackage{graphicx}
-\usepackage{hhline}
-\usepackage[hidelinks]{hyperref}
-\usepackage[noabbrev]{cleveref}
-\usepackage{lmodern}
-\usepackage{listings}
-\usepackage{nicematrix}
-\usepackage{multirow,array}
-\usepackage{parskip}
-\usepackage{pgfplots}
-\pgfplotsset{compat=1.18}
-\usepgfplotslibrary{dateplot}
-\usepackage{ragged2e}
-\usepackage{siunitx}
-\usepackage[cm]{sfmath}
-\usepackage{subcaption}
-\usepackage{tabularx}
-\usepackage{titlesec}
-\usepackage{tikz}
-\usetikzlibrary{intersections, angles, quotes, calc, positioning, arrows.meta, bending}
-\tikzset{>=stealth}
-\usepackage[theorems, skins, breakable]{tcolorbox}
-\usepackage{wrapfig}
-\usepackage{ulem}
-\usepackage{xcolor}
+\usepackage{bchow2}
 
-%sff for all types of font
-\renewcommand{\familydefault}{\sfdefault}
+%font
+\setmainfont{KpLight}
+\setsansfont{CMU Bright}[Scale=MatchLowercase]
+\setmonofont{KpMono}
+\setmathfont{KpMath-Light.otf}[math-style=ISO,bold-style=TeX,StylisticSet={1,3,4},CharacterVariant={2,3,6}]
 
-\DeclareMathVersion{sans}
-\SetSymbolFont{operators}{sans}{OT1}{cmbr}{m}{n}
-\SetSymbolFont{letters}{sans}{OML}{cmbrm}{m}{it}
-\SetSymbolFont{symbols}{sans}{OMS}{cmbrs}{m}{n}
-\SetMathAlphabet{\mathit}{sans}{OT1}{cmbr}{m}{sl}
-\SetMathAlphabet{\mathbf}{sans}{OT1}{cmbr}{bx}{n}
-\SetMathAlphabet{\mathtt}{sans}{OT1}{cmtl}{m}{n}
-\SetSymbolFont{largesymbols}{sans}{OMX}{iwona}{m}{n}
+\renewcommand{\familydefault}{\rmdefault}
 
-\DeclareMathVersion{boldsans}
-\SetSymbolFont{operators}{boldsans}{OT1}{cmbr}{b}{n}
-\SetSymbolFont{letters}{boldsans}{OML}{cmbrm}{b}{it}
-\SetSymbolFont{symbols}{boldsans}{OMS}{cmbrs}{b}{n}
-\SetMathAlphabet{\mathit}{boldsans}{OT1}{cmbr}{b}{sl}
-\SetMathAlphabet{\mathbf}{boldsans}{OT1}{cmbr}{bx}{n}
-\SetMathAlphabet{\mathtt}{boldsans}{OT1}{cmtl}{b}{n}
-\SetSymbolFont{largesymbols}{boldsans}{OMX}{iwona}{bx}{n}
-
-\newif\IfInSansMode
-\let\oldsf\sffamily
-\renewcommand*{\sffamily}{\oldsf\mathversion{sans}\InSansModetrue}
-\let\oldmd\mdseries
-\renewcommand*{\mdseries}{\oldmd\IfInSansMode\mathversion{sans}\fi\relax}
-\let\oldbf\bfseries
-\renewcommand*{\bfseries}{\oldbf\IfInSansMode\mathversion{boldsans}\else%
-	\mathversion{bold}\fi\relax}
-\let\oldnorm\normalfont
-\renewcommand*{\normalfont}{\oldnorm\InSansModefalse\mathversion{normal}}
-\let\oldrm\rmfamily
-\renewcommand*{\rmfamily}{\oldrm\InSansModefalse\mathversion{normal}}
-
-%link setup
-\hypersetup{
-	colorlinks,
-	citecolor=black,
-	filecolor=black,
-	linkcolor=black, 
-	urlcolor=black
-}
-%image path
-\graphicspath{ {./images/} }
-
-%boxes
-\newtcolorbox{questionbox}[1]{enhanced,breakable,colback=white,colbacktitle=myblue,colframe=myblue,title=#1,sharpish corners,breakable=true,fonttitle=\bfseries,boxrule=0pt,attach boxed title to top left={yshift=-2mm}}
-\newtcolorbox{explanationbox}{enhanced,breakable,borderline west={2pt}{0pt}{myblue},colback=myblue!5,boxrule=0pt,frame hidden}
-\newtcolorbox{mybox}[1]{colback=white,colframe=mygold,notitle,sharp corners,halign=center}
-
-%matrix setup
-\setcounter{MaxMatrixCols}{20}
-\renewcommand{\ULdepth}{1.8pt}
-\contourlength{0.8pt}
-\newcommand{\myuline}[1]{%
-	\uline{\phantom{#1}}%
-	\llap{\contour{white}{#1}}%
-}
-\renewcommand{\vec}[1]{%
-	\smash{\ensurestackMath{\stackengine{1pt}{#1}{\scriptscriptstyle\sim}{U}{c}{F}{F}{S}}}
-	\vphantom{#1}
-}
-
-%custom colors
-\defaultfontfeatures {Ligatures = TeX}
-\definecolor{myblue}{HTML}{224099}
-\definecolor{mygreen}{HTML}{409922}
-\definecolor{mygold}{HTML}{997b22}
-\definecolor{myred}{HTML}{992240}
-\definecolor{mypurple}{HTML}{7b2299}
-
-%page setup
-\geometry{
-	left=2.5cm,
-	right=2.5cm,
-	top=2cm,
-	bottom=2cm,
-}
-
-%bold math
-\newcommand\N{\ensuremath{\mathbb{N}}}
-\newcommand\R{\ensuremath{\mathbb{R}}}
-\newcommand\Z{\ensuremath{\mathbb{Z}}}
-\renewcommand\O{\ensuremath{\emptyset}}
-\newcommand\Q{\ensuremath{\mathbb{Q}}}
-\newcommand\C{\ensuremath{\mathbb{C}}}
-\DeclareMathOperator{\sgn}{sgn}
-
-%theorems
-\tcbset{
-	bluestylecolor/.style={sharp corners,colback=myblue!5,colframe=myblue,fonttitle=\bfseries,},
-	bluestyleline/.style={sharp corners,colback=white,colframe=myblue,fonttitle=\bfseries,},
-	redstylecolor/.style={sharp corners,colback=myred!5,colframe=myred,fonttitle=\bfseries},
-	redstyleline/.style={sharp corners,colback=white,colframe=myred,fonttitle=\bfseries},
-	greenstylecolor/.style={sharp corners,colback=mygreen!5,colframe=mygreen,fonttitle=\bfseries},
-	greenstyleline/.style={sharp corners,colback=white,colframe=mygreen,fonttitle=\bfseries},
-}
-
-\newtcbtheorem[number within=section,crefname={definition}{definitions}]{definition}{Definition}{greenstylecolor}{def}
-\newtcbtheorem[use counter from=definition,crefname={theorem}{theorems}]{theorem}{Theorem}{redstylecolor}{theo}
-\newtcbtheorem[use counter from=definition,crefname={lemma}{lemmas}]{lemma}{Lemma}{redstylecolor}{lem}
-\newtcbtheorem[use counter from=definition,crefname={remark}{remarks}]{remark}{Remark}{redstylecolor}{rem}
-\newtcbtheorem[use counter from=definition,crefname={corollary}{corollarys}]{corollary}{Corollary}{greenstylecolor}{coll}
-\newtcbtheorem[no counter,crefname={example}{examples}]{example}{Example}{bluestylecolor, }{ex}
-
-%custom headings for tutorials
-\newcommand\sectiontitle[1]{%
-	\tikz[baseline,trim left=3.2cm,trim right=2.9cm] {
-		\fill [mygold] (3.2cm,-1ex) rectangle (\textwidth+3.2cm,2.5ex);
-		
-	}
-}
-\titleformat{\section}{\bfseries\large\color{white}}{\bfseries\sectiontitle}{0.3cm}{}
-\titlespacing{\section}{0pt}{*6}{*1}
-
-%preamble
-\setcounter{tocdepth}{2}
-\pagenumbering{roman}
 
 \begin{document}
-\begin{titlepage}
-	\centering
-	\vspace*{4.5cm}
-	\rule{\linewidth}{2pt}
-	\LARGE\textbf{ECOS3021}\\
-	\vspace{0.5cm}
-	\Huge\textbf{Business Cycles and Asset Markets}\\
-	\rule{\linewidth}{2pt}
-	\LARGE\textbf{Tutorials}\\
-	\vspace{1.5cm}
-	\Large Brendan Chow
-	\vfill
-\end{titlepage}
-\pagenumbering{arabic}
+\title{{ECOS3021}\\{\normalsize{Business Cycles and Asset Markets -- Tutorial}}}
+	\author{Brendan Chow}
+	\abstract{Based on the lecture notes by Dr. James Graham}
+	\affiliation{
+	Student at the University of Sydney\\
+	\href{https://xagill.com/}{Website}\\
+	\href{https://www.linkedin.com/in/brendanchow/}{LinkedIn}\\
+	\href{https://github.com/ARocketdog}{GitHub}\\
+	}
+	\emailAdd{brendanchow@xagill.com}
+	\maketitle
+	\newpage
+	\pagestyle{fancynotes}
+%start document
 
 \section{Tutorial 2}
 	\begin{questionbox}{Question 1}

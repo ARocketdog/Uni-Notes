@@ -38,3 +38,8 @@ plyr
 scales
 ggbiplot
 factoextra
+skimr
+survival
+MASS
+TH.data
+multcomp

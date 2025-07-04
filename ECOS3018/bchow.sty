@@ -71,12 +71,13 @@
 \usepackage{mathtools,amsmath,amsthm,amsfonts}         % Math Presets
 \usepackage{nicematrix}
 \NiceMatrixOptions{renew-matrix,renew-dots}
+\setcounter{MaxMatrixCols}{20}
 
 \usepackage{array,tabularray,booktabs}                 % Table Presets
 \UseTblrLibrary{amsmath, booktabs, siunitx}
 
 \usepackage{graphicx,wrapfig,float,caption,subcaption} % Figure Presets
-\usepackage{setspace,multicol,parskip}                 % Text Presets
+\usepackage{setspace,xspace,multicol,parskip}                 % Text Presets
 \usepackage{tikz}                                      % Tikz Presets
 \usetikzlibrary{arrows.meta, angles, bending, positioning}
 \tikzset{>=stealth}
@@ -94,6 +95,7 @@
 \definecolor{mygold}{HTML}{997b22}
 \definecolor{myred}{HTML}{992240}
 \definecolor{mypurple}{HTML}{7b2299}
+\definecolor{mycyan}{HTML}{22997b}
 \definecolor{myblack}{HTML}{000000}
 
 % ----------------------------------------------------------------------
@@ -102,8 +104,6 @@
 \DeclareGraphicsExtensions{.pdf,.png,.jpg}
 
 \geometry{
-paperwidth=8.5in,
-paperheight=11in,
 inner=.06\paperheight,
 voffset=-70pt,
 headheight=.02\paperheight,
@@ -129,7 +129,7 @@ footskip=30pt
     \fancyhf{}%
     \fancyheadoffset[rh]{\myoddoffset}%
     \fancyhead[L]{{\textsc\leftmark}}%
-    \fancyhead[R]{\footnotesize \textit{\rightmark}~~~~ \thepage}%
+    \fancyhead[R]{\textsc{\rightmark}~~~~ {\addfontfeatures{Numbers=Lowercase}\thepage}}%
 }%
 
 \newenvironment{fullpage}
@@ -223,8 +223,8 @@ footskip=30pt
 % Boxes
 \newtcolorbox{questionbox}[1]{enhanced, breakable, colback=white, colbacktitle=myblue, colframe=myblue, title=#1,sharpish corners, fonttitle=\bfseries, boxrule=0pt, attach boxed title to top left={yshift=-2mm}}
 \newtcolorbox{explanationbox}{enhanced, breakable, borderline west={2pt}{0pt}{myblue}, colback=myblue!5, boxrule=0pt,frame hidden}
-\newtcolorbox{mybox}[1]{colback=white, colframe=mygold, notitle, sharp corners, halign=flush center}
-\tcbset{highlight math style={enhanced, colframe=mygold, boxsep=0pt}}
+\newtcolorbox{mybox}{colback=white, colframe=mygold, sharp corners, halign=flush center,fontupper=\sffamily}
+\tcbset{highlight math style={enhanced, colframe=mygold, colback=white, boxsep=0pt}}
 
 % Algorithm environment
 \usepackage{algorithm}
@@ -248,6 +248,7 @@ footskip=30pt
 \newcommand{\gold}[1]{\textcolor{mygold}{#1}}
 \newcommand{\green}[1]{\textcolor{mygreen}{#1}}
 \newcommand{\purple}[1]{\textcolor{mypurple}{#1}}
+\newcommand{\cyan}[1]{\textcolor{mycyan}{#1}}
 
 % Shortcuts
 \newcommand{\eps}{\ensuremath{\varepsilon}\xspace}
@@ -347,7 +348,8 @@ footskip=30pt
 \newcommand{\gaussian}[2]{\ensuremath{ \mathcal{N}\mleft(#1,#2\mright) }}
 \newcommand{\gaussianpdf}[2]{\ensuremath{ g_{#1,#2}}}
 \newcommand{\betadistr}[2]{\ensuremath{ \operatorname{Beta}\mleft( #1, #2 \mright) }}
-\newcommand{\normal}[2]{\ensuremath{\operatorname{N}\mleft( #1, #2 \mright)}}
+\newcommand{\multinormal}[3]{\ensuremath{\operatorname{\mathcal{N}}_{#1}\mleft( #2, #3 \mright)}}
+
 
 % Norms
 \newcommand{\norm}[1]{\lVert#1{\rVert}}
@@ -529,7 +531,7 @@ footskip=30pt
 %% First page
 \pagestyle{empty}
 \thispagestyle{titlepage}
-\newgeometry{marginparwidth=0pt,marginparsep=0pt,textwidth=.82\paperwidth,hoffset=0in,voffset=0in}
+\newgeometry{marginparwidth=0pt,marginparsep=0pt,textwidth=.82\paperwidth,hoffset=0in,voffset=0in,textheight=.85\paperheight}
 \setcounter{page}{0}
 \noindent{\small\scshape\@fpheader}\@preprint\par
 \afterLogoSpace
@@ -645,7 +647,7 @@ footskip=30pt
 \renewcommand{\@dotsep}{10000}
 
 % Set table of contents depth
-\setcounter{tocdepth}{2}
+\setcounter{tocdepth}{1}
 
 % section numbering
 \setcounter{secnumdepth}{2}
@@ -694,37 +696,50 @@ footskip=30pt
                                    {1em}%
                                    {\normalfont\normalsize\bfseries}}
 
-\RequirePackage{titlesec}
-
-
+\RequirePackage{titlesec,titletoc}
 
 \titleformat{name=\section}
-[display]
-{\bfseries\huge\sffamily}
-{\thesection}
-{0pt}
-{}
-[]
-
+    [display]
+    {\huge}
+    {\thesection}
+    {0pt}
+    {\itshape}
+    []
+\titlecontents{section}%
+   [0em] % distance from left margin
+   {\vspace{1.5\baselineskip}\LARGE\rmfamily\itshape} % above (global formatting of entry)
+   {\hspace*{2em}\contentslabel{2em}} % before w/label (label = ``2'')
+   {\hspace*{0em}} % before w/o label
+   {\rmfamily\upshape\qquad\thecontentspage} % filler + page (leaders and page num)
+   [] % after
+\titlespacing*{\section}
+    {0pt}
+    {50pt}
+    {30pt}
+  
 \titleformat{name=\subsection}
-[hang]
-{\sffamily\Large\bfseries}
-{\makebox[33pt][l]{\thesubsection}}
-{1em}
-{}
-[]
+    [hang]
+    {\Large}
+    {\thesubsection}
+    {1em}
+    {\itshape}
+    []
+\titlespacing*{\subsection}
+    {0pt}
+    {3.5ex plus 1ex minus .2ex}
+    {2.3ex plus .2ex}
 
 \titleformat{name=\subsubsection}
-[hang]
-{\sffamily\large\bfseries}
-{\makebox[35pt][l]{\thesubsubsection}}
-{1em}
-{}
-[]
-
-\titlespacing*{\section}{0pt}{50pt}{30pt}
-\titlespacing*{\subsection}{0pt}{3.5ex plus 1ex minus .2ex}{2.3ex plus .2ex}
-\titlespacing*{\subsubsection}{0pt}{3.25ex plus 1ex minus .2ex}{1.5ex plus.2ex}
+    [hang]
+    {\large\itshape}
+    {\thesubsubsection}
+    {1em}
+    {}
+    []
+\titlespacing*{\subsubsection}
+    {0pt}
+    {3.25ex plus 1ex minus .2ex}
+    {1.5ex plus.2ex}
 
 %Caption of figure and table
 \def\fnum@figure{\textbf{\figurename\nobreakspace\thefigure}}

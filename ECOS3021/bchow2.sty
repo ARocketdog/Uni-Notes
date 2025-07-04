@@ -71,13 +71,12 @@
 \usepackage{mathtools,amsmath,amsthm,amsfonts}         % Math Presets
 \usepackage{nicematrix}
 \NiceMatrixOptions{renew-matrix,renew-dots}
-\setcounter{MaxMatrixCols}{20}
 
 \usepackage{array,tabularray,booktabs}                 % Table Presets
 \UseTblrLibrary{amsmath, booktabs, siunitx}
 
 \usepackage{graphicx,wrapfig,float,caption,subcaption} % Figure Presets
-\usepackage{setspace,xspace,multicol,parskip}                 % Text Presets
+\usepackage{setspace,multicol,parskip}                 % Text Presets
 \usepackage{tikz}                                      % Tikz Presets
 \usetikzlibrary{arrows.meta, angles, bending, positioning}
 \tikzset{>=stealth}
@@ -95,7 +94,6 @@
 \definecolor{mygold}{HTML}{997b22}
 \definecolor{myred}{HTML}{992240}
 \definecolor{mypurple}{HTML}{7b2299}
-\definecolor{mycyan}{HTML}{22997b}
 \definecolor{myblack}{HTML}{000000}
 
 % ----------------------------------------------------------------------
@@ -104,12 +102,12 @@
 \DeclareGraphicsExtensions{.pdf,.png,.jpg}
 
 \geometry{
+paperwidth=8.5in,
+paperheight=11in,
 inner=.06\paperheight,
 voffset=-70pt,
 headheight=.02\paperheight,
-textwidth=.63\paperwidth,
-marginparsep=.02\paperwidth,
-marginparwidth=.2\paperwidth,
+textwidth=.85\paperwidth,
 textheight=.78\paperheight,
 headsep=.02\paperheight,
 footskip=30pt
@@ -120,22 +118,14 @@ footskip=30pt
 \renewcommand{\footrulewidth}{0pt}
 
 \pagestyle{fancy}%
-\newlength{\myoddoffset}%
-\setlength{\myoddoffset}{\marginparwidth + \marginparsep}%
 \renewcommand{\sectionmark}[1]{\markboth{#1}{}}%
 \renewcommand{\subsectionmark}[1]{\markright{#1}{}}%
 
 \fancypagestyle{fancynotes}{%
     \fancyhf{}%
-    \fancyheadoffset[rh]{\myoddoffset}%
     \fancyhead[L]{{\textsc\leftmark}}%
-    \fancyhead[R]{\textsc{\rightmark}~~~~ {\addfontfeatures{Numbers=Lowercase}\thepage}}%
+    \fancyhead[R]{\footnotesize \textit{\rightmark}~~~~ {\addfontfeatures{Numbers=Lowercase}\thepage}}%
 }%
-
-\newenvironment{fullpage}
-    {\smallskip\noindent\begin{minipage}
-    {\textwidth+\marginparwidth+\marginparsep}\smallskip\smallskip}
-    {\end{minipage}\vspace{.1in}}
 
 % ----------------------------------------------------------------------
 %           User Created Environments 
@@ -217,14 +207,13 @@ footskip=30pt
 \renewcommand*{\raggedrightmarginnote}{\noindent}
 \newcommand{\mn}[1]{\textsuperscript{\thesidenote}{}\marginnote{\textsuperscript{\thesidenote}{}\itshape\footnotesize #1}\refstepcounter{sidenote}}
 \newcommand{\en}[1]{\marginnote{\footnotesize{#1}}}
-\newcommand{\lec}[2]{{\setlength{\marginparwidth}{.07\paperwidth}\reversemarginpar\marginnote{\centering\footnotesize{\textsf{\bfseries #1}}\\#2}}}
 \newcommand{\sn}[1]{\sidenote{\itshape\footnotesize #1}}
 
 % Boxes
 \newtcolorbox{questionbox}[1]{enhanced, breakable, colback=white, colbacktitle=myblue, colframe=myblue, title=#1,sharpish corners, fonttitle=\bfseries, boxrule=0pt, attach boxed title to top left={yshift=-2mm}}
 \newtcolorbox{explanationbox}{enhanced, breakable, borderline west={2pt}{0pt}{myblue}, colback=myblue!5, boxrule=0pt,frame hidden}
-\newtcolorbox{mybox}{colback=white, colframe=mygold, sharp corners, halign=flush center,fontupper=\sffamily}
-\tcbset{highlight math style={enhanced, colframe=mygold, colback=white, boxsep=0pt}}
+\newtcolorbox{mybox}[1]{colback=white, colframe=mygold, notitle, sharp corners, halign=flush center,fontupper=\sffamily}
+\tcbset{highlight math style={enhanced, colframe=mygold, boxsep=0pt}}
 
 % Algorithm environment
 \usepackage{algorithm}
@@ -248,7 +237,6 @@ footskip=30pt
 \newcommand{\gold}[1]{\textcolor{mygold}{#1}}
 \newcommand{\green}[1]{\textcolor{mygreen}{#1}}
 \newcommand{\purple}[1]{\textcolor{mypurple}{#1}}
-\newcommand{\cyan}[1]{\textcolor{mycyan}{#1}}
 
 % Shortcuts
 \newcommand{\eps}{\ensuremath{\varepsilon}\xspace}
@@ -348,8 +336,7 @@ footskip=30pt
 \newcommand{\gaussian}[2]{\ensuremath{ \mathcal{N}\mleft(#1,#2\mright) }}
 \newcommand{\gaussianpdf}[2]{\ensuremath{ g_{#1,#2}}}
 \newcommand{\betadistr}[2]{\ensuremath{ \operatorname{Beta}\mleft( #1, #2 \mright) }}
-\newcommand{\multinormal}[3]{\ensuremath{\operatorname{\mathcal{N}}_{#1}\mleft( #2, #3 \mright)}}
-
+\newcommand{\normal}[2]{\ensuremath{\operatorname{N}\mleft( #1, #2 \mright)}}
 
 % Norms
 \newcommand{\norm}[1]{\lVert#1{\rVert}}
@@ -531,7 +518,6 @@ footskip=30pt
 %% First page
 \pagestyle{empty}
 \thispagestyle{titlepage}
-\newgeometry{marginparwidth=0pt,marginparsep=0pt,textwidth=.82\paperwidth,hoffset=0in,voffset=0in,textheight=.85\paperheight}
 \setcounter{page}{0}
 \noindent{\small\scshape\@fpheader}\@preprint\par
 \afterLogoSpace
@@ -647,10 +633,10 @@ footskip=30pt
 \renewcommand{\@dotsep}{10000}
 
 % Set table of contents depth
-\setcounter{tocdepth}{1}
+\setcounter{tocdepth}{2}
 
 % section numbering
-\setcounter{secnumdepth}{2}
+\setcounter{secnumdepth}{0}
 
 % Footer and header of the body
 % the command ``\pagestyle{myplain}'' must be inserted
@@ -696,50 +682,35 @@ footskip=30pt
                                    {1em}%
                                    {\normalfont\normalsize\bfseries}}
 
-\RequirePackage{titlesec,titletoc}
+\RequirePackage{titlesec}
 
 \titleformat{name=\section}
-    [display]
-    {\huge}
-    {\thesection}
-    {0pt}
-    {\itshape}
-    []
-\titlecontents{section}%
-   [0em] % distance from left margin
-   {\vspace{1.5\baselineskip}\LARGE\rmfamily\itshape} % above (global formatting of entry)
-   {\hspace*{2em}\contentslabel{2em}} % before w/label (label = ``2'')
-   {\hspace*{0em}} % before w/o label
-   {\rmfamily\upshape\qquad\thecontentspage} % filler + page (leaders and page num)
-   [] % after
-\titlespacing*{\section}
-    {0pt}
-    {50pt}
-    {30pt}
-  
+[display]
+{\huge}
+{\thesection}
+{0pt}
+{\itshape}
+[]
+
 \titleformat{name=\subsection}
-    [hang]
-    {\Large}
-    {\thesubsection}
-    {1em}
-    {\itshape}
-    []
-\titlespacing*{\subsection}
-    {0pt}
-    {3.5ex plus 1ex minus .2ex}
-    {2.3ex plus .2ex}
+[hang]
+{\Large}
+{\thesubsection}
+{1em}
+{\itshape}
+[]
 
 \titleformat{name=\subsubsection}
-    [hang]
-    {\large\itshape}
-    {\thesubsubsection}
-    {1em}
-    {}
-    []
-\titlespacing*{\subsubsection}
-    {0pt}
-    {3.25ex plus 1ex minus .2ex}
-    {1.5ex plus.2ex}
+[hang]
+{\large\itshape}
+{\thesubsubsection}
+{1em}
+{}
+[]
+
+\titlespacing*{\section}{0pt}{50pt}{20pt}
+\titlespacing*{\subsection}{0pt}{3.5ex plus 1ex minus .2ex}{2.3ex plus .2ex}
+\titlespacing*{\subsubsection}{0pt}{3.25ex plus 1ex minus .2ex}{1.5ex plus.2ex}
 
 %Caption of figure and table
 \def\fnum@figure{\textbf{\figurename\nobreakspace\thefigure}}

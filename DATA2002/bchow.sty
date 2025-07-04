@@ -94,6 +94,7 @@
 \definecolor{mygold}{HTML}{997b22}
 \definecolor{myred}{HTML}{992240}
 \definecolor{mypurple}{HTML}{7b2299}
+\definecolor{mycyan}{HTML}{22997b}
 \definecolor{myblack}{HTML}{000000}
 
 % ----------------------------------------------------------------------
@@ -102,8 +103,6 @@
 \DeclareGraphicsExtensions{.pdf,.png,.jpg}
 
 \geometry{
-paperwidth=8.5in,
-paperheight=11in,
 inner=.06\paperheight,
 voffset=-70pt,
 headheight=.02\paperheight,
@@ -129,7 +128,7 @@ footskip=30pt
     \fancyhf{}%
     \fancyheadoffset[rh]{\myoddoffset}%
     \fancyhead[L]{{\textsc\leftmark}}%
-    \fancyhead[R]{\footnotesize \textit{\rightmark}~~~~ \thepage}%
+    \fancyhead[R]{\footnotesize \textit{\rightmark}~~~~ {\addfontfeatures{Numbers=Lowercase}\thepage}}%
 }%
 
 \newenvironment{fullpage}
@@ -223,15 +222,12 @@ footskip=30pt
 % Boxes
 \newtcolorbox{questionbox}[1]{enhanced, breakable, colback=white, colbacktitle=myblue, colframe=myblue, title=#1,sharpish corners, fonttitle=\bfseries, boxrule=0pt, attach boxed title to top left={yshift=-2mm}}
 \newtcolorbox{explanationbox}{enhanced, breakable, borderline west={2pt}{0pt}{myblue}, colback=myblue!5, boxrule=0pt,frame hidden}
-\newtcolorbox{mybox}[1]{colback=white, colframe=mygold, notitle, sharp corners, halign=flush center}
-\tcbset{highlight math style={enhanced, colframe=mygold, boxsep=0pt}}
-
-% Extra boxes
+\newtcolorbox{mybox}[1]{colback=white, colframe=mygold, notitle, sharp corners, halign=flush center,fontupper=\sffamily}
+\tcbset{highlight math style={enhanced, colframe=mygold, boxsep=0pt}}% Extra boxes
 \newtcolorbox{goldbox}{goldstylecolor}
 \newtcolorbox{greenbox}{greenstylecolor}
 \newtcolorbox{bluebox}[1]{bluestylecolor, title = #1}
 \newtcolorbox{redbox}[1]{redstylecolor, title = #1}
-
 % Algorithm environment
 \usepackage{algorithm}
 \usepackage[noend]{algpseudocode}
@@ -254,6 +250,7 @@ footskip=30pt
 \newcommand{\gold}[1]{\textcolor{mygold}{#1}}
 \newcommand{\green}[1]{\textcolor{mygreen}{#1}}
 \newcommand{\purple}[1]{\textcolor{mypurple}{#1}}
+\newcommand{\cyan}[1]{\textcolor{mycyan}{#1}}
 
 % Shortcuts
 \newcommand{\eps}{\ensuremath{\varepsilon}\xspace}
@@ -535,7 +532,7 @@ footskip=30pt
 %% First page
 \pagestyle{empty}
 \thispagestyle{titlepage}
-\newgeometry{marginparwidth=0pt,marginparsep=0pt,textwidth=.82\paperwidth,hoffset=0in,voffset=0in}
+\newgeometry{marginparwidth=0pt,marginparsep=0pt,textwidth=.82\paperwidth,hoffset=0in,voffset=0in,textheight=.85\paperheight}
 \setcounter{page}{0}
 \noindent{\small\scshape\@fpheader}\@preprint\par
 \afterLogoSpace
@@ -702,28 +699,26 @@ footskip=30pt
 
 \RequirePackage{titlesec}
 
-
-
 \titleformat{name=\section}
 [display]
-{\bfseries\huge\sffamily}
+{\huge}
 {\thesection}
 {0pt}
-{}
+{\itshape}
 []
 
 \titleformat{name=\subsection}
 [hang]
-{\sffamily\Large\bfseries}
-{\makebox[33pt][l]{\thesubsection}}
+{\Large}
+{\thesubsection}
 {1em}
-{}
+{\itshape}
 []
 
 \titleformat{name=\subsubsection}
 [hang]
-{\sffamily\large\bfseries}
-{\makebox[35pt][l]{\thesubsubsection}}
+{\large\itshape}
+{\thesubsubsection}
 {1em}
 {}
 []

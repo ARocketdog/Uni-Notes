@@ -1,4 +1,19 @@
-\documentclass[a4paper]{article}
+\documentclass[a4paper]{article}\usepackage[]{graphicx}\usepackage[]{xcolor}
+% maxwidth is the original width if it is less than linewidth
+% otherwise use linewidth (to make sure the graphics do not exceed the margin)
+\makeatletter
+\def\maxwidth{ %
+  \ifdim\Gin@nat@width>\linewidth
+    \linewidth
+  \else
+    \Gin@nat@width
+  \fi
+}
+\makeatother
+
+\usepackage{Sweavel}
+
+
 \usepackage{bchow}
 \usepackage{csquotes}
 \usepackage{tabularx}
@@ -15424,50 +15439,758 @@ Effect of seed
 	\item The k-means algorithm can yield quite different results depending on the initial seed.
 	\item Example runs used 5 random starts, and used the \lstinline|within.cluster.ss| metric to decide on the best solution
 \end{itemize}
+\begin{Schunk}
+\begin{Sinput}
+set.seed(2023)
+flea$cl1 = kmeans(scale(flea[, c(2, 5)]), 3, nstart = 1)$cluster
+flea$cl2 = kmeans(scale(flea[, c(2, 5)]), 3, nstart = 1)$cluster
+flea$cl3 = kmeans(scale(flea[, c(2, 5)]), 3, nstart = 1)$cluster
+flea$cl4 = kmeans(scale(flea[, c(2, 5)]), 3, nstart = 1)$cluster
+flea$cl5 = kmeans(scale(flea[, c(2, 5)]), 3, nstart = 1)$cluster
+flea$cl6 = kmeans(scale(flea[, c(2, 5)]), 3, nstart = 1)$cluster
+p1 = ggplot(data = flea, aes(x = tars1, y = aede1, colour = factor(cl1))) + geom_point() +
+    scale_color_manual(values = c("#992240", "#409922", "#224099")) + xlab("") +
+    ylab("") + theme_classic() + theme(aspect.ratio = 1, legend.position = "none")
+p2 = ggplot(data = flea, aes(x = tars1, y = aede1, colour = factor(cl2))) + geom_point() +
+    scale_color_manual(values = c("#992240", "#409922", "#224099")) + xlab("") +
+    ylab("") + theme_classic() + theme(aspect.ratio = 1, legend.position = "none")
+p3 = ggplot(data = flea, aes(x = tars1, y = aede1, colour = factor(cl5))) + geom_point() +
+    scale_color_manual(values = c("#992240", "#409922", "#224099")) + xlab("") +
+    ylab("") + theme_classic() + theme(aspect.ratio = 1, legend.position = "none")
+gridExtra::grid.arrange(p1, p2, p3, ncol = 3)
+\end{Sinput}
 
 
+{\centering \includegraphics[width=\maxwidth]{figure/listings-unnamed-chunk-477-1} 
+
+}
+
+\end{Schunk}
+\subsubsection{Interpoint distance measures}
+\textbf{Euclidean}
+\begin{itemize}
+	\item Cluster analysis depends on the interpoint distances, points close together should be grouped together
+	\item Euclidean distance was used for the example. Let \( A = (x_{a1}, x_{a2}, ..., x_{ap}), B=(x_{b1}, x_{b2}, ..., x_{bp}) \)
+\end{itemize} 
+\begin{align*}
+d_{EUC}(A, B) &= \sqrt{\sum_{j=1}^p (x_{aj}-x_{bj})^2} &\\
+&= \sqrt{((X_A-X_B)^\prime (X_A-X_B))}&
+\end{align*}
+
+\textbf{Other distance metrics}
+\begin{itemize}
+	\item Mahalanobis (or statistical) distance
+	\[
+		\sqrt{((X_A-X_B)^\top S^{-1} (X_A-X_B))}
+	\]
+	\item Manhattan
+	\[
+		\sum_{j=1}^p \lvert (X_{aj}-X_{bj}) \rvert
+	\]
+	\item Minkowski
+	\[
+		(\sum_{j=1}^p \lvert (X_{aj}-X_{bj}) \rvert^m)^{1/m}
+	\]
+\end{itemize}
+\textbf{Distances for count data}
+\begin{itemize}
+	\item Canberra
+	\[
+		\frac{1}{n_z}\sum_{j=1}^p\frac{X_{aj}-X_{bj}}{X_{aj}+X_{bj}}
+	\]
+	\item Bray-Curtis
+	\[
+		\frac{\sum_{j=1}^p \lvert X_{aj}-X_{bj} \rvert}{\sum_{j=1}^p(X_{aj}+X_{bj})}
+	\]
+\end{itemize}
+\subsubsection{Interpoint distance measures - Euclidean}
+Rules for any metric to be a distance
+\begin{enumerate}
+	\item \( d(A, B) \geq 0 \)
+	\item \( d(A, A) = 0 \)
+	\item \( d(A, B) = d(B, A) \)
+	\item Metric dissimilarity satisfies \( d(A, B) \leq d(A, C) + d(C, B) \), and an ultrametric dissimilarity satisfies \( d(A, B) \leq max\{d(A, C), d(C, B)\} \)
+\end{enumerate}
+\subsection{Hierarchical clustering}
+\subsubsection{Hierarchical clustering}
+\begin{itemize}
+	\item \textcolor{myred}{Agglomeration}: Begin with all observations in singleton clusters. Sequentially \textcolor{myred}{join} points into clusters, until all are in one cluster. 
+	\item \textcolor{myred}{Divisive}: Begin with all observtions in one cluster, and sequentially \textcolor{myred}{divide} until all observations are in singleton clusters. 
+	\item Produces a tree diagram illustrating the process, called a dendrogram.
+\end{itemize}
+Some new data:\\
+\begin{minipage}[t]{0.49\textwidth}
+\centering
+\begin{Schunk}
+\begin{Sinput}
+set.seed(88)
+df = tibble(lbl=letters[1:12], 
+             x1=sample(1:10, 12, replace=TRUE),
+             x2=sample(1:10, 12, replace=TRUE))
+df[1:4,2] = df[1:4,2] + 12
+df[5:8,3] = df[5:8,3] + 12
+kable(df, booktabs = TRUE)
+\end{Sinput}
+
+\begin{tabular}{lrr}
+\toprule
+lbl & x1 & x2\\
+\midrule
+a & 17 & 6\\
+b & 14 & 2\\
+c & 20 & 1\\
+d & 17 & 4\\
+e & 10 & 14\\
+\addlinespace
+f & 10 & 18\\
+g & 1 & 20\\
+h & 8 & 20\\
+i & 7 & 3\\
+j & 10 & 8\\
+\addlinespace
+k & 6 & 9\\
+l & 8 & 10\\
+\bottomrule
+\end{tabular}
+
+\end{Schunk}
+\end{minipage}
+\hspace{0.02\textwidth}
+\begin{minipage}[t]{0.49\textwidth}
+\begin{Schunk}
+\begin{Sinput}
+ggplot(data=df, aes(x1, x2)) + geom_text(aes(label=lbl)) + 
+  xlab("") + ylab("") + theme_bw() + 
+  theme(aspect.ratio=1) 
+\end{Sinput}
 
 
+{\centering \includegraphics[width=\maxwidth]{figure/listings-unnamed-chunk-479-1} 
+
+}
+
+\end{Schunk}
+\end{minipage}
+\( m \times n \) distance matrix
+\begin{Schunk}
+\begin{Sinput}
+d = as.matrix(round(dist(df[,2:3], diag=TRUE, upper=TRUE),1))
+colnames(d) = df$lbl
+rownames(d) = df$lbl
+kable(d, booktabs = TRUE) |>
+  kable_styling(position="center", latex_options = "hold_position") |>
+  column_spec(c(2,5), color="myblue") |>
+  row_spec(c(1,4), color="myblue")
+\end{Sinput}
+\begin{table}[!h]
+\centering
+\begin{tabular}{l>{}rrr>{}rrrrrrrrr}
+\toprule
+  & a & b & c & d & e & f & g & h & i & j & k & l\\
+\midrule
+\textcolor{myblue}{a} & \textcolor{myblue}{0.0} & \textcolor{myblue}{5.0} & \textcolor{myblue}{5.8} & \textcolor{myblue}{2.0} & \textcolor{myblue}{10.6} & \textcolor{myblue}{13.9} & \textcolor{myblue}{21.3} & \textcolor{myblue}{16.6} & \textcolor{myblue}{10.4} & \textcolor{myblue}{7.3} & \textcolor{myblue}{11.4} & \textcolor{myblue}{9.8}\\
+b & \textcolor{myblue}{5.0} & 0.0 & 6.1 & \textcolor{myblue}{3.6} & 12.6 & 16.5 & 22.2 & 19.0 & 7.1 & 7.2 & 10.6 & 10.0\\
+c & \textcolor{myblue}{5.8} & 6.1 & 0.0 & \textcolor{myblue}{4.2} & 16.4 & 19.7 & 26.9 & 22.5 & 13.2 & 12.2 & 16.1 & 15.0\\
+\textcolor{myblue}{d} & \textcolor{myblue}{2.0} & \textcolor{myblue}{3.6} & \textcolor{myblue}{4.2} & \textcolor{myblue}{0.0} & \textcolor{myblue}{12.2} & \textcolor{myblue}{15.7} & \textcolor{myblue}{22.6} & \textcolor{myblue}{18.4} & \textcolor{myblue}{10.0} & \textcolor{myblue}{8.1} & \textcolor{myblue}{12.1} & \textcolor{myblue}{10.8}\\
+e & \textcolor{myblue}{10.6} & 12.6 & 16.4 & \textcolor{myblue}{12.2} & 0.0 & 4.0 & 10.8 & 6.3 & 11.4 & 6.0 & 6.4 & 4.5\\
+\addlinespace
+f & \textcolor{myblue}{13.9} & 16.5 & 19.7 & \textcolor{myblue}{15.7} & 4.0 & 0.0 & 9.2 & 2.8 & 15.3 & 10.0 & 9.8 & 8.2\\
+g & \textcolor{myblue}{21.3} & 22.2 & 26.9 & \textcolor{myblue}{22.6} & 10.8 & 9.2 & 0.0 & 7.0 & 18.0 & 15.0 & 12.1 & 12.2\\
+h & \textcolor{myblue}{16.6} & 19.0 & 22.5 & \textcolor{myblue}{18.4} & 6.3 & 2.8 & 7.0 & 0.0 & 17.0 & 12.2 & 11.2 & 10.0\\
+i & \textcolor{myblue}{10.4} & 7.1 & 13.2 & \textcolor{myblue}{10.0} & 11.4 & 15.3 & 18.0 & 17.0 & 0.0 & 5.8 & 6.1 & 7.1\\
+j & \textcolor{myblue}{7.3} & 7.2 & 12.2 & \textcolor{myblue}{8.1} & 6.0 & 10.0 & 15.0 & 12.2 & 5.8 & 0.0 & 4.1 & 2.8\\
+\addlinespace
+k & \textcolor{myblue}{11.4} & 10.6 & 16.1 & \textcolor{myblue}{12.1} & 6.4 & 9.8 & 12.1 & 11.2 & 6.1 & 4.1 & 0.0 & 2.2\\
+l & \textcolor{myblue}{9.8} & 10.0 & 15.0 & \textcolor{myblue}{10.8} & 4.5 & 8.2 & 12.2 & 10.0 & 7.1 & 2.8 & 2.2 & 0.0\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\end{Schunk}
+\begin{minipage}[t]{0.49\textwidth}
+\begin{Schunk}
+\begin{Sinput}
+df$cl11 = factor(c(2,1,1,2,1,1,1,1,1,1,1,1))
+ggplot(data=df, aes(x=x1, y=x2, colour=cl11)) +
+  geom_text(aes(label=lbl)) + 
+  scale_color_manual(values=c("#992240", "#409922", "#224099")) +
+  xlab("") + ylab("") + theme_bw() + 
+  theme(aspect.ratio=1, legend.position="none") 
+\end{Sinput}
 
 
+{\centering \includegraphics[width=\maxwidth]{figure/listings-unnamed-chunk-481-1} 
+
+}
+
+\end{Schunk}
+\end{minipage}
+\hspace{0.02\textwidth}
+\begin{minipage}[t]{0.49\textwidth}
+\begin{Schunk}
+\begin{Sinput}
+library(ggdendro)
+df_hc = hclust(as.dist(d), method="average")
+ggdendrogram(df_hc, rotate = TRUE, size = 4)
+\end{Sinput}
 
 
+{\centering \includegraphics[width=\maxwidth]{figure/listings-unnamed-chunk-482-1} 
+
+}
+
+\end{Schunk}
+\end{minipage}
+What is the distance between the new cluster (a,d) and all of the other observations?
+\subsubsection{Linkage}
+Between points in the cluster to points not in the cluster. 
+\begin{itemize}
+	\item Single: minimum distance between points in the different clusters
+	\item Complete: maximum distance between points in the different clusters
+	\item Average: average of distances between points in the different clusters
+	\item Centroid: distances between the average of the different clusters
+	\item Wards: minimizes the total within-cluster variance
+\end{itemize}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.4]{linkage}
+\end{figure}
+\begin{Schunk}
+\begin{Sinput}
+df_hc1 = hclust(as.dist(d), method="single")
+p1 = ggdendrogram(df_hc1, rotate = TRUE, size = 4) + ggtitle("single")
+df_hc2 = hclust(as.dist(d), method="complete")
+p2 = ggdendrogram(df_hc2, rotate = TRUE, size = 4) + ggtitle("complete")
+df_hc3 = hclust(as.dist(d), method="average")
+p3 = ggdendrogram(df_hc3, rotate = TRUE, size = 4) + ggtitle("average")
+df_hc4 = hclust(as.dist(d), method="centroid")
+p4 = ggdendrogram(df_hc4, rotate = TRUE, size = 4) + ggtitle("centroid")
+df_hc5 = hclust(as.dist(d), method="ward.D2")
+p5 = ggdendrogram(df_hc5, rotate = TRUE, size = 4) + ggtitle("wards")
+p6 = ggplot(data=df, aes(x=x1, y=x2, colour=cl11)) +
+  geom_text(aes(label=lbl)) + 
+  scale_color_manual(values=c("#992240", "#409922", "#224099")) +
+  xlab("") + ylab("") + theme_bw() + 
+  theme(aspect.ratio=1, legend.position="none") 
+gridExtra::grid.arrange(p1, p2, p3, p4, p5, p6, ncol=3)
+\end{Sinput}
 
 
+{\centering \includegraphics[width=\maxwidth]{figure/listings-unnamed-chunk-483-1} 
+
+}
+
+\end{Schunk}
+\subsubsection{Dendrogram}
+\begin{itemize}
+	\item Each leaf of the dendrogram represents one observation
+	\item Leaves fuse into branches and branches fuse, either with leaves or other branches.	
+	\item Fusions .lower in the tree mean the groups of observations are more similar to each other. 
+\end{itemize}
+Cut the tree to partition the data into $k$ clusters.
+\begin{Schunk}
+\begin{Sinput}
+df$cl1 = factor(cutree(df_hc1, 3))
+df$cl2 = factor(cutree(df_hc2, 3))
+df$cl3 = factor(cutree(df_hc3, 3))
+df$cl4 = factor(cutree(df_hc4, 3))
+df$cl5 = factor(cutree(df_hc5, 3))
+p1 = ggplot(data=df, aes(x=x1, y=x2, colour=cl1)) +
+  geom_text(aes(label=lbl)) + 
+  scale_color_manual(values=c("#992240", "#409922", "#224099")) +
+  xlab("") + ylab("") + theme_bw() + 
+  theme(aspect.ratio=1, legend.position="none") + ggtitle("single")
+p2 = ggplot(data=df, aes(x=x1, y=x2, colour=cl2)) +
+  geom_text(aes(label=lbl)) + 
+  scale_color_manual(values=c("#992240", "#409922", "#224099")) +
+  xlab("") + ylab("") + theme_bw() + 
+  theme(aspect.ratio=1, legend.position="none") + 
+  ggtitle("complete")
+p3 = ggplot(data=df, aes(x=x1, y=x2, colour=cl3)) +
+  geom_text(aes(label=lbl)) + 
+  scale_color_manual(values=c("#992240", "#409922", "#224099")) +
+  xlab("") + ylab("") + theme_bw() + 
+  theme(aspect.ratio=1, legend.position="none") + 
+  ggtitle("average")
+p4 = ggplot(data=df, aes(x=x1, y=x2, colour=cl4)) +
+  geom_text(aes(label=lbl)) + 
+  scale_color_manual(values=c("#992240", "#409922", "#224099")) +
+  xlab("") + ylab("") + theme_bw() + 
+  theme(aspect.ratio=1, legend.position="none") + 
+  ggtitle("centroid")
+p5 = ggplot(data=df, aes(x=x1, y=x2, colour=cl5)) +
+  geom_text(aes(label=lbl)) + 
+  scale_color_manual(values=c("#992240", "#409922", "#224099")) +
+  xlab("") + ylab("") + theme_bw() + 
+  theme(aspect.ratio=1, legend.position="none") + 
+  ggtitle("wards")
+gridExtra::grid.arrange(p1, p2, p3, p4, p5, ncol=3)
+\end{Sinput}
 
 
+{\centering \includegraphics[width=\maxwidth]{figure/listings-unnamed-chunk-484-1} 
+
+}
+
+\end{Schunk}
+\subsubsection{Pros and cons}
+\begin{itemize}
+	\item Single linkage tends to ``chain'' the data into long stringy clusters, can avoid confusion from nuisance variables but gets confused by "inliers" (outliers between clusters)
+	\item Complete linkage tends to be confused by nuisance variables, but not by inliers
+	\item Wards tends to create spherical homogeneously shaped clusters, a little similar to \( k \)-mean
+\end{itemize}
+No one perfect method for all problems, but Wards tends to be a good starting point. 
+\newpage
+
+\section{Dimension reduction}\label{sec:35}
+\subsection{Principal component analysis}
+\subsubsection{Sub-spaces}
+\begin{itemize}
+	\item Data will often be confined to a region of the space having lower \textcolor{myred}{intrinsic dimensionality}.
+	\item The data lives in a low-dimensional subspace.
+	\item The goal is to \textcolor{myred}{reduce the dimensionality}, to the subspace containing the data.
+\end{itemize}
+\subsubsection{PCA}
+\begin{itemize}
+	\item Principal component analysis (PCA) produces a low-dimensional representation of a dataset. It finds a sequence of linear combinations of the variables that have \textcolor{myred}{maximal variance}, and are \textcolor{myred}{mutually uncorrelated}.
+	\item It is an \textcolor{myblue}{\textbf{unsupervised learning}} method.
+\end{itemize}
+\subsubsection{Why use PCA?}
+\begin{itemize}
+	\item We may have too many predictors for a \textcolor{myred}{\textbf{regression}}. Instead, we can use the first few principal components. \textcolor{myred}{PCA regression}.
+	\item \textcolor{myred}{\textbf{Understanding relationships}} between variables - similar to a correlation matrix.
+	\item \textcolor{myred}{\textbf{Data visualisation}}: we can plot a small number of variables more easily than a large number of variables.
+\end{itemize}
+
+\subsubsection{First principal component}
+
+The first principal component of a set of variables \( x_1, x_2, \dots, x_p \) is the linear combination
+\[
+	z_1 = \phi_{11}x_1 + \phi_{21} x_2 + \dots + \phi_{p1} x_p
+\]
+that has the largest variance such that  
+\[
+	\sum_{j=1}^p \phi^2_{j1} = 1
+\]
+The elements \( \phi_{11},\dotsc,\phi_{p1} \) are the \textcolor{myred}{loadings} of the first principal component.
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.5]{6_14}
+\end{figure}
+\textcolor{mygreen}{First PC}; \textcolor{myblue}{second PC}
+
+\subsubsection{Geometry}
+\begin{itemize}
+	\item The loading vector \( \symbf{\phi}_1 = [\phi_{11},\dots,\phi_{p1}]^\prime \) defines direction in feature space along which data vary most.
+	\item If we project the \( n \) data points \( \symbf{x}_1,\dotsc,\symbf{x}_n \) onto this direction, the projected values are the principal component scores \( \symbf{z}_1 = [z_{11},\dotsc,z_{n1}]^\prime \).
+	\item The second principal component is the linear combination \( z_{i2} = \phi_{12}x_{i1} + \phi_{22}x_{i2} + \dots + \phi_{p2}x_{ip} \) that has maximal variance among all linear combinations that are \textit{uncorrelated} with \( \symbf{z}_1 \) .
+	\item Equivalent to constraining \( \symbf{\phi}_2 \) to be orthogonal (perpendicular) to \( \symbf{\phi}_1 \) . And so on.
+	\item There are at most \( \min(n - 1, p) \) PCs.
+\end{itemize}
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.6]{6_15}
+\end{figure}
+If you think of the first few PCs like a linear model fit, and the others as the error, it is like regression, except that errors are orthogonal to model.
+\subsubsection{Total variance}
+\textcolor{myred}{Total variance} in data (assuming variables centered at 0):
+\[
+	\mathrm{TV} = \sum_{j=1}^p \var(x_j) = \sum_{j=1}^p \frac{1}{n}\sum_{i=1}^n x_{ij}^2
+\]
+If variables are standardised, TV=number of variables!\\
+\textcolor{myred}{Variance explained} by \( m \)th principal component:
+\[
+	V_m = \var(z_m) = \frac{1}{n}\sum_{i=1}^n z_{i}^2
+\]
+\[
+	\mathrm{TV} = \sum_{m=1}^M V_m \mathrm{where}\; M=\min(n-1,p).
+\]
+\subsubsection{Choosing the number of PCs}
+\begin{itemize}
+	\item Proportion of variance explained:
+	\[
+		\mathrm{PVE}_m = \frac{V_m}{\mathrm{TV}}
+	\]
+	\item Choosing the number of PCs that adequately summarises the variation in \( \symbf{X} \) is achieved by examining the cumulative proportion of variance explained.
+	\item Cumulative proportion of variance explained:
+	\[
+		\mathrm{CPVE}_k = \sum_{m=1}^k\frac{V_m}{\mathrm{TV}}
+	\]
+	and also by a scree plot
+\end{itemize}
+\subsubsection{Choosing the number of PCs: scree plot}
+\begin{Schunk}
+\begin{Sinput}
+df = tibble(npcs=1:10, evl=c(3.5,2.7,2.2,0.5,0.3,0.3,0.2,0.1,0.1,0.1))
+ggplot(df, aes(x=npcs, y=evl)) + geom_line() + 
+  xlab("Number of PCs") + ylab("Eigenvalue") +
+  scale_x_continuous(breaks=seq(0,10,1)) + geom_vline(xintercept=4, colour="myred", linewidth=1, alpha=0.7) +
+  annotate("text", x=4.5, y=3, label="Choose k=4", colour="myred", hjust = 0, size=2) +
+  theme_classic() 
+\end{Sinput}
+\begin{Soutput}
+Error in `geom_vline()`:
+! Problem while converting geom to grob.
+i Error occurred in the 2nd layer.
+Caused by error:
+! Unknown colour name: myred
+\end{Soutput}
+\end{Schunk}
+\subsubsection{National track records}
+Example: the data on national track records for women (as at 1984).
+\begin{Schunk}
+\begin{Sinput}
+track = readr::read_csv("data/womens_track.csv")
+dplyr::glimpse(track)
+\end{Sinput}
+\begin{Soutput}
+Rows: 55
+Columns: 8
+$ m100     <dbl> 11.61, 11.20, 11.43, 11.41, 11.46, 11.31, 12.14, 11.00, 12.00~
+$ m200     <dbl> 22.94, 22.35, 23.09, 23.04, 23.05, 23.17, 24.47, 22.25, 24.52~
+$ m400     <dbl> 54.50, 51.08, 50.62, 52.00, 53.30, 52.80, 55.00, 50.06, 54.90~
+$ m800     <dbl> 2.15, 1.98, 1.99, 2.00, 2.16, 2.10, 2.18, 2.00, 2.05, 2.08, 2~
+$ m1500    <dbl> 4.43, 4.13, 4.22, 4.14, 4.58, 4.49, 4.45, 4.06, 4.23, 4.33, 4~
+$ m3000    <dbl> 9.79, 9.08, 9.34, 8.88, 9.81, 9.77, 9.51, 8.81, 9.37, 9.31, 9~
+$ marathon <dbl> 178.52, 152.37, 159.37, 157.85, 169.98, 168.75, 191.02, 149.4~
+$ country  <chr> "argentin", "australi", "austria", "belgium", "bermuda", "bra~
+\end{Soutput}
+\begin{Sinput}
+GGally::ggpairs(track[,1:7]) + theme_bw() + theme(axis.text = element_blank())
+\end{Sinput}
 
 
+{\centering \includegraphics[width=\maxwidth]{figure/listings-unnamed-chunk-486-1} 
+
+}
+
+\end{Schunk}
+\subsubsection{Compute}
+\begin{Schunk}
+\begin{Sinput}
+track_pca = prcomp(track[,1:7], center = TRUE, scale = TRUE)
+track_pca
+\end{Sinput}
+\begin{Soutput}
+Standard deviations (1, .., p=7):
+[1] 2.4094991 0.8084835 0.5476152 0.3542280 0.2319847 0.1976089 0.1498085
+
+Rotation (n x k) = (7 x 7):
+               PC1        PC2         PC3         PC4         PC5          PC6
+m100     0.3683561  0.4900597 -0.28601157  0.31938631  0.23116950  0.619825234
+m200     0.3653642  0.5365800 -0.22981913 -0.08330196  0.04145457 -0.710764580
+m400     0.3816103  0.2465377  0.51536655 -0.34737748 -0.57217791  0.190945970
+m800     0.3845592 -0.1554023  0.58452608 -0.04207636  0.62032379 -0.019089032
+m1500    0.3891040 -0.3604093  0.01291198  0.42953873  0.03026144 -0.231248381
+m3000    0.3888661 -0.3475394 -0.15272772  0.36311995 -0.46335476  0.009277159
+marathon 0.3670038 -0.3692076 -0.48437037 -0.67249685  0.13053590  0.142280558
+                 PC7
+m100      0.05217655
+m200     -0.10922503
+m400      0.20849691
+m800     -0.31520972
+m1500     0.69256151
+m3000    -0.59835943
+marathon  0.06959828
+\end{Soutput}
+\end{Schunk}
+\subsubsection{Assess}
+\begin{Schunk}
+\begin{Sinput}
+summary(track_pca)
+\end{Sinput}
+\begin{Soutput}
+Importance of components:
+                          PC1     PC2     PC3     PC4     PC5     PC6     PC7
+Standard deviation     2.4095 0.80848 0.54762 0.35423 0.23198 0.19761 0.14981
+Proportion of Variance 0.8294 0.09338 0.04284 0.01793 0.00769 0.00558 0.00321
+Cumulative Proportion  0.8294 0.92276 0.96560 0.98353 0.99122 0.99679 1.00000
+\end{Soutput}
+\begin{Sinput}
+track_pca_smry = tibble(evl=track_pca$sdev^2) |>
+  mutate(p = evl/sum(evl), cum_p = cumsum(evl/sum(evl))) |>t() 
+colnames(track_pca_smry) = colnames(track_pca$rotation)
+rownames(track_pca_smry) = c("Variance", "Proportion", "Cum. prop")
+kable(track_pca_smry, digits=2, booktabs = TRUE) |>
+  kable_styling(position="center", latex_options = "hold_position")
+\end{Sinput}
+\begin{table}[!h]
+\centering
+\begin{tabular}{lrrrrrrr}
+\toprule
+  & PC1 & PC2 & PC3 & PC4 & PC5 & PC6 & PC7\\
+\midrule
+Variance & 5.81 & 0.65 & 0.30 & 0.13 & 0.05 & 0.04 & 0.02\\
+Proportion & 0.83 & 0.09 & 0.04 & 0.02 & 0.01 & 0.01 & 0.00\\
+Cum. prop & 0.83 & 0.92 & 0.97 & 0.98 & 0.99 & 1.00 & 1.00\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{Sinput}
+  row_spec(0, color="white", background = "myblue") |>
+  column_spec(1,color="white", background = "myblue") |>
+  row_spec(3, color="white", background = "myred")
+\end{Sinput}
+\begin{Soutput}
+Error in row_spec(0, color = "white", background = "myblue"): argument "row" is missing, with no default
+\end{Soutput}
+\end{Schunk}
+Increase in variance explained large until \( k = 3 \) PCs, and then tapers off. A choice of \textcolor{myred}{3 PCs} would explain 97\% of the total variance.
+Scree plot: Where is the elbow?
+\begin{Schunk}
+\begin{Sinput}
+track_pca_var = tibble(n=1:length(track_pca$sdev), evl=track_pca$sdev^2)
+ggplot(track_pca_var, aes(x=n, y=evl)) + geom_line() +
+  labs(x = "Number of PCs", y = "Eigenvalue") +
+  theme_classic()
+\end{Sinput}
 
 
+{\centering \includegraphics[width=\maxwidth]{figure/listings-unnamed-chunk-489-1} 
+
+}
+
+\end{Schunk}
+The scree plot suggests just 1 PCs would be sufficient to explain most of the variability.
+\subsubsection{Visualise}
+Visualise model using a \textbf{biplot}: plot the principal component scores, and also the contribution of the original variables to the principal component.
+\begin{Schunk}
+\begin{Sinput}
+row.names(track) = track$country
+library(ggbiplot)
+ggbiplot(track_pca,
+         labels = rownames(track),
+         labels.size = 3,
+         varname.size = 4) +
+  theme_bw()
+\end{Sinput}
 
 
+{\centering \includegraphics[width=\maxwidth]{figure/listings-unnamed-chunk-490-1} 
+
+}
+
+\end{Schunk}
+\subsubsection{Interpret}
+Explain and interpret: using the coefficients of the principal components.
+\begin{itemize}
+	\item PC1 measures overall magnitude, the strength of the athletics program. High positive values indicate \textcolor{myred}{poor} programs with generally slow times across events.
+	\item PC2 measures the \textcolor{myred}{contrast} in the program between \textcolor{myred}{short and long distance} events. Some countries have relatively stronger long distance athletes, while others have relatively stronger short distance athletes.
+	\item There are several \textcolor{myred}{outliers} visible in this plot, \lstinline|wsamoa|, \lstinline|cookis|, \lstinline|dpkorea|. PCA, because it is computed using the variance in the data, can be affected by outliers. It may be better to remove these countries, and re-run the PCA.
+\end{itemize}
+\subsubsection{Related problems}
+You have multivariate variables \( \symbf{x}_1,\dotsc,\symbf{x}_n \) so \( \symbf{x}_1 = (x_{11}, \dotsc, x_{1p}) \) 
+\begin{itemize}
+	\item Find a new set of multivariate variables that are uncorrelated and explain as much variance as possible.
+	\item If you put all the variables together in one matrix, find the best matrix created with fewer variables (lower rank) that explains the original data.
+\end{itemize}
+The first goal is statistical and the second goal is \textcolor{myred}{\textbf{data compression}}.
+\subsection{Eigenfaces}
+\subsubsection{Face example}
+\begin{Schunk}
+\begin{Sinput}
+load(url("https://github.com/DATA2002/data/raw/master/face.rda"))
+image(t(faceData)[,nrow(faceData):1])
+\end{Sinput}
 
 
+{\centering \includegraphics[width=\maxwidth]{figure/listings-unnamed-chunk-491-1} 
+
+}
+
+\end{Schunk}
+\subsubsection{Variance explained}
+\begin{Schunk}
+\begin{Sinput}
+svd_face = svd(scale(faceData))
+pca_face = prcomp(faceData)
+par(mfrow=c(1,2))
+plot(svd_face$d^2/sum(svd_face$d^2),
+     pch=19,
+     xlab="Singular vector",
+     ylab="Variance explained")
+screeplot(pca_face)
+\end{Sinput}
 
 
+{\centering \includegraphics[width=\maxwidth]{figure/listings-unnamed-chunk-492-1} 
+
+}
+
+\end{Schunk}
+\subsubsection{Create approximations}
+We can reconstruct the face using lower dimensional approximations.
+\begin{Schunk}
+\begin{Sinput}
+svd1 = svd(scale(faceData))
+## Note that %*% is matrix multiplication
+
+# Here svd1$d[1] is a constant
+approx1 = svd1$u[,1] %*% t(svd1$v[,1]) * svd1$d[1]
+
+# In these examples we need to make the diagonal matrix out of d
+approx5 = svd1$u[,1:5] %*% diag(svd1$d[1:5]) %*% t(svd1$v[,1:5]) 
+approx10 = svd1$u[,1:10] %*% diag(svd1$d[1:10]) %*% t(svd1$v[,1:10]) 
+\end{Sinput}
+\end{Schunk}
+\subsubsection{Plot approximations}
+\begin{Schunk}
+\begin{Sinput}
+par(mfrow=c(2,2), mar = c(2,2,2,2))
+image(t(approx1)[,nrow(approx1):1], main = "One component")
+image(t(approx5)[,nrow(approx5):1], main = "Five components")
+image(t(approx10)[,nrow(approx10):1], main = "Ten components")
+image(t(faceData)[,nrow(faceData):1], main = "Original data")  ## Original data
+\end{Sinput}
 
 
+{\centering \includegraphics[width=\maxwidth]{figure/listings-unnamed-chunk-494-1} 
+
+}
+
+\end{Schunk}
+\subsection{Dimension reduction and clustering}
+\subsubsection{US arrests data}
+\begin{Schunk}
+\begin{Sinput}
+data("USArrests")
+glimpse(USArrests)
+\end{Sinput}
+\begin{Soutput}
+Rows: 50
+Columns: 4
+$ Murder   <dbl> 13.2, 10.0, 8.1, 8.8, 9.0, 7.9, 3.3, 5.9, 15.4, 17.4, 5.3, 2.~
+$ Assault  <int> 236, 263, 294, 190, 276, 204, 110, 238, 335, 211, 46, 120, 24~
+$ UrbanPop <int> 58, 48, 80, 50, 91, 78, 77, 72, 80, 60, 83, 54, 83, 65, 57, 6~
+$ Rape     <dbl> 21.2, 44.5, 31.0, 19.5, 40.6, 38.7, 11.1, 15.8, 31.9, 25.8, 2~
+\end{Soutput}
+\begin{Sinput}
+df = data.frame(scale(USArrests))
+GGally::ggpairs(df)
+\end{Sinput}
 
 
+{\centering \includegraphics[width=\maxwidth]{figure/listings-unnamed-chunk-495-1} 
+
+}
+
+\end{Schunk}
+\subsubsection{PCA for US arrests}
+\begin{Schunk}
+\begin{Sinput}
+pca_arrests = princomp(df)
+library(ggbiplot)
+p1 = ggscreeplot(pca_arrests) +
+  theme_bw() + labs(y = "Prop. of explained variance")
+p2 = ggscreeplot(pca_arrests,type = "cev") + theme_bw() + labs(y = " Cumulative prop. of explained variance")
+gridExtra::grid.arrange(p1, p2, ncol=2)
+\end{Sinput}
 
 
+{\centering \includegraphics[width=\maxwidth]{figure/listings-unnamed-chunk-496-1} 
+
+}
+
+\end{Schunk}
+\subsubsection{Biplot}
+\begin{Schunk}
+\begin{Sinput}
+ggbiplot(pca_arrests,
+         labels = rownames(USArrests),
+         labels.size = 2,
+         varname.size = 3) + 
+  coord_cartesian(ylim = c(-2.5,2.5), xlim = c(-2.5,2.5)) +
+  theme_bw()
+\end{Sinput}
 
 
+{\centering \includegraphics[width=\maxwidth]{figure/listings-unnamed-chunk-497-1} 
+
+}
+
+\end{Schunk}
+\subsubsection{Clustering}
+\begin{Schunk}
+\begin{Sinput}
+set.seed(88)
+cl_arrests = kmeans(
+  df, centers = 4, nstart = 10
+)
+ggbiplot(
+  pca_arrests,
+  groups = factor(cl_arrests$cluster),
+  ellipse = TRUE,
+  varname.size = 2) + 
+  scale_color_manual(values=c("#992240", "#409922", "#224099", "#997b22")) + 
+  theme_bw() +
+  theme(legend.position = "none")
+\end{Sinput}
 
 
+{\centering \includegraphics[width=\maxwidth]{figure/listings-unnamed-chunk-498-1} 
+
+}
+
+\end{Schunk}
+\begin{Schunk}
+\begin{Sinput}
+library(factoextra)
+fviz_cluster(cl_arrests, data = df) + theme_classic()
+\end{Sinput}
 
 
+{\centering \includegraphics[width=0.9\linewidth]{figure/listings-unnamed-chunk-499-1} 
+
+}
+
+\end{Schunk}
+\subsubsection{Wine}
+\begin{Schunk}
+\begin{Sinput}
+data(wine)
+glimpse(wine)
+\end{Sinput}
+\begin{Soutput}
+Rows: 178
+Columns: 13
+$ Alcohol        <dbl> 14.23, 13.20, 13.16, 14.37, 13.24, 14.20, 14.39, 14.06,~
+$ MalicAcid      <dbl> 1.71, 1.78, 2.36, 1.95, 2.59, 1.76, 1.87, 2.15, 1.64, 1~
+$ Ash            <dbl> 2.43, 2.14, 2.67, 2.50, 2.87, 2.45, 2.45, 2.61, 2.17, 2~
+$ AlcAsh         <dbl> 15.6, 11.2, 18.6, 16.8, 21.0, 15.2, 14.6, 17.6, 14.0, 1~
+$ Mg             <int> 127, 100, 101, 113, 118, 112, 96, 121, 97, 98, 105, 95,~
+$ Phenols        <dbl> 2.80, 2.65, 2.80, 3.85, 2.80, 3.27, 2.50, 2.60, 2.80, 2~
+$ Flav           <dbl> 3.06, 2.76, 3.24, 3.49, 2.69, 3.39, 2.52, 2.51, 2.98, 3~
+$ NonFlavPhenols <dbl> 0.28, 0.26, 0.30, 0.24, 0.39, 0.34, 0.30, 0.31, 0.29, 0~
+$ Proa           <dbl> 2.29, 1.28, 2.81, 2.18, 1.82, 1.97, 1.98, 1.25, 1.98, 1~
+$ Color          <dbl> 5.64, 4.38, 5.68, 7.80, 4.32, 6.75, 5.25, 5.05, 5.20, 7~
+$ Hue            <dbl> 1.04, 1.05, 1.03, 0.86, 1.04, 1.05, 1.02, 1.06, 1.08, 1~
+$ OD             <dbl> 3.92, 3.40, 3.17, 3.45, 2.93, 2.85, 3.58, 3.58, 2.85, 3~
+$ Proline        <int> 1065, 1050, 1185, 1480, 735, 1450, 1290, 1295, 1045, 10~
+\end{Soutput}
+\begin{Sinput}
+library(ggbiplot)
+wine.pca = prcomp(
+  wine,
+  scale. = TRUE)
+ggbiplot(
+  wine.pca, 
+  obs.scale = 1, 
+  var.scale = 1, 
+  groups = wine.class,
+  ellipse = TRUE, 
+  circle = TRUE) +
+  scale_color_manual(values=c("#992240", "#409922", "#224099")) + 
+  theme(legend.direction = 'horizontal',
+        legend.position = 'top') +
+  theme_bw()
+\end{Sinput}
 
 
+{\centering \includegraphics[width=\maxwidth]{figure/listings-unnamed-chunk-500-1} 
 
+}
 
-
-
-
-
-
-
-
-
-
+\end{Schunk}
+\end{document}
